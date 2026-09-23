@@ -1,0 +1,4505 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Biology Champions - Game edukasi Biologi SMA interaktif bertema playful biru-tosca dengan POV perawat rumah sakit. Pecahkan tantangan soal biologi melalui interaksi penyakit pasien!">
+    <title>Biology Champions: POV Perawat Rumah Sakit - Game Biologi SMA</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- Main Stylesheet -->
+    <style>
+/* ==========================================================================
+   BIOLOGY CHAMPIONS - PLAYFUL BIRU-TOSCA HOSPITAL THEME
+   A modern, vibrant, and engaging web-based hospital simulation game
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap');
+
+:root {
+    /* Playful Tosca & Medical Blue Palette */
+    --color-tosca-primary: #00C9A7;
+    --color-tosca-dark: #00A887;
+    --color-tosca-light: #48E5C2;
+    --color-cyan-vibrant: #00B4D8;
+    --color-cyan-deep: #0077B6;
+    --color-cyan-soft: #90E0EF;
+    --color-cyan-lightest: #E0F7FA;
+    --color-mint-bg: #F0FDFA;
+    --color-hospital-white: #FFFFFF;
+    --color-navy-dark: #0A2540;
+    --color-navy-card: #0F172A;
+    --color-slate-text: #334155;
+    --color-slate-light: #64748B;
+    
+    /* Playful Accent Colors */
+    --color-coral-alert: #F43F5E;
+    --color-coral-light: #FFE4E6;
+    --color-yellow-star: #FACC15;
+    --color-amber-warn: #F59E0B;
+    --color-purple-accent: #8B5CF6;
+    --color-green-success: #10B981;
+    --color-green-light: #D1FAE5;
+    
+    /* Glassmorphism & Shadows */
+    --glass-bg: rgba(255, 255, 255, 0.88);
+    --glass-border: rgba(0, 201, 167, 0.25);
+    --glass-shadow: 0 12px 32px -4px rgba(0, 180, 216, 0.18), 0 4px 12px rgba(0, 0, 0, 0.05);
+    --card-shadow: 0 10px 25px -5px rgba(10, 37, 64, 0.08), 0 8px 10px -6px rgba(10, 37, 64, 0.04);
+    --card-shadow-hover: 0 20px 35px -8px rgba(0, 180, 216, 0.28), 0 10px 15px -3px rgba(0, 0, 0, 0.06);
+    --neon-tosca-glow: 0 0 20px rgba(0, 201, 167, 0.45);
+    
+    /* Radii */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --radius-xl: 32px;
+    --radius-full: 9999px;
+    
+    /* Fonts */
+    --font-heading: 'Nunito', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+}
+
+/* ==================== Reset & Base Styles ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: var(--font-body);
+    background: linear-gradient(135deg, #E0F7FA 0%, #E6FFFA 40%, #CCFBF1 100%);
+    color: var(--color-slate-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Playful Hospital Background Wallpaper Shapes */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50px;
+    right: -50px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(0, 201, 167, 0.18) 0%, rgba(0, 180, 216, 0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: -80px;
+    left: -80px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0, 180, 216, 0.15) 0%, rgba(72, 229, 194, 0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ==================== Top Navigation / Nurse Bar ==================== */
+.nurse-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 2px solid rgba(0, 180, 216, 0.2);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(0, 180, 216, 0.08);
+}
+
+.brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.brand-icon-box {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--color-tosca-primary), var(--color-cyan-vibrant));
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 201, 167, 0.35);
+    font-size: 22px;
+    color: white;
+    transform: rotate(-3deg);
+    transition: transform 0.2s ease;
+}
+
+.brand-wrapper:hover .brand-icon-box {
+    transform: rotate(4deg) scale(1.08);
+}
+
+.brand-text h1 {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 900;
+    background: linear-gradient(120deg, #0077B6, #00C9A7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+}
+
+.brand-text p {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--color-cyan-deep);
+}
+
+/* Nurse Profile Badge in Nav */
+.nurse-stats-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nurse-id-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #F0FDFA, #E0F7FA);
+    border: 1.5px solid var(--color-tosca-primary);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    box-shadow: 0 2px 8px rgba(0, 201, 167, 0.15);
+}
+
+.nurse-avatar-mini {
+    width: 34px;
+    height: 34px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border: 2px solid var(--color-tosca-primary);
+}
+
+.nurse-info-text {
+    line-height: 1.15;
+}
+
+.nurse-name-display {
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--color-navy-dark);
+}
+
+.nurse-rank-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--color-tosca-dark);
+    text-transform: uppercase;
+}
+
+.stat-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    border: 1px solid #CBD5E1;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-navy-dark);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.stat-chip.xp {
+    border-color: #FACC15;
+    background: #FEFCE8;
+    color: #854D0E;
+}
+
+.stat-chip.patients {
+    border-color: #00C9A7;
+    background: #F0FDF4;
+    color: #166534;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-button {
+    background: white;
+    border: 1.5px solid #CBD5E1;
+    color: var(--color-slate-text);
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+    background: var(--color-cyan-lightest);
+    border-color: var(--color-cyan-vibrant);
+    color: var(--color-cyan-deep);
+    transform: translateY(-2px);
+}
+
+.btn-book {
+    background: linear-gradient(135deg, var(--color-cyan-vibrant), var(--color-tosca-primary));
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 201, 167, 0.3);
+    transition: all 0.2s ease;
+}
+
+.btn-book:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 201, 167, 0.45);
+}
+
+/* ==================== Main Game Container ==================== */
+.game-viewport {
+    flex: 1;
+    position: relative;
+    max-width: 1380px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 20px 24px 30px;
+    z-index: 1;
+}
+
+/* ==================== Screen 1: Welcome & Setup ==================== */
+.welcome-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 120px);
+    text-align: center;
+    position: relative;
+}
+
+.welcome-card {
+    background: var(--glass-bg);
+    border: 2px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    border-radius: var(--radius-xl);
+    padding: 40px 48px;
+    max-width: 640px;
+    width: 100%;
+    box-shadow: var(--glass-shadow);
+    position: relative;
+    animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hospital-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #E0F7FA;
+    color: var(--color-cyan-deep);
+    border: 1.5px solid var(--color-cyan-vibrant);
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+
+.welcome-title {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--color-navy-dark);
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.welcome-title span {
+    color: var(--color-tosca-primary);
+}
+
+.welcome-subtitle {
+    font-size: 0.95rem;
+    color: var(--color-slate-light);
+    margin-bottom: 28px;
+    line-height: 1.5;
+}
+
+/* Nurse Character Selection */
+.character-select-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-cyan-deep);
+    margin-bottom: 12px;
+}
+
+.avatar-options {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.avatar-choice {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #CBD5E1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.avatar-choice:hover {
+    transform: scale(1.1);
+    border-color: var(--color-cyan-vibrant);
+}
+
+.avatar-choice.active {
+    border-color: var(--color-tosca-primary);
+    background: #E6FFFA;
+    transform: scale(1.15);
+    box-shadow: 0 0 0 5px rgba(0, 201, 167, 0.25);
+}
+
+.nurse-name-input-group {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.nurse-name-input-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-navy-dark);
+    margin-bottom: 6px;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon span {
+    position: absolute;
+    left: 14px;
+    font-size: 18px;
+}
+
+.nurse-name-input {
+    width: 100%;
+    padding: 12px 16px 12px 44px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid #CBD5E1;
+    border-radius: var(--radius-md);
+    background: white;
+    color: var(--color-navy-dark);
+    transition: all 0.2s ease;
+}
+
+.nurse-name-input:focus {
+    outline: none;
+    border-color: var(--color-tosca-primary);
+    box-shadow: 0 0 0 4px rgba(0, 201, 167, 0.2);
+}
+
+/* Difficulty & Subject tags */
+.curriculum-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 28px;
+}
+
+.curriculum-pill {
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--color-slate-text);
+}
+
+.btn-start-game {
+    width: 100%;
+    padding: 16px 28px;
+    background: linear-gradient(135deg, var(--color-tosca-primary) 0%, var(--color-cyan-vibrant) 100%);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 201, 167, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-start-game:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 12px 30px rgba(0, 201, 167, 0.55);
+}
+
+.btn-start-game:active {
+    transform: translateY(0);
+}
+
+/* ==================== Screen 2: Ward & Patient Simulation (POV Perawat) ==================== */
+.ward-screen {
+    display: grid;
+    grid-template-columns: 310px 1fr 340px;
+    gap: 20px;
+    align-items: start;
+}
+
+/* Left Column: Patient Ward Roster */
+.ward-roster-card {
+    background: var(--glass-bg);
+    border: 1.5px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--card-shadow);
+}
+
+.roster-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px dashed rgba(0, 180, 216, 0.25);
+}
+
+.roster-header h3 {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: var(--color-navy-dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.roster-badge {
+    background: #E0F7FA;
+    color: var(--color-cyan-deep);
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+}
+
+.patient-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.patient-list::-webkit-scrollbar {
+    width: 5px;
+}
+.patient-list::-webkit-scrollbar-thumb {
+    background: rgba(0, 180, 216, 0.3);
+    border-radius: 10px;
+}
+
+.patient-roster-item {
+    background: white;
+    border: 1.5px solid #E2E8F0;
+    border-radius: var(--radius-md);
+    padding: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.patient-roster-item:hover {
+    border-color: var(--color-cyan-vibrant);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0, 180, 216, 0.12);
+}
+
+.patient-roster-item.active {
+    border-color: var(--color-tosca-primary);
+    background: #F0FDFA;
+    box-shadow: 0 4px 14px rgba(0, 201, 167, 0.25);
+}
+
+.patient-roster-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--color-tosca-primary);
+}
+
+.roster-avatar-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #E0F7FA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 2px solid #CBD5E1;
+}
+
+.patient-roster-item.cured .roster-avatar-box {
+    border-color: var(--color-tosca-primary);
+    background: #D1FAE5;
+}
+
+.roster-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.roster-name {
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--color-navy-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.roster-condition {
+    font-size: 0.72rem;
+    color: var(--color-slate-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.roster-status-badge {
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: var(--radius-full);
+    display: inline-block;
+    margin-top: 4px;
+}
+
+.status-treating {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.status-cured {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+/* ==================== Center Column: Hospital Bed & Patient POV ==================== */
+.ward-center-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Main Patient Exam Card */
+.patient-bed-card {
+    background: var(--glass-bg);
+    border: 2px solid var(--glass-border);
+    backdrop-filter: blur(14px);
+    border-radius: var(--radius-xl);
+    padding: 24px;
+    box-shadow: var(--glass-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.bed-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.bed-title-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.bed-number-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #E0F7FA;
+    color: var(--color-cyan-deep);
+    font-size: 0.74rem;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    width: fit-content;
+}
+
+.patient-main-name {
+    font-family: var(--font-heading);
+    font-size: 1.55rem;
+    font-weight: 900;
+    color: var(--color-navy-dark);
+}
+
+.patient-sub-details {
+    font-size: 0.82rem;
+    color: var(--color-slate-light);
+}
+
+/* Recovery Progress Bar on Card */
+.recovery-container {
+    text-align: right;
+    width: 170px;
+}
+
+.recovery-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--color-navy-dark);
+}
+
+.recovery-progress-track {
+    width: 100%;
+    height: 12px;
+    background: #E2E8F0;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    border: 1px solid #CBD5E1;
+    position: relative;
+}
+
+.recovery-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00B4D8 0%, #00C9A7 100%);
+    width: 0%;
+    border-radius: var(--radius-full);
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 0 10px rgba(0, 201, 167, 0.5);
+}
+
+/* Interactive Patient Bed Display */
+.patient-bed-visual {
+    background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%);
+    border: 2px solid #CBD5E1;
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    position: relative;
+    min-height: 220px;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* Bed Pillow & Headboard graphic */
+.bed-headboard {
+    position: absolute;
+    top: 12px;
+    width: 90%;
+    height: 10px;
+    background: #94A3B8;
+    border-radius: 5px;
+    opacity: 0.5;
+}
+
+.patient-avatar-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.patient-avatar-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.1));
+    transition: all 0.3s ease;
+}
+
+.patient-avatar-svg.cured-anim {
+    animation: gentleBounce 2s infinite ease-in-out;
+}
+
+@keyframes gentleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Patient Speech / Complaint Bubble */
+.patient-complaint-bubble {
+    background: white;
+    border: 2px solid var(--color-cyan-vibrant);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+    max-width: 320px;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0, 180, 216, 0.15);
+}
+
+.patient-complaint-bubble::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 8px 12px 8px 0;
+    border-style: solid;
+    border-color: transparent var(--color-cyan-vibrant) transparent transparent;
+}
+
+.patient-complaint-bubble::after {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 7px 10px 7px 0;
+    border-style: solid;
+    border-color: transparent white transparent transparent;
+}
+
+.bubble-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--color-cyan-deep);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.bubble-text {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-navy-dark);
+    line-height: 1.4;
+}
+
+/* ==================== Nurse's Medical Trolley (Alat Medis Interaktif) ==================== */
+.nurse-trolley-panel {
+    background: var(--glass-bg);
+    border: 2px solid var(--glass-border);
+    backdrop-filter: blur(14px);
+    border-radius: var(--radius-xl);
+    padding: 20px 24px;
+    box-shadow: var(--glass-shadow);
+}
+
+.trolley-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.trolley-title-group h4 {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: var(--color-navy-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.trolley-instruction {
+    font-size: 0.78rem;
+    color: var(--color-slate-light);
+    font-weight: 600;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.medical-tool-btn {
+    background: white;
+    border: 2px solid #CBD5E1;
+    border-radius: var(--radius-lg);
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    text-align: center;
+}
+
+.medical-tool-btn:hover {
+    transform: translateY(-4px) scale(1.03);
+    border-color: var(--color-cyan-vibrant);
+    box-shadow: 0 8px 18px rgba(0, 180, 216, 0.22);
+}
+
+.medical-tool-btn.ready {
+    border-color: var(--color-tosca-primary);
+    background: #F0FDFA;
+    box-shadow: 0 0 0 3px rgba(0, 201, 167, 0.2);
+    animation: toolGlowPulse 2s infinite ease-in-out;
+}
+
+@keyframes toolGlowPulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(0, 201, 167, 0.2); }
+    50% { box-shadow: 0 0 0 6px rgba(0, 201, 167, 0.4); }
+}
+
+.medical-tool-btn.completed {
+    border-color: var(--color-tosca-primary);
+    background: #E6FFFA;
+}
+
+.tool-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: #E0F7FA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: transform 0.2s ease;
+}
+
+.medical-tool-btn:hover .tool-icon-wrapper {
+    transform: rotate(6deg) scale(1.1);
+}
+
+.tool-name-label {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--color-navy-dark);
+}
+
+.tool-sub-label {
+    font-size: 0.68rem;
+    color: var(--color-slate-light);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.tool-check-pill {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-tosca-primary);
+    color: white;
+    font-size: 12px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 201, 167, 0.4);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.medical-tool-btn.completed .tool-check-pill {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ==================== Right Column: ICU Monitor & Vital Signs ==================== */
+.vital-monitor-card {
+    background: #0B192C;
+    border: 3px solid #1E3E62;
+    border-radius: var(--radius-xl);
+    padding: 18px;
+    box-shadow: 0 16px 36px rgba(11, 25, 44, 0.4), inset 0 0 20px rgba(0, 180, 216, 0.08);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.monitor-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1E3E62;
+}
+
+.monitor-brand {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    color: #38BDF8;
+    text-transform: uppercase;
+}
+
+.monitor-status-dot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-tosca-light);
+}
+
+.pulse-indicator {
+    width: 8px;
+    height: 8px;
+    background: var(--color-tosca-primary);
+    border-radius: 50%;
+    animation: ekgBlink 1.2s infinite ease-in-out;
+}
+
+@keyframes ekgBlink {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 8px var(--color-tosca-primary); }
+}
+
+/* EKG Oscilloscope Canvas */
+.ekg-screen-box {
+    background: #040D1A;
+    border: 1.5px solid #1E293B;
+    border-radius: var(--radius-md);
+    padding: 10px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Grid lines for EKG screen */
+.ekg-screen-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+        linear-gradient(rgba(0, 180, 216, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 180, 216, 0.08) 1px, transparent 1px);
+    background-size: 16px 16px;
+    pointer-events: none;
+}
+
+#ekgCanvas {
+    display: block;
+    width: 100%;
+    height: 75px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Vital Signs Grid */
+.vitals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.vital-tile {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid #1E293B;
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.vital-tile.heart-rate {
+    border-left: 3px solid #00C9A7;
+}
+.vital-tile.spo2 {
+    border-left: 3px solid #00B4D8;
+}
+.vital-tile.temp {
+    border-left: 3px solid #F59E0B;
+}
+.vital-tile.bp {
+    border-left: 3px solid #EC4899;
+}
+
+.vital-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.vital-value {
+    font-family: var(--font-mono);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: white;
+    margin: 4px 0 2px;
+}
+
+.vital-unit {
+    font-size: 0.65rem;
+    color: #64748B;
+}
+
+.vital-status-pill {
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+    width: fit-content;
+    margin-top: 4px;
+}
+
+.vital-status-pill.warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: #FBBF24;
+}
+
+.vital-status-pill.normal {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34D399;
+}
+
+/* Organ System Clinical Card in Right Column */
+.clinical-organ-card {
+    background: white;
+    border: 1.5px solid #CBD5E1;
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    margin-top: 14px;
+    box-shadow: var(--card-shadow);
+}
+
+.clinical-organ-card h5 {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--color-cyan-deep);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.organ-tag-badge {
+    background: #E0F7FA;
+    color: var(--color-cyan-deep);
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.clinical-tip-text {
+    font-size: 0.75rem;
+    color: var(--color-slate-light);
+    line-height: 1.4;
+}
+
+/* ==================== Modal Pop-up: Medical Clipboard Soal Biologi ==================== */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10, 37, 64, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Medical Clipboard Styling */
+.clipboard-modal {
+    background: #FFFDF9;
+    border: 3px solid #E2E8F0;
+    border-radius: 20px;
+    max-width: 680px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+    transform: translateY(20px) scale(0.96);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-overlay.active .clipboard-modal {
+    transform: translateY(0) scale(1);
+}
+
+/* Metallic Clip at the top of the clipboard */
+.clipboard-metallic-clip {
+    position: sticky;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 28px;
+    background: linear-gradient(180deg, #94A3B8 0%, #64748B 50%, #475569 100%);
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clip-hole {
+    width: 40px;
+    height: 8px;
+    background: #1E293B;
+    border-radius: 4px;
+}
+
+.clipboard-content-body {
+    padding: 24px 32px 30px;
+}
+
+/* Header inside clipboard */
+.clipboard-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed #CBD5E1;
+}
+
+.clipboard-title-area {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.clipboard-stage-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #E0F7FA;
+    color: var(--color-cyan-deep);
+    font-size: 0.74rem;
+    font-weight: 800;
+    padding: 3px 12px;
+    border-radius: var(--radius-full);
+    width: fit-content;
+}
+
+.clipboard-topic-tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-tosca-dark);
+}
+
+.btn-close-modal {
+    background: #F1F5F9;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 16px;
+    color: #64748B;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-close-modal:hover {
+    background: #E2E8F0;
+    color: var(--color-coral-alert);
+}
+
+/* Clinical Context Note on Paper */
+.clinical-case-context {
+    background: #F0FDFA;
+    border-left: 4px solid var(--color-tosca-primary);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #0F766E;
+    line-height: 1.45;
+}
+
+/* The Biology Question Box */
+.question-prompt-box {
+    margin-bottom: 22px;
+}
+
+.question-text {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-navy-dark);
+    line-height: 1.45;
+}
+
+/* Multiple Choice Options */
+.options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.option-item {
+    background: white;
+    border: 2px solid #E2E8F0;
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    user-select: none;
+}
+
+.option-item:hover:not(.disabled) {
+    border-color: var(--color-cyan-vibrant);
+    background: #F8FAFC;
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0, 180, 216, 0.12);
+}
+
+.option-letter {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #F1F5F9;
+    color: var(--color-navy-dark);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1.5px solid #CBD5E1;
+    transition: all 0.2s ease;
+}
+
+.option-item:hover:not(.disabled) .option-letter {
+    background: var(--color-cyan-vibrant);
+    color: white;
+    border-color: var(--color-cyan-vibrant);
+}
+
+.option-text {
+    font-size: 0.92rem;
+    color: var(--color-slate-text);
+    line-height: 1.4;
+    padding-top: 4px;
+    flex: 1;
+}
+
+/* Correct / Wrong States */
+.option-item.correct {
+    border-color: var(--color-green-success) !important;
+    background: #ECFDF5 !important;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+}
+
+.option-item.correct .option-letter {
+    background: var(--color-green-success);
+    color: white;
+    border-color: var(--color-green-success);
+}
+
+.option-item.wrong {
+    border-color: var(--color-coral-alert) !important;
+    background: #FFF1F2 !important;
+    animation: shake 0.4s ease;
+}
+
+.option-item.wrong .option-letter {
+    background: var(--color-coral-alert);
+    color: white;
+    border-color: var(--color-coral-alert);
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+
+.option-item.disabled {
+    cursor: default;
+    opacity: 0.85;
+}
+
+/* Explanation & Hint Box */
+.feedback-box {
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 16px;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.feedback-box.active {
+    display: block;
+}
+
+.feedback-box.success {
+    background: #ECFDF5;
+    border: 1.5px solid var(--color-green-success);
+}
+
+.feedback-box.error {
+    background: #FFFBEB;
+    border: 1.5px solid var(--color-amber-warn);
+}
+
+.feedback-title {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.feedback-box.success .feedback-title {
+    color: #065F46;
+}
+
+.feedback-box.error .feedback-title {
+    color: #92400E;
+}
+
+.feedback-explanation {
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--color-slate-text);
+}
+
+.modal-footer-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1.5px dashed #CBD5E1;
+}
+
+.btn-hint {
+    background: none;
+    border: 1.5px solid #CBD5E1;
+    padding: 8px 14px;
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-slate-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-hint:hover {
+    background: #FEF9C3;
+    border-color: #FACC15;
+    color: #854D0E;
+}
+
+.btn-continue-next {
+    background: linear-gradient(135deg, var(--color-tosca-primary), var(--color-cyan-vibrant));
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 201, 167, 0.35);
+    display: none;
+    transition: all 0.2s ease;
+}
+
+.btn-continue-next.active {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-continue-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 201, 167, 0.5);
+}
+
+/* ==================== Modal: Patient Cured Celebration (Surat Sembuh) ==================== */
+.celebration-modal {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 36px 40px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    animation: popUpScale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popUpScale {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.celebration-ribbon {
+    font-size: 52px;
+    margin-bottom: 12px;
+    animation: gentleWiggle 1s ease infinite alternate;
+}
+
+@keyframes gentleWiggle {
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(5deg); }
+}
+
+.celebration-title {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--color-navy-dark);
+    margin-bottom: 8px;
+}
+
+.celebration-title span {
+    color: var(--color-tosca-primary);
+}
+
+.discharge-certificate-box {
+    background: #F0FDFA;
+    border: 2px dashed var(--color-tosca-primary);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    margin: 18px 0;
+    text-align: left;
+    position: relative;
+}
+
+.stamp-cured {
+    position: absolute;
+    right: 18px;
+    bottom: 14px;
+    border: 3px solid #10B981;
+    color: #10B981;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transform: rotate(-12deg);
+    opacity: 0.85;
+}
+
+.cert-row {
+    font-size: 0.84rem;
+    color: var(--color-slate-text);
+    margin-bottom: 6px;
+}
+
+.cert-row strong {
+    color: var(--color-navy-dark);
+}
+
+.celebration-rewards {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.reward-item {
+    background: #FEFCE8;
+    border: 1.5px solid #FACC15;
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #854D0E;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-next-patient {
+    width: 100%;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, var(--color-tosca-primary), var(--color-cyan-vibrant));
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 201, 167, 0.4);
+    transition: all 0.2s ease;
+}
+
+.btn-next-patient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 201, 167, 0.55);
+}
+
+/* ==================== Modal: Buku Saku Biologi (Encyclopedia) ==================== */
+.encyclopedia-modal {
+    background: white;
+    border-radius: var(--radius-xl);
+    max-width: 820px;
+    width: 100%;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+}
+
+.encyclopedia-header {
+    background: linear-gradient(135deg, #0077B6, #00C9A7);
+    color: white;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.encyclopedia-header h3 {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.encyclopedia-tabs {
+    display: flex;
+    background: #F1F5F9;
+    padding: 8px 16px;
+    gap: 8px;
+    overflow-x: auto;
+    border-bottom: 1.5px solid #E2E8F0;
+}
+
+.encyclopedia-tab {
+    background: white;
+    border: 1px solid #CBD5E1;
+    border-radius: var(--radius-full);
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-slate-text);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.encyclopedia-tab:hover {
+    border-color: var(--color-cyan-vibrant);
+    color: var(--color-cyan-deep);
+}
+
+.encyclopedia-tab.active {
+    background: var(--color-cyan-vibrant);
+    color: white;
+    border-color: var(--color-cyan-vibrant);
+    box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+}
+
+.encyclopedia-body {
+    padding: 24px 28px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.encyclopedia-topic-content {
+    display: none;
+}
+
+.encyclopedia-topic-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.topic-hero-box {
+    background: #F0FDFA;
+    border-left: 4px solid var(--color-tosca-primary);
+    padding: 14px 18px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin-bottom: 20px;
+}
+
+.topic-hero-box h4 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--color-navy-dark);
+    margin-bottom: 4px;
+}
+
+.concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.concept-card {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: var(--radius-md);
+    padding: 16px;
+}
+
+.concept-card h5 {
+    font-family: var(--font-heading);
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--color-cyan-deep);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.concept-card p {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--color-slate-text);
+}
+
+/* ==================== Microscopic Interactive Viewport Modal ==================== */
+.microscope-modal-card {
+    background: #09121D;
+    border: 3px solid #00B4D8;
+    border-radius: var(--radius-xl);
+    padding: 24px;
+    max-width: 580px;
+    width: 100%;
+    color: white;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 180, 216, 0.25);
+}
+
+.microscope-lens-viewport {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    border: 8px solid #1E293B;
+    background: radial-gradient(circle, #0F766E 0%, #042F2E 70%, #000 100%);
+    margin: 16px auto;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 25px rgba(0, 201, 167, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.microscope-lens-viewport::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.microscope-lens-viewport::after {
+    content: '';
+    position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.specimen-cell-svg {
+    width: 75%;
+    height: 75%;
+    animation: rotateSpecimen 25s infinite linear;
+}
+
+@keyframes rotateSpecimen {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==================== Confetti Animation Canvas ==================== */
+#confettiCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2000;
+}
+
+/* ==================== Utility Animations ==================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.9); }
+    70% { opacity: 1; transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+/* ==================== Responsive Layout ==================== */
+@media (max-width: 1180px) {
+    .ward-screen {
+        grid-template-columns: 260px 1fr;
+    }
+    .vital-monitor-col {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 860px) {
+    .ward-screen {
+        grid-template-columns: 1fr;
+    }
+    .vital-monitor-col {
+        grid-column: span 1;
+        grid-template-columns: 1fr;
+    }
+    .tools-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .nurse-topbar {
+        padding: 8px 16px;
+    }
+    .nurse-stats-group .stat-chip {
+        display: none;
+    }
+    .concept-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+</head>
+<body>
+
+    <!-- Confetti Particle Canvas for Celebration -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- Top Nurse Navigation Bar -->
+    <header class="nurse-topbar">
+        <div class="brand-wrapper" id="brandHomeBtn">
+            <div class="brand-icon-box">🩺</div>
+            <div class="brand-text">
+                <h1>Biology Champions</h1>
+                <p>RS Bio Medika • Divisi Perawat SMA</p>
+            </div>
+        </div>
+
+        <!-- Nurse Status & Stats -->
+        <div class="nurse-stats-group">
+            <div class="nurse-id-card">
+                <div class="nurse-avatar-mini" id="dispNurseAvatar">👩‍⚕️</div>
+                <div class="nurse-info-text">
+                    <div class="nurse-name-display" id="dispNurseName">Perawat Maya</div>
+                    <div class="nurse-rank-badge" id="dispNurseRank">Perawat Magang</div>
+                </div>
+            </div>
+
+            <div class="stat-chip xp">
+                <span>⭐</span>
+                <span id="dispXp">0 XP</span>
+            </div>
+
+            <div class="stat-chip patients">
+                <span>💖</span>
+                <span id="dispPatientsCount">0 Sembuh</span>
+            </div>
+        </div>
+
+        <!-- Nav Utility Buttons -->
+        <div class="nav-buttons">
+            <button class="btn-book" id="btnOpenBook" title="Buka Buku Saku Biologi">
+                <span>📖</span> Buku Saku SMA
+            </button>
+            <button class="icon-button" id="btnToggleMusic" title="Putar Musik Klinik Santai">
+                🎵
+            </button>
+            <button class="icon-button" id="btnToggleSound" title="Bisukan Suara">
+                🔊
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Game Viewport -->
+    <main class="game-viewport">
+
+        <!-- ==================== SCREEN 1: Welcome & Setup ==================== -->
+        <section class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-card">
+                <div class="hospital-badge">
+                    <span>🏥</span> Rumah Sakit Edukasi Bio Medika
+                </div>
+                <h2 class="welcome-title">Selamat Bertugas di <span>Biology Champions</span>!</h2>
+                <p class="welcome-subtitle">
+                    Ambil stetoskopmu dan jadilah perawat handal! Pasien di bangsal rumah sakit membutuhkan keahlian biologi SMA-mu. Setiap keluhan penyakit adalah tantangan sains nyata yang harus kamu pecahkan.
+                </p>
+
+                <div class="character-select-title">Pilih Avatar Perawatmu:</div>
+                <div class="avatar-options">
+                    <div class="avatar-choice active" data-avatar="👩‍⚕️">👩‍⚕️</div>
+                    <div class="avatar-choice" data-avatar="👨‍⚕️">👨‍⚕️</div>
+                    <div class="avatar-choice" data-avatar="🧑‍⚕️">🧑‍⚕️</div>
+                    <div class="avatar-choice" data-avatar="🥼">🥼</div>
+                </div>
+
+                <div class="nurse-name-input-group">
+                    <label for="nurseNameInput">Nama Lengkap Perawat:</label>
+                    <div class="input-with-icon">
+                        <span>🏷️</span>
+                        <input type="text" id="nurseNameInput" class="nurse-name-input" value="Perawat Champion" placeholder="Ketik namamu di sini..." maxlength="25">
+                    </div>
+                </div>
+
+                <div class="curriculum-pills">
+                    <span class="curriculum-pill">🩸 Sistem Peredaran Darah</span>
+                    <span class="curriculum-pill">🛡️ Sistem Imun & Patogen</span>
+                    <span class="curriculum-pill">⚡ Metabolisme & Sel</span>
+                    <span class="curriculum-pill">🫁 Sistem Respirasi</span>
+                    <span class="curriculum-pill">🫘 Nefron Ginjal</span>
+                    <span class="curriculum-pill">🧬 Genetika Molekuler</span>
+                </div>
+
+                <button class="btn-start-game" id="btnStartGame">
+                    <span>Mulai Shift Jaga & Rawat Pasien</span>
+                    <span>🚀</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 2: Ward & Patient Simulation ==================== -->
+        <section class="ward-screen" id="wardScreen" style="display: none;">
+            
+            <!-- Left Column: Patient Roster -->
+            <aside class="ward-roster-card">
+                <div class="roster-header">
+                    <h3><span>📋</span> Daftar Pasien</h3>
+                    <span class="roster-badge">6 Kamar</span>
+                </div>
+                <div class="patient-list" id="patientRosterList">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </aside>
+
+            <!-- Center Column: Patient Bed & Nurse Trolley -->
+            <div class="ward-center-stage">
+                
+                <!-- Main Patient Bed View -->
+                <div class="patient-bed-card">
+                    <div class="bed-header-row">
+                        <div class="bed-title-meta">
+                            <span class="bed-number-pill" id="patientBedNumber">Bed 101 - Bangsal Sirkulasi</span>
+                            <h2 class="patient-main-name" id="patientName">Pak Budi</h2>
+                            <p class="patient-sub-details" id="patientMeta">52 Tahun • Laki-laki • Anemia Berat</p>
+                        </div>
+                        <div class="recovery-container">
+                            <div class="recovery-label-row">
+                                <span>Status Pemulihan</span>
+                                <span id="recoveryPercentText">0% Kesembuhan</span>
+                            </div>
+                            <div class="recovery-progress-track">
+                                <div class="recovery-progress-fill" id="recoveryFill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Patient Display Bed -->
+                    <div class="patient-bed-visual">
+                        <div class="bed-headboard"></div>
+                        <div class="patient-avatar-wrapper" id="patientAvatarBox">
+                            <!-- Injected SVG Avatar -->
+                        </div>
+                        <div class="patient-complaint-bubble">
+                            <div class="bubble-tag">Keluhan Pasien:</div>
+                            <div class="bubble-text" id="patientComplaint">
+                                "Badan saya terasa lemas sekali, kepala pusing berkunang-kunang, dan napas saya terengah-engah..."
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nurse's Medical Trolley (Interactive Medical Tools) -->
+                <div class="nurse-trolley-panel">
+                    <div class="trolley-header">
+                        <div class="trolley-title-group">
+                            <h4><span>🧰</span> Troli Tindakan Medis Perawat</h4>
+                            <p class="trolley-instruction">Klik alat medis di bawah untuk memeriksa pasien & menjawab challenge soal biologi:</p>
+                        </div>
+                    </div>
+
+                    <div class="tools-grid">
+                        <!-- Tool 1: Stethoscope -->
+                        <button class="medical-tool-btn ready" data-tool="stethoscope" id="toolStethoscope">
+                            <div class="tool-check-pill">✓</div>
+                            <div class="tool-icon-wrapper">🩺</div>
+                            <div class="tool-name-label">Stetoskop</div>
+                            <div class="tool-sub-label">Auskultasi Klinis</div>
+                        </button>
+
+                        <!-- Tool 2: Thermometer -->
+                        <button class="medical-tool-btn ready" data-tool="thermometer" id="toolThermometer">
+                            <div class="tool-check-pill">✓</div>
+                            <div class="tool-icon-wrapper">🌡️</div>
+                            <div class="tool-name-label">Termometer</div>
+                            <div class="tool-sub-label">Skrining & Suhu</div>
+                        </button>
+
+                        <!-- Tool 3: Blood Lab -->
+                        <button class="medical-tool-btn ready" data-tool="bloodLab" id="toolBloodLab">
+                            <div class="tool-check-pill">✓</div>
+                            <div class="tool-icon-wrapper">💉</div>
+                            <div class="tool-name-label">Lab Darah</div>
+                            <div class="tool-sub-label">Hematologi & Bio</div>
+                        </button>
+
+                        <!-- Tool 4: Microscope -->
+                        <button class="medical-tool-btn ready" data-tool="microscope" id="toolMicroscope">
+                            <div class="tool-check-pill">✓</div>
+                            <div class="tool-icon-wrapper">🔬</div>
+                            <div class="tool-name-label">Mikroskop</div>
+                            <div class="tool-sub-label">Observasi Sel</div>
+                        </button>
+
+                        <!-- Tool 5: Prescription Treatment -->
+                        <button class="medical-tool-btn ready" data-tool="treatment" id="toolTreatment">
+                            <div class="tool-check-pill">✓</div>
+                            <div class="tool-icon-wrapper">💊</div>
+                            <div class="tool-name-label">Resep Obat</div>
+                            <div class="tool-sub-label">Terapi Kuratif</div>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Vital Signs & Diagnostic Panel -->
+            <div class="vital-monitor-col">
+                <div class="vital-monitor-card">
+                    <div class="monitor-top-bar">
+                        <span class="monitor-brand">BIO-MONITOR 3000</span>
+                        <div class="monitor-status-dot">
+                            <div class="pulse-indicator"></div>
+                            <span>REALTIME EKG</span>
+                        </div>
+                    </div>
+
+                    <!-- Live Oscilloscope EKG Canvas -->
+                    <div class="ekg-screen-box">
+                        <canvas id="ekgCanvas"></canvas>
+                    </div>
+
+                    <!-- Dynamic Vitals Grid -->
+                    <div class="vitals-grid">
+                        <div class="vital-tile heart-rate">
+                            <div class="vital-label">
+                                <span>Detak Jantung</span>
+                                <span>❤️</span>
+                            </div>
+                            <div class="vital-value" id="vitalHR">115</div>
+                            <div class="vital-unit">BPM (Denyut/Menit)</div>
+                            <div class="vital-status-pill warning" id="vitalStatusHR">Takikardia</div>
+                        </div>
+
+                        <div class="vital-tile spo2">
+                            <div class="vital-label">
+                                <span>Saturasi O2</span>
+                                <span>🫁</span>
+                            </div>
+                            <div class="vital-value" id="vitalSpO2">92%</div>
+                            <div class="vital-unit">SpO2 (Kadar Oksigen)</div>
+                            <div class="vital-status-pill warning" id="vitalStatusSpO2">Hipoksia</div>
+                        </div>
+
+                        <div class="vital-tile temp">
+                            <div class="vital-label">
+                                <span>Suhu Tubuh</span>
+                                <span>🌡️</span>
+                            </div>
+                            <div class="vital-value" id="vitalTemp">36.4°C</div>
+                            <div class="vital-unit">Celcius (°C)</div>
+                            <div class="vital-status-pill normal" id="vitalStatusTemp">Normal</div>
+                        </div>
+
+                        <div class="vital-tile bp">
+                            <div class="vital-label">
+                                <span>Tekanan Darah</span>
+                                <span>⚡</span>
+                            </div>
+                            <div class="vital-value" id="vitalBP">90/60</div>
+                            <div class="vital-unit">mmHg</div>
+                            <div class="vital-status-pill normal" id="vitalStatusBP">Hipotensi</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clinical Organ & Biology Focus -->
+                <div class="clinical-organ-card">
+                    <h5><span>🔬</span> Materi Biologi Terkait:</h5>
+                    <div class="organ-tag-badge" id="organTagBadge">Sistem Peredaran Darah & Eritrosit</div>
+                    <p class="clinical-tip-text">
+                        <strong>Diagnosis Pasien:</strong> <span id="clinicalDiagnosis">Anemia Berat & Hipoksia Jaringan</span>. Pelajari struktur hemoglobin, peran Fe2+, dan transpor gas darah untuk memulihkan pasien.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ==================== MODAL 1: Medical Clipboard Question Pop-up ==================== -->
+    <div class="modal-overlay" id="questionModal">
+        <div class="clipboard-modal">
+            <div class="clipboard-metallic-clip">
+                <div class="clip-hole"></div>
+            </div>
+
+            <div class="clipboard-content-body">
+                <div class="clipboard-header">
+                    <div class="clipboard-title-area">
+                        <span class="clipboard-stage-badge" id="modalToolBadge">🩺 Interaksi: Stetoskop</span>
+                        <span class="clipboard-topic-tag" id="modalTopicTag">Materi SMA: Sistem Sirkulasi</span>
+                    </div>
+                    <button class="btn-close-modal" id="btnCloseQuestion" title="Tutup">✕</button>
+                </div>
+
+                <!-- Clinical Observation Context -->
+                <div class="clinical-case-context" id="modalContextText">
+                    Saat meletakkan stetoskop di dada pasien, terdengar detak jantung cepat...
+                </div>
+
+                <!-- Biology Challenge Question -->
+                <div class="question-prompt-box">
+                    <h3 class="question-text" id="modalQuestionText">
+                        Pertanyaan Biologi SMA di sini...
+                    </h3>
+                </div>
+
+                <!-- Multiple Choice Options -->
+                <div class="options-list" id="modalOptionsList">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <!-- Scientific Explanation & Hint Box -->
+                <div class="feedback-box" id="modalFeedbackBox">
+                    <div class="feedback-title" id="modalFeedbackTitle">🎉 Jawaban Benar!</div>
+                    <div class="feedback-explanation" id="modalFeedbackText">
+                        Pembahasan biologi mendalam...
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer-actions">
+                    <button class="btn-hint" id="btnHint">
+                        <span>💡</span> Minta Petunjuk Biologi
+                    </button>
+                    <button class="btn-continue-next" id="btnContinueNext">
+                        <span>Lanjut Tindakan</span>
+                        <span>➡️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 2: Microscopic Viewport ==================== -->
+    <div class="modal-overlay" id="microscopeModal">
+        <div class="microscope-modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h4 id="microscopeSpecimenTitle" style="font-family: var(--font-heading); margin: 0;">Apusan Mikroskopis Pasien</h4>
+                <button class="btn-close-modal" id="btnCloseMicroscope" title="Tutup">✕</button>
+            </div>
+            <p style="font-size: 0.8rem; color: #94A3B8;">Perbesaran Lensa Objektif 100x Imersi Minyak</p>
+
+            <div class="microscope-lens-viewport">
+                <div id="microscopeSpecimenSvg"></div>
+            </div>
+
+            <p style="font-size: 0.84rem; margin-bottom: 16px; color: #CBD5E1;">
+                Sampel seluler telah terfokus sempurna. Klik tombol di bawah untuk menganalisis temuan biologi seluler ini:
+            </p>
+
+            <button class="btn-start-game" id="btnInspectQuestion" style="padding: 12px 20px; font-size: 0.95rem;">
+                <span>Analisis Soal Mikroskopis</span>
+                <span>🔬</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 3: Patient Cured Celebration ==================== -->
+    <div class="modal-overlay" id="celebrationModal">
+        <div class="celebration-modal">
+            <div class="celebration-ribbon">🎊</div>
+            <h3 class="celebration-title">Pasien <span>Sembuh Sempurna!</span></h3>
+            <p style="font-size: 0.88rem; color: var(--color-slate-light);">
+                Diagnosis dan tindakan biologimu tepat sasaran! Pasien telah pulih 100%.
+            </p>
+
+            <!-- Discharge Certificate (Surat Kepulangan Pasien) -->
+            <div class="discharge-certificate-box">
+                <div class="stamp-cured">✓ Sembuh Total</div>
+                <div class="cert-row"><strong>Nama Pasien:</strong> <span id="certPatientName">Pak Budi</span></div>
+                <div class="cert-row"><strong>Kasus Penyakit:</strong> <span id="certCondition">Anemia Berat</span></div>
+                <div class="cert-row"><strong>Sistem Biologi:</strong> <span id="certOrgan">Sistem Sirkulasi</span></div>
+                <div class="cert-row"><strong>Perawat Penanggung Jawab:</strong> <span id="certNurseSignature">Perawat Maya</span></div>
+            </div>
+
+            <div class="celebration-rewards">
+                <div class="reward-item">
+                    <span>⭐</span>
+                    <span>+150 XP</span>
+                </div>
+                <div class="reward-item">
+                    <span>🎖️</span>
+                    <span>+1 Bintang Biologi</span>
+                </div>
+            </div>
+
+            <button class="btn-next-patient" id="btnNextPatient">
+                <span>Lanjut Rawat Pasien Berikutnya 🏥</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 4: Buku Saku Biologi SMA (Encyclopedia) ==================== -->
+    <div class="modal-overlay" id="encyclopediaModal">
+        <div class="encyclopedia-modal">
+            <div class="encyclopedia-header">
+                <h3><span>📖</span> Buku Saku Medis & Biologi SMA</h3>
+                <button class="btn-close-modal" id="btnCloseEncyclopedia" style="background: rgba(255,255,255,0.2); color: white;">✕</button>
+            </div>
+
+            <!-- Tab Navigation for Topics -->
+            <div class="encyclopedia-tabs">
+                <button class="encyclopedia-tab active" data-topic="sirkulasi">🩸 Darah & Sirkulasi</button>
+                <button class="encyclopedia-tab" data-topic="imun">🛡️ Sistem Imun</button>
+                <button class="encyclopedia-tab" data-topic="metabolisme">⚡ Metabolisme & Sel</button>
+                <button class="encyclopedia-tab" data-topic="respirasi">🫁 Sistem Pernapasan</button>
+                <button class="encyclopedia-tab" data-topic="ekskresi">🫘 Nefron Ginjal</button>
+                <button class="encyclopedia-tab" data-topic="genetika">🧬 Genetika Molekuler</button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="encyclopedia-body">
+                
+                <!-- Topic 1: Sirkulasi -->
+                <div class="encyclopedia-topic-content active" id="topic_sirkulasi">
+                    <div class="topic-hero-box">
+                        <h4>Sistem Peredaran Darah & Eritrosit</h4>
+                        <p>Memahami struktur eritrosit tanpa inti, hemoglobin sebagai pengikat O2, dan eritropoiesis sumsum tulang.</p>
+                    </div>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5>🔴 Struktur Hemoglobin & Fe2+</h5>
+                            <p>Hemoglobin tersusun dari 4 subunit globin dengan 4 gugus heme. Tiap heme mengandung ion Fe2+ yang mampu mengikat 1 molekul O2 membentuk oksihemoglobin (HbO2).</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🦴 Eritropoietin (EPO) Ginjal</h5>
+                            <p>Ketika ginjal mengalami hipoksia (kekurangan O2), sel peritubular mensekresikan hormon eritropoietin yang merangsang sumsum merah tulang memperbanyak eritrosit.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🍋 Vitamin C & Absorbsi Besi</h5>
+                            <p>Vitamin C (asam askorbat) mereduksi ion Fe3+ (feri) menjadi Fe2+ (fero) yang terlarut dan mudah diserap oleh enterosit usus halus (duodenum).</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🫀 Kompensasi Vasokonstriksi</h5>
+                            <p>Saat terjadi anemia berat, tubuh menyempitkan arteriol perifer (kulit & tangan) agar aliran darah kaya oksigen diprioritaskan ke otak dan jantung.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 2: Imun -->
+                <div class="encyclopedia-topic-content" id="topic_imun">
+                    <div class="topic-hero-box">
+                        <h4>Sistem Imun & Mikroorganisme</h4>
+                        <p>Diferensiasi leukosit, pirogen pemicu demam hipotalamus, serta dinding sel peptidoglikan bakteri.</p>
+                    </div>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5>🔥 Termoregulasi & Pirogen</h5>
+                            <p>Fagosit yang menelan patogen melepaskan sitokin pirogen (IL-1, TNF-α) yang memicu sintesis Prostaglandin E2 (PGE2) di hipotalamus untuk menaikkan suhu tubuh (demam).</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🛡️ Neutrofil: Garda Pertama</h5>
+                            <p>Neutrofil adalah leukosit polimorfonuklear terbanyak yang bertugas melakukan fagositosis cepat dan pembentukan pus (nanah) saat infeksi bakteri akut.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🟣 Bakteri Gram Positif</h5>
+                            <p>Memiliki lapisan peptidoglikan yang sangat tebal sehingga mengikat kristal violet-iodin dan tetap berwarna ungu saat pewarnaan Gram.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>💊 Antibiotik Beta-Laktam</h5>
+                            <p>Menghambat enzim transpeptidase sintesis dinding sel bakteri. Sel manusia tidak terdampak karena sel hewan tidak memiliki dinding sel peptidoglikan.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 3: Metabolisme -->
+                <div class="encyclopedia-topic-content" id="topic_metabolisme">
+                    <div class="topic-hero-box">
+                        <h4>Metabolisme Sel & Sinyal Hormon</h4>
+                        <p>Resistensi reseptor insulin, transporter GLUT4, pembakaran lemak beta-oksidasi, dan glukosuria.</p>
+                    </div>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5>🔑 Reseptor Insulin & GLUT4</h5>
+                            <p>Insulin berikatan dengan reseptor tirosin kinase sel otot & lemak untuk memicu translokasi transporter GLUT4 ke membran sel agar glukosa dapat masuk.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🧈 Beta-Oksidasi & Keton</h5>
+                            <p>Saat sel tidak bisa memanfaatkan glukosa, sel memecah asam lemak melalui beta-oksidasi di mitokondria menjadi asetil-KoA yang berlebih dan memicu pembentukan badan keton.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>💧 Glukosuria Osmotik Ginjal</h5>
+                            <p>Jika glukosa darah melebihi ambang batas ginjal (180 mg/dL), kapasitas transporter SGLT2 jenuh sehingga glukosa lolos ke urine dan menarik air (sering kencing/poliuria).</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🏃 Olahraga & Jalur AMPK</h5>
+                            <p>Kontraksi otot menaikkan rasio AMP/ATP yang mengaktifkan AMPK. Enzim ini mentranslokasikan GLUT4 secara independen tanpa memerlukan insulin.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 4: Respirasi -->
+                <div class="encyclopedia-topic-content" id="topic_respirasi">
+                    <div class="topic-hero-box">
+                        <h4>Sistem Pernapasan & Gas Darah</h4>
+                        <p>Bronkokonstriksi otot polos, sianosis deoksihemoglobin, dan pengangkutan CO2 dalam bentuk ion bikarbonat.</p>
+                    </div>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5>🌬️ Otot Polos Bronkiolus</h5>
+                            <p>Bronkiolus tidak memiliki cincin kartilago melainkan dikelilingi otot polos. Pada asma, spasme otot polos ini memicu penyempitan lumen dan suara mengi (wheezing).</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🧪 Transpor Ion Bikarbonat (HCO3-)</h5>
+                            <p>70% CO2 diubah oleh enzim karbonat anhidrase eritrosit menjadi H2CO3 lalu terdisosiasi menjadi ion bikarbonat (HCO3-) yang larut dalam plasma darah.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>💙 Sianosis & Deoksi-Hb</h5>
+                            <p>Kadar deoksihemoglobin (Hb tanpa O2) di atas 5 g/dL memicu warna kebiruan pada bibir dan kuku karena karakteristik penyerapan spektrum cahaya.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>⚡ Bronkodilator & cAMP</h5>
+                            <p>Agonis beta-2 (Salbutamol) menstimulasi adenilat siklase untuk menaikkan cAMP intraseluler, memicu relaksasi otot polos bronkiolus.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 5: Ekskresi -->
+                <div class="encyclopedia-topic-content" id="topic_ekskresi">
+                    <div class="topic-hero-box">
+                        <h4>Nefron Ginjal & Osmoregulasi</h4>
+                        <p>Lapisan filtrasi glomerulus, tekanan onkotik albumin, sistem RAAS, dan aquaporin ADH.</p>
+                    </div>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5>🕸️ Sawar Glomerulus & Podosit</h5>
+                            <p>Terdiri dari endotel bertingkap, membran basal heparan sulfat bermuatan negatif, dan sel podosit. Kerusakan sawar ini menyebabkan protein darah bocor (proteinuria).</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>⚖️ Tekanan Onkotik & Edema</h5>
+                            <p>Albumin mempertahankan tekanan onkotik koloid plasma. Penurunan albumin darah menyebabkan cairan kapiler merembes ke jaringan interstisial (edema).</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>💧 Hormon ADH & Aquaporin</h5>
+                            <p>ADH dari hipofisis posterior memicu insersi kanal air aquaporin-2 di tubulus pengumpul nefron untuk mereabsorpsi air kembali ke tubuh.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🔄 Prinsip Hemodialisis</h5>
+                            <p>Memanfaatkan difusi zat sisa (ureum/kreatinin) menuruni gradien konsentrasi melintasi membran semipermeabel sintetis dengan aliran berlawanan (counter-current).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 6: Genetika -->
+                <div class="encyclopedia-topic-content" id="topic_genetika">
+                    <div class="topic-hero-box">
+                        <h4>Genetika Molekuler & Sintesis Protein</h4>
+                        <p>Struktur tetramer hemoglobin, mutasi pergeseran kerangka baca, dan pewarisan Mendel autosom resesif.</p>
+                    </div>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <h5>🧬 Struktur Rantai Globin (α2β2)</h5>
+                            <p>Hemoglobin dewasa normal (HbA) terdiri atas tetramer 2 rantai alfa-globin dan 2 rantai beta-globin, masing-masing membawa satu cincin heme.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>✂️ Mutasi Frameshift</h5>
+                            <p>Delesi atau insersi basa nitrogen yang bukan kelipatan 3 merusak seluruh kerangka baca kodon triplet asam amino, menghasilkan rantai globin cacat.</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🎲 Hukum Mendel Autosom Resesif</h5>
+                            <p>Dua orang tua carrier (Tt x Tt) memiliki peluang 25% melahirkan anak penderita talasemia mayor (tt), 50% carrier (Tt), dan 25% normal (TT).</p>
+                        </div>
+                        <div class="concept-card">
+                            <h5>🩸 Splenomegali Limpa</h5>
+                            <p>Eritrosit yang cacat dan kaku dihancurkan secara masif oleh makrofag di pulpa merah limpa, memicu pembesaran ukuran limpa (splenomegali).</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Embedded Single-File Application Logic (Ready for GitHub Pages) -->
+<script>
+// --- AUDIO SYSTEM ---
+/**
+ * Biology Champions - Web Audio API Sound Synthesizer
+ * Provides medical soundscapes (heartbeat, EKG beep, stethoscope, correct chime, error buzz, victory fanfare)
+ * Zero external audio files needed!
+ */
+
+class SoundSystem {
+    constructor() {
+        this.ctx = null;
+        this.isMuted = false;
+        this.ambientPlaying = false;
+        this.ambientTimer = null;
+        this.initOnUserGesture();
+    }
+
+    initContext() {
+        if (!this.ctx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) {
+                this.ctx = new AudioContext();
+            }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+    }
+
+    initOnUserGesture() {
+        const unlock = () => {
+            this.initContext();
+            window.removeEventListener('click', unlock);
+            window.removeEventListener('keydown', unlock);
+            window.removeEventListener('touchstart', unlock);
+        };
+        window.addEventListener('click', unlock, { once: true });
+        window.addEventListener('keydown', unlock, { once: true });
+        window.addEventListener('touchstart', unlock, { once: true });
+    }
+
+    toggleMute() {
+        this.isMuted = !this.isMuted;
+        if (this.isMuted && this.ambientPlaying) {
+            this.stopAmbient();
+        }
+        return this.isMuted;
+    }
+
+    // Play a smooth tone
+    playTone(freq, type = 'sine', duration = 0.2, gainValue = 0.15, startTime = 0) {
+        if (this.isMuted) return;
+        this.initContext();
+        if (!this.ctx) return;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        const t = this.ctx.currentTime + startTime;
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, t);
+
+        gain.gain.setValueAtTime(gainValue, t);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(t);
+        osc.stop(t + duration);
+    }
+
+    // Medical Monitor Beep (EKG)
+    playEkgBeep(isHigh = false) {
+        if (this.isMuted) return;
+        const freq = isHigh ? 1150 : 880;
+        this.playTone(freq, 'sine', 0.08, 0.12);
+    }
+
+    // Heartbeat lub-dub sound
+    playHeartbeat() {
+        if (this.isMuted) return;
+        this.initContext();
+        if (!this.ctx) return;
+
+        // Lub (low thud)
+        this.playThump(65, 0.12, 0.28, 0);
+        // Dub (slightly sharper low thud 0.18s later)
+        this.playThump(52, 0.15, 0.22, 0.18);
+    }
+
+    playThump(freq, duration, gainVal, startDelay) {
+        if (this.isMuted) return;
+        this.initContext();
+        if (!this.ctx) return;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const filter = this.ctx.createBiquadFilter();
+
+        const t = this.ctx.currentTime + startDelay;
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, t);
+        osc.frequency.exponentialRampToValueAtTime(25, t + duration);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(140, t);
+
+        gain.gain.setValueAtTime(gainVal, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(t);
+        osc.stop(t + duration);
+    }
+
+    // Correct Answer - Cheerful medical victory chime
+    playCorrect() {
+        if (this.isMuted) return;
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+            this.playTone(freq, 'triangle', 0.28, 0.14, idx * 0.08);
+        });
+    }
+
+    // Wrong Answer - Gentle low bounce
+    playWrong() {
+        if (this.isMuted) return;
+        this.playTone(330, 'sawtooth', 0.18, 0.08, 0);
+        this.playTone(260, 'sawtooth', 0.25, 0.08, 0.14);
+    }
+
+    // Tool click / Stethoscope attach
+    playToolClick() {
+        if (this.isMuted) return;
+        this.playTone(1200, 'sine', 0.04, 0.08, 0);
+        this.playTone(1800, 'sine', 0.04, 0.05, 0.03);
+    }
+
+    // Medicine Pill pop sound
+    playPop() {
+        if (this.isMuted) return;
+        this.initContext();
+        if (!this.ctx) return;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const t = this.ctx.currentTime;
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, t);
+        osc.frequency.exponentialRampToValueAtTime(800, t + 0.08);
+
+        gain.gain.setValueAtTime(0.2, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(t);
+        osc.stop(t + 0.09);
+    }
+
+    // Patient cured - Grand celebratory fanfare
+    playPatientCured() {
+        if (this.isMuted) return;
+        const chords = [
+            { f: 523.25, t: 0 },    // C5
+            { f: 659.25, t: 0.1 },  // E5
+            { f: 783.99, t: 0.2 },  // G5
+            { f: 1046.50, t: 0.35 },// C6
+            { f: 1318.51, t: 0.5 }, // E6
+            { f: 1567.98, t: 0.65 } // G6
+        ];
+        chords.forEach(c => {
+            this.playTone(c.f, 'triangle', 0.45, 0.18, c.t);
+        });
+    }
+
+    // Level Up sound
+    playLevelUp() {
+        if (this.isMuted) return;
+        const notes = [440, 554.37, 659.25, 880];
+        notes.forEach((f, i) => {
+            this.playTone(f, 'sine', 0.3, 0.16, i * 0.1);
+        });
+    }
+
+    // Gentle ambient hospital clinic melody loop
+    toggleAmbient() {
+        if (this.ambientPlaying) {
+            this.stopAmbient();
+            return false;
+        } else {
+            this.startAmbient();
+            return true;
+        }
+    }
+
+    startAmbient() {
+        if (this.isMuted) return;
+        this.initContext();
+        this.ambientPlaying = true;
+
+        const melody = [
+            { f: 523.25, dur: 0.3 }, // C5
+            { f: 587.33, dur: 0.3 }, // D5
+            { f: 659.25, dur: 0.4 }, // E5
+            { f: 783.99, dur: 0.5 }, // G5
+            { f: 659.25, dur: 0.3 }, // E5
+            { f: 523.25, dur: 0.6 }  // C5
+        ];
+
+        let index = 0;
+        const step = () => {
+            if (!this.ambientPlaying || this.isMuted) return;
+            const note = melody[index];
+            this.playTone(note.f, 'sine', note.dur * 1.5, 0.035, 0);
+            index = (index + 1) % melody.length;
+            this.ambientTimer = setTimeout(step, 900);
+        };
+        step();
+    }
+
+    stopAmbient() {
+        this.ambientPlaying = false;
+        if (this.ambientTimer) {
+            clearTimeout(this.ambientTimer);
+            this.ambientTimer = null;
+        }
+    }
+}
+
+// Global sound manager instance
+window.soundSystem = new SoundSystem();
+
+
+// --- QUESTIONS DATABASE ---
+/**
+ * Biology Champions - Bank Soal Biologi SMA (Senior High School)
+ * Terintegrasi dengan interaksi alat medis dan kasus pasien di rumah sakit
+ */
+
+const BIOLOGY_QUESTIONS = [
+    // =========================================================================
+    // KASUS 1: Pak Budi (52 th) - Gejala: Sangat Lemas, Wajah Pucat, Mudah Lelah
+    // Topik: Sistem Sirkulasi, Eritrosit, Hemoglobin, & Metabolisme Zat Besi
+    // =========================================================================
+    {
+        id: "Q1_STETH",
+        patientId: "patient_1",
+        tool: "stethoscope",
+        toolName: "Stetoskop",
+        stageTitle: "Auskultasi Detak Jantung & Aliran Darah",
+        context: "Saat meletakkan stetoskop di dada Pak Budi, terdengar denyut jantung takikardia (sangat cepat) karena jantung berusaha memompa darah lebih banyak untuk memenuhi kebutuhan oksigen jaringan.",
+        question: "Mengapa penurunan jumlah sel darah merah (eritrosit) atau kadar hemoglobin (Hb) secara langsung menyebabkan tubuh merasa cepat lelah dan napas terengah-engah?",
+        options: [
+            "Kekurangan eritrosit menurunkan produksi hormon adrenalin dalam kelenjar adrenal",
+            "Hemoglobin mengikat ion Fe2+ yang berfungsi mengikat O2; defisiensinya menurunkan suplai O2 ke mitokondria untuk respirasi aerob (pembentukan ATP)",
+            "Kekurangan eritrosit menyebabkan penurunan volume plasma darah sehingga tekanan osmotik darah runtuh seketika",
+            "Hemoglobin berfungsi memecah glukosa langsung dalam pembuluh darah vena cava"
+        ],
+        correctIndex: 1,
+        hint: "Ingat fungsi gugus Heme dengan ion besi (Fe2+) serta peran oksigen sebagai akseptor elektron terakhir dalam fosforilasi oksidatif.",
+        explanation: "Hemoglobin tersusun dari 4 subunit globin dengan gugus heme yang mengandung ion Fe2+ untuk mengikat gas O2 membentuk oksihemoglobin (HbO2). Penurunan Hb menyebabkan hipoksia jaringan, sehingga mitokondria sel kekurangan oksigen untuk memproduksi ATP melalui rantai transpor elektron, memicu rasa lelah ekstrem.",
+        topicTag: "Sistem Sirkulasi & Bioenergetika"
+    },
+    {
+        id: "Q1_THERMO",
+        patientId: "patient_1",
+        tool: "thermometer",
+        toolName: "Termometer & Skrining Vitals",
+        stageTitle: "Pemeriksaan Suhu & Perfusi Perifer",
+        context: "Suhu tubuh Pak Budi normal (36.4°C), namun ujung jari-jari tangan dan kakinya terasa sangat dingin saat disentuh.",
+        question: "Ujung ekstremitas dingin pada pasien anemia disebabkan oleh mekanisme kompensasi vaskular berupa...",
+        options: [
+            "Vasodilatasi kapiler perifer untuk membuang panas tubuh",
+            "Vasokonstriksi pembuluh darah perifer guna memprioritaskan suplai darah beroksigen ke organ vital (otak dan jantung)",
+            "Peningkatan laju filtrasi glomerulus oleh hormon aldosteron",
+            "Pembekuan darah spontan oleh trombosit di arteriol tangan"
+        ],
+        correctIndex: 1,
+        hint: "Pikirkan bagaimana tubuh mengalihkan aliran darah dari kulit ke organ utama saat oksigen minim.",
+        explanation: "Ketika terjadi hipoksia akibat anemia, sistem saraf simpatis memicu vasokonstriksi arteriol perifer di kulit dan ekstremitas. Hal ini mengarahkan aliran darah kaya oksigen menuju organ vital seperti otak, jantung, dan ginjal.",
+        topicTag: "Homeostasis & Fisiologi Kardiovaskular"
+    },
+    {
+        id: "Q1_BLOOD",
+        patientId: "patient_1",
+        tool: "bloodLab",
+        toolName: "Pemeriksaan Lab Darah",
+        stageTitle: "Analisis Hematologi Darah Lengkap",
+        context: "Hasil laboratorium menunjukkan kadar Hb hanya 6.8 g/dL (normal: 13-17 g/dL) dan kadar eritropoietin darah sangat tinggi.",
+        question: "Organ tubuh manakah yang mendeteksi hipoksia renal dan meresponsnya dengan mensekresikan hormon eritropoietin (EPO) untuk merangsang eritropoiesis?",
+        options: [
+            "Hati (Hepar) melalui sel Kupffer",
+            "Pankreas melalui sel alfa Langerhans",
+            "Ginjal melalui sel interstisial peritubular korteks",
+            "Limpa (Lien) melalui pulpa merah"
+        ],
+        correctIndex: 2,
+        hint: "Organ penyaring darah yang mengekskresikan urine juga memproduksi hormon pemicu sel darah merah di sumsum tulang.",
+        explanation: "Ginjal merupakan sensor utama kadar oksigen darah. Saat terjadi hipoksia jaringan, sel interstisial peritubular di korteks ginjal memproduksi hormon eritropoietin (EPO), yang bersirkulasi menuju sumsum merah tulang (bone marrow) untuk memacu pembelahan dan diferensiasi sel punca eritroid.",
+        topicTag: "Sistem Endokrin & Hematopoiesis"
+    },
+    {
+        id: "Q1_MICROSCOPE",
+        patientId: "patient_1",
+        tool: "microscope",
+        toolName: "Mikroskop Biologi",
+        stageTitle: "Observasi Apusan Darah Tepi",
+        context: "Kamu meletakkan slide darah Pak Budi di bawah lensa objektif 100x dengan minyak imersi. Tampak eritrosit berukuran sangat kecil (mikrositik) dan tampak pucat di bagian tengahnya (hipokromik).",
+        question: "Eritrosit matang pada mamalia manusia tidak memiliki inti sel (enukleasi) dan mitokondria. Keuntungan fisiologis dari hilangnya kedua organel tersebut adalah...",
+        options: [
+            "Memaksimalkan ruang untuk menampung molekul hemoglobin serta mencegah eritrosit mengonsumsi sendiri oksigen yang diangkutnya",
+            "Membuat eritrosit dapat membelah secara meiosis saat berada di pembuluh kapiler",
+            "Memungkinkan sintesis protein hemoglobin baru secara terus-menerus selama 120 hari masa hidupnya",
+            "Membantu eritrosit menghasilkan energi melalui siklus Krebs tanpa menggunakan glukosa"
+        ],
+        correctIndex: 0,
+        hint: "Jika sel memiliki mitokondria, sel itu akan menggunakan oksigen yang dibawanya. Dan tanpa nukleus, ruang sitoplasma menjadi jauh lebih lapang!",
+        explanation: "Eritrosit mamalia mengalami enukleasi saat matang agar sitoplasma dapat diisi maksimal oleh sekitar 270 juta molekul hemoglobin per sel. Ketiadaan mitokondria memastikan eritrosit hanya mengandalkan glikolisis anaerobik, sehingga tidak 'mencuri' oksigen yang harus diantarkan ke jaringan tubuh.",
+        topicTag: "Biologi Sel & Morfologi Darah"
+    },
+    {
+        id: "Q1_TREATMENT",
+        patientId: "patient_1",
+        tool: "treatment",
+        toolName: "Preskripsi & Terapi",
+        stageTitle: "Formulasi Terapi & Suplementasi",
+        context: "Pak Budi didiagnosis menderita Anemia Defisiensi Besi berat. Kamu harus memberikan resep dan edukasi nutrisi biologi yang tepat.",
+        question: "Vitamin apa yang paling krusial dikonsumsi bersamaan dengan suplemen zat besi untuk meningkatkan absorbsi ion besi di usus halus (duodenum), dan mengapa?",
+        options: [
+            "Vitamin A, karena menguraikan ikatan heme menjadi bilirubin di lambung",
+            "Vitamin C (asam askorbat), karena mereduksi ion feri (Fe3+) menjadi fero (Fe2+) yang jauh lebih mudah diserap oleh enterosit usus",
+            "Vitamin K, karena merangsang sintesis protrombin dan fibrinogen dalam darah",
+            "Vitamin D, karena mengikat kalsium dan ion besi menjadi senyawa garam empedu"
+        ],
+        correctIndex: 1,
+        hint: "Asam askorbat bertindak sebagai reduktor kuat di lumen saluran pencernaan.",
+        explanation: "Zat besi non-heme dalam makanan sering berupa Fe3+ (feri) yang sukar diserap. Vitamin C (asam askorbat) bertindak sebagai agen pereduksi yang mengubah Fe3+ menjadi Fe2+ (fero) serta membentuk kelat terlarut yang mudah ditransportasikan oleh protein DMT1 (Divalent Metal Transporter 1) pada membran mikrovili enterosit duodenum.",
+        topicTag: "Nutrisi & Biokimia Pencernaan"
+    },
+
+    // =========================================================================
+    // KASUS 2: Adik Citra (16 th) - Gejala: Demam Tinggi (39.2°C), Radang Tenggorokan, Kelenjar Getah Bening Leher Bengkak
+    // Topik: Sistem Imun, Patogen (Bakteri vs Virus), Leukosit, Antibodi
+    // =========================================================================
+    {
+        id: "Q2_THERMO",
+        patientId: "patient_2",
+        tool: "thermometer",
+        toolName: "Termometer & Skrining Demam",
+        stageTitle: "Pengukuran Hipertermia & Respon Imun",
+        context: "Suhu tubuh Adik Citra mencapai 39.2°C. Dia menggigil dan kulitnya memerah.",
+        question: "Mekanisme biologis apa yang memicu kenaikan titik patokan suhu (*set point*) pada hipotalamus saat tubuh mengalami infeksi?",
+        options: [
+            "Pelepasan sitokin pirogen (seperti IL-1, TNF-α) oleh makrofag yang merangsang sintesis prostaglandin E2 (PGE2) di hipotalamus",
+            "Penurunan laju metabolisme basal oleh hormon tiroksin kelenjar tiroid",
+            "Kerusakan permanen pada medula oblongata akibat toksin bakteri",
+            "Penutupan total pembuluh darah aorta oleh fibrin pembeku darah"
+        ],
+        correctIndex: 0,
+        hint: "Pirogen berasal dari bahasa Yunani 'piro' (api/panas) dan 'gen' (penghasil), dimediasi oleh mediator lipid PGE2.",
+        explanation: "Saat fagosit (makrofag dan neutrofil) mengenali antigen patogen melalui TLR (Toll-Like Receptors), mereka melepaskan sitokin pirogen endogen (interleukin-1, IL-6, dan TNF-α). Sitokin ini bersirkulasi ke hipotalamus dan memicu sintesis prostaglandin E2 (PGE2), yang menaikkan set-point termostat tubuh sehingga timbul demam sebagai strategi menghambat replikasi mikroorganisme.",
+        topicTag: "Sistem Imun & Termoregulasi"
+    },
+    {
+        id: "Q2_STETH",
+        patientId: "patient_2",
+        tool: "stethoscope",
+        toolName: "Stetoskop",
+        stageTitle: "Pemeriksaan Pembesaran Kelenjar Limfa",
+        context: "Dengan palpasi dan auskultasi leher, teraba nodus limfa (kelenjar getah bening) servikal yang membengkak dan nyeri tekan.",
+        question: "Pembengkakan nodus limfa (*limfadenopati*) saat infeksi terjadi akibat peristiwa biologis...",
+        options: [
+            "Pengendapan kristal asam urat pada pembuluh limfatik leher",
+            "Proliferasi dan aktivasi cepat limfosit T dan B serta akumulasi makrofag yang memfagositosis patogen di dalam nodus",
+            "Kebocoran cairan empedu dari kantung empedu menuju kelenjar leher",
+            "Penumpukan eritrosit yang mengalami hemolisis di dalam pembuluh kil"
+        ],
+        correctIndex: 1,
+        hint: "Nodus limfa adalah markas seleksi dan perbanyakan sel pertahanan tubuh adaptif!",
+        explanation: "Nodus limfa berfungsi sebagai filter biologis cairan limfa. Ketika antigen patogen terbawa ke nodus limfa oleh sel dendritik, sel limfosit T dan limfosit B spesifik mengalami seleksi klonal dan proliferasi (pembelahan masif) di pusat germinal (germinal center), disertai akumulasi makrofag fagositik sehingga nodus membengkak secara fisiologis.",
+        topicTag: "Sistem Limfatik & Imunitas Spesifik"
+    },
+    {
+        id: "Q2_BLOOD",
+        patientId: "patient_2",
+        tool: "bloodLab",
+        toolName: "Pemeriksaan Lab Darah",
+        stageTitle: "Hitung Jenis Leukosit (Differential Count)",
+        context: "Hasil laboratorium menunjukkan leukositosis (18.500 /µL, normal: 5.000-10.000 /µL) dengan dominasi neutrofil bersegmen (shift to the left).",
+        question: "Berdasarkan dominasi leukosit bergranula jenis neutrofil, diagnosis biologi apa yang paling mungkin dialami Citra?",
+        options: [
+            "Infeksi cacing parasit (helmintiasis) yang biasanya ditandai oleh lonjakan eosinofil",
+            "Alergi serbuk sari musiman yang dipicu degranulasi histamin oleh sel mast dan basofil",
+            "Infeksi bakteri akut, karena neutrofil adalah garis pertahanan pertama fagositosis yang dikerahkan dalam jumlah masif",
+            "Infeksi retrovirus kronis yang spesifik merusak sel T-CD4+"
+        ],
+        correctIndex: 2,
+        hint: "Neutrofil adalah pasukan garda terdepan penumpas bakteri yang membentuk nanah (pus).",
+        explanation: "Neutrofil merupakan sel leukosit polimorfonuklear (PMN) terbanyak dalam darah normal dan merupakan responder pertama terhadap infeksi bakteri. Fenomena 'shift to the left' menandakan sumsum tulang melepaskan bentuk neutrofil muda (stab/band) untuk melawan invasi bakteri akut secara cepat melalui fagositosis dan NETosis.",
+        topicTag: "Hematologi & Respon Imun Bawaan"
+    },
+    {
+        id: "Q2_MICROSCOPE",
+        patientId: "patient_2",
+        tool: "microscope",
+        toolName: "Mikroskop Biologi",
+        stageTitle: "Pewarnaan Gram Swab Tenggorokan",
+        context: "Sampel apusan tenggorokan diwarnai Gram dan diamati di bawah mikroskop: terlihat bakteri berbentuk kokus beruntai seperti rantai berwarna ungu (Gram positif).",
+        question: "Dinding sel bakteri Gram-positif berwarna ungu saat pewarnaan kristal violet karena memiliki karakteristik struktur...",
+        options: [
+            "Lapisan peptidoglikan yang sangat tebal tanpa membran luar lipopolisakarida (LPS)",
+            "Lapisan peptidoglikan tipis yang diapit oleh dua lapis membran fosfolipid ganda",
+            "Dinding sel yang seluruhnya tersusun dari selulosa dan pektin seperti dinding sel tumbuhan",
+            "Ketiadaan dinding sel sehingga zat warna langsung mewarnai materi genetik plasmid"
+        ],
+        correctIndex: 0,
+        hint: "Gram positif menahan kompleks kristal violet-iodin karena jerat peptidoglikan tebal tidak larut oleh alkohol dekolorisasi.",
+        explanation: "Bakteri Gram-positif (seperti Streptococcus pyogenes pemicu radang tenggorokan) memiliki lapisan peptidoglikan yang tebal (20-80 nm) pada dinding selnya dengan asam teikoat. Struktur ini memerangkap kompleks pewarna kristal violet-iodin sehingga tidak luntur saat dibilas alkohol dan tetap berwarna ungu gelap.",
+        topicTag: "Mikrobiologi & Struktur Sel Prokariotik"
+    },
+    {
+        id: "Q2_TREATMENT",
+        patientId: "patient_2",
+        tool: "treatment",
+        toolName: "Preskripsi & Terapi",
+        stageTitle: "Pemberian Antibiotik Beta-Laktam",
+        context: "Citra diberikan terapi antibiotik golongan Amoksisilin (derivat penisilin). Kamu perlu memverifikasi target molekuler kerja obat ini.",
+        question: "Bagaimana mekanisme kerja antibiotik golongan penisilin dalam memusnahkan bakteri tanpa merusak sel tubuh manusia?",
+        options: [
+            "Mengikat subunit ribosom 60S eukariotik untuk menghambat elongasi translasi protein",
+            "Menghambat enzim transpeptidase yang membentuk ikatan silang peptidoglikan dinding sel bakteri; sel manusia tidak terpengaruh karena tidak memiliki dinding sel",
+            "Menghancurkan mitokondria bakteri dengan melubangi membran krista",
+            "Menggandakan laju mutasi operon laktosa bakteri hingga lisis"
+        ],
+        correctIndex: 1,
+        hint: "Manusia adalah organisme eukariotik bersel hewan tanpa dinding sel. Ini prinsip toksisitas selektif!",
+        explanation: "Antibiotik beta-laktam menghambat enzim transpeptidase (Penicillin-Binding Proteins/PBP) yang bertugas menyilangkan rantai peptidoglikan pada pembentukan dinding sel bakteri baru. Kegagalan sintesis dinding sel menyebabkan lisis osmotik pada bakteri. Sel manusia aman karena sel hewan tidak memiliki dinding peptidoglikan (toksisitas selektif).",
+        topicTag: "Biologi Molekuler & Farmakologi"
+    },
+
+    // =========================================================================
+    // KASUS 3: Ibu Ratna (45 th) - Gejala: Sering Haus (Polidipsia), Sering Kencing (Poliuria), Gula Darah Puasa 280 mg/dL
+    // Topik: Metabolisme Sel, Hormon Insulin & Glukagon, Respirasi Sel & ATP
+    // =========================================================================
+    {
+        id: "Q3_BLOOD",
+        patientId: "patient_3",
+        tool: "bloodLab",
+        toolName: "Pemeriksaan Lab Darah",
+        stageTitle: "Tes Glukosa Darah & HbA1c",
+        context: "Glukosa darah sewaktu Ibu Ratna mencapai 310 mg/dL dan HbA1c 9.5% (normal < 5.7%). Pasien didiagnosis Diabetes Mellitus Tipe 2.",
+        question: "Pada tingkat molekuler, apa penyebab utama hiperglikemia pada pasien Diabetes Mellitus Tipe 2?",
+        options: [
+            "Kerusakan otoimun total pada sel beta pankreas sehingga tubuh nol produksi insulin",
+            "Resistensi insulin, di mana reseptor insulin pada sel target (otot dan adiposit) gagal memicu translokasi transporter GLUT4 ke membran plasma",
+            "Peningkatan berlebihan produksi enzim ptialin di kelenjar ludah parotis",
+            "Kegagalan usus menyerap ion natrium yang menghalangi difusi terfasilitasi fruktosa"
+        ],
+        correctIndex: 1,
+        hint: "Insulin diproduksi tapi kunci reseptornya macet sehingga pintu glukosa (GLUT4) tidak terpasang di dinding sel.",
+        explanation: "Pada DM Tipe 2, pankreas tetap menghasilkan insulin, namun terjadi resistensi reseptor tirosin kinase pada sel otot rangka dan jaringan adiposa. Akibatnya, kaskade sinyal intraseluler (jalur IRS-1/PI3K/Akt) terganggu, sehingga vesikel penyimpan protein transporter glukosa (GLUT4) tidak ditranslokasikan ke membran sel. Glukosa menumpuk di aliran darah.",
+        topicTag: "Biologi Sel & Sinyal Hormon"
+    },
+    {
+        id: "Q3_STETH",
+        patientId: "patient_3",
+        tool: "stethoscope",
+        toolName: "Stetoskop",
+        stageTitle: "Pemeriksaan Vaskular & Auskultasi Abdomen",
+        context: "Ibu Ratna juga mengeluh kram otot saat berjalan dan mudah mengantuk setelah makan makanan berkarbohidrat tinggi.",
+        question: "Ketika glukosa tidak dapat masuk ke dalam sel miokardium dan otot rangka, sel akan beralih membakar sumber energi alternatif melalui proses...",
+        options: [
+            "Beta-oksidasi asam lemak menghasilkan asetil-KoA, yang jika berlebihan memicu pembentukan badan keton",
+            "Fotosintesis gelap siklus Calvin di stroma sitoplasma",
+            "Fermentasi asam laktat tanpa memerlukan substrat organik apa pun",
+            "Pemecahan asam nukleat RNA menjadi pirimidin bebas"
+        ],
+        correctIndex: 0,
+        hint: "Lemak diubah menjadi energi saat glukosa tidak dapat diserap sel, menghasilkan produk samping berupa senyawa keton.",
+        explanation: "Karena sel mengalami 'kelaparan di tengah kelimpahan glukosa darah', jaringan adiposa memecah trigliserida menjadi asam lemak bebas. Asam lemak ini mengalami beta-oksidasi di matriks mitokondria menjadi asetil-KoA. Akumulasi asetil-KoA yang melampaui kapasitas siklus Krebs akan diubah oleh hepar menjadi badan keton (asetoasetat, beta-hidroksibutirat, aseton).",
+        topicTag: "Metabolisme Lipid & Bioenergetika"
+    },
+    {
+        id: "Q3_MICROSCOPE",
+        patientId: "patient_3",
+        tool: "microscope",
+        toolName: "Mikroskop Biologi",
+        stageTitle: "Pemeriksaan Sampel Sedimen Urine",
+        context: "Kamu memeriksa sampel urine Ibu Ratna di mikroskop. Uji Benedict menunjukkan warna merah bata pekat (glukosuria positif).",
+        question: "Mengapa glukosa bisa ditemukan di dalam urine pasien diabetes, padahal pada orang sehat urine tidak mengandung glukosa?",
+        options: [
+            "Glukosa disintesis langsung di dalam kandung kemih oleh mikroflora normal",
+            "Kadar glukosa filtrat melebihi ambang batas kapasitas transpor maksimum (*transport maximum/Tm*) protein SGLT2 di tubulus kontortus proksimal nefron",
+            "Glomerulus mengalami robekan total sehingga protein dan seluruh molekul darah bocor",
+            "Hormon antidiuretik (ADH) merangsang ekskresi gula keluar tubuh untuk mengencerkan darah"
+        ],
+        correctIndex: 1,
+        hint: "Protein transpor di tubulus ginjal memiliki batas kapasitas jenuh (sekitar 180 mg/dL).",
+        explanation: "Secara fisiologis, 100% glukosa yang difiltrasi di glomerulus diserap kembali (reabsorpsi aktif sekunder) di tubulus kontortus proksimal oleh kotransporter Na+/glukosa (SGLT2). Namun, jika kadar glukosa plasma melampaui nilai ambang ginjal (sekitar 180 mg/dL), kapasitas transporter jenuh sehingga kelebihan glukosa lolos ke urine dan menarik air secara osmosis (poliuria osmotik).",
+        topicTag: "Sistem Ekskresi & Fisiologi Ginjal"
+    },
+    {
+        id: "Q3_THERMO",
+        patientId: "patient_3",
+        tool: "thermometer",
+        toolName: "Termometer & Skrining Infeksi",
+        stageTitle: "Pemeriksaan Luka Kecil di Kaki",
+        context: "Ada luka lecet kecil di jempol kaki Ibu Ratna yang sulit sembuh. Pasien tidak merasa demam, namun jaringan sekitar luka tampak sedikit merah.",
+        question: "Mengapa luka pada pasien diabetes mellitus kronis cenderung sangat lambat sembuh dan rentan terkena infeksi bakteri anaerob?",
+        options: [
+            "Glukosa tinggi merusak sel saraf sensorik (neuropati), menurunkan perfusi mikrovaskular, dan lingkungan hiperglikemia menjadi media subur bagi proliferasi mikroba",
+            "Hiperglikemia menghancurkan seluruh keping darah (trombosit) dalam hitungan menit",
+            "Sel makrofag berhenti memproduksi lisosom secara genetik permanen",
+            "Darah pasien diabetes kehilangan kemampuan membeku karena kalsium darah habis"
+        ],
+        correctIndex: 0,
+        hint: "Kombinasi neuropati diabetik, rusaknya pembuluh darah halus (angiopati), serta makanan manis bagi bakteri.",
+        explanation: "Kadar gula darah tinggi yang kronis menyebabkan glikosilasi protein membran (AGEs/Advanced Glycation End-products), merusak endotel pembuluh mikro (mikroangiopati) sehingga suplai oksigen dan leukosit ke luka menurun. Selain itu, neuropati sensorik membuat pasien tidak menyadari trauma fisik, sementara konsentrasi glukosa jaringan yang tinggi menjadi substrat ideal bagi perkembangbiakan kuman.",
+        topicTag: "Patologi Jaringan & Sistem Sirkulasi"
+    },
+    {
+        id: "Q3_TREATMENT",
+        patientId: "patient_3",
+        tool: "treatment",
+        toolName: "Preskripsi & Terapi",
+        stageTitle: "Edukasi Diet & Mekanisme Olahraga",
+        context: "Kamu memberikan edukasi kepada Ibu Ratna mengenai manfaat latihan fisik aerobik rutin 30 menit sehari.",
+        question: "Secara biokimia seluler, bagaimana kontraksi otot saat berolahraga dapat menurunkan kadar gula darah tanpa bergantung pada hormon insulin?",
+        options: [
+            "Kontraksi otot mengaktifkan protein kinase AMPK yang memicu translokasi GLUT4 ke membran sel otot secara independen dari insulin",
+            "Olahraga mengubah glukosa langsung menjadi gas karbondioksida di dalam alveolus",
+            "Otot mengeluarkan enzim ptialin yang menguraikan glukosa di dalam cairan interstisial",
+            "Olahraga menghentikan seluruh proses glikolisis dan siklus Krebs"
+        ],
+        correctIndex: 0,
+        hint: "Jalur aktivasi enzim sensor energi sel AMPK (AMP-activated protein kinase) saat rasio AMP/ATP naik.",
+        explanation: "Saat otot berkontraksi, hidrolisis ATP meningkatkan rasio AMP/ATP seluler, mengaktifkan enzim AMPK (AMP-activated protein kinase). Jalur persinyalan AMPK ini mampu memicu eksositosis vesikel transporter GLUT4 ke sarkolema (membran sel otot) secara independen dari jalur reseptor insulin. Inilah mengapa olahraga adalah terapi primer terbaik bagi penderita resistensi insulin.",
+        topicTag: "Biologi Molekuler & Fisiologi Olahraga"
+    },
+
+    // =========================================================================
+    // KASUS 4: Mas Reza (18 th) - Gejala: Sesak Napas Akut, Bunyi Mengi (Wheezing), Batuk Kering Usai Olahraga Lari
+    // Topik: Sistem Respirasi, Pertukaran Gas Alveolus, Transpor Bikarbonat, Alergi
+    // =========================================================================
+    {
+        id: "Q4_STETH",
+        patientId: "patient_4",
+        tool: "stethoscope",
+        toolName: "Stetoskop",
+        stageTitle: "Auskultasi Paru-Paru (Mengi/Wheezing)",
+        context: "Kamu menempelkan stetoskop di punggung dan dada Mas Reza. Terdengar suara nada tinggi saat ekspirasi (wheezing) dan laju pernapasan 32 kali per menit (takipnea).",
+        question: "Penyempitan lumen saluran pernapasan pada serangan asma bronkial terutama disebabkan oleh kontraksi otot polos pada organ...",
+        options: [
+            "Trakea dengan cincin tulang rawan hialin",
+            "Bronkiolus terminalis dan respiratorius yang tidak dilapisi cincin tulang rawan",
+            "Laring di sekitar pita suara",
+            "Faring di dekat epiglotis"
+        ],
+        correctIndex: 1,
+        hint: "Saluran percabangan kecil yang tidak lagi disokong oleh cincin tulang rawan keras melainkan dikelilingi otot polos.",
+        explanation: "Berbeda dengan trakea dan bronkus utama yang memiliki cincin tulang rawan hialin kaku untuk menjaga patensi lumen, bronkiolus tidak memiliki kartilago dan dindingnya didominasi oleh otot polos sirkular. Pada serangan asma, spasme otot polos bronkiolus (bronkokonstriksi) disertai edema mukosa dan hipersekresi mukus menyempitkan jalan napas.",
+        topicTag: "Anatomi & Histologi Sistem Pernapasan"
+    },
+    {
+        id: "Q4_THERMO",
+        patientId: "patient_4",
+        tool: "thermometer",
+        toolName: "Oksimetri & Skrining Vitals",
+        stageTitle: "Pengukuran Saturasi Oksigen (SpO2)",
+        context: "Sensor oksimetri pada jari Mas Reza menunjukkan SpO2 90% (normal: 95-100%). Kulit tampak sedikit sianosis (kebiruan).",
+        question: "Warna kebiruan pada bibir dan kuku (sianosis) saat hipoksemia timbul karena tingginya konsentrasi molekul...",
+        options: [
+            "Oksihemoglobin (HbO2) yang memantulkan spektrum cahaya biru",
+            "Deoksihemoglobin (hemoglobin tereduksi tanpa O2) di kapiler jaringan",
+            "Karbaminohemoglobin yang berikatan kuat dengan gas karbon monoksida",
+            "Bilirubin bebas hasil perombakan hati"
+        ],
+        correctIndex: 1,
+        hint: "Darah kaya oksigen berwarna merah terang, sedangkan darah miskin oksigen berwarna merah gelap kebiruan.",
+        explanation: "Sianosis secara visual tampak ketika kadar deoksihemoglobin (hemoglobin yang tidak berikatan dengan O2) di kapiler darah melebihi 5 g/dL. Oksihemoglobin menyerap cahaya merah dan memantulkan warna merah cerah, sedangkan deoksihemoglobin menyerap spektrum berbeda sehingga tampak kebiruan/gelap melalui dermis kulit tipis.",
+        topicTag: "Fisiologi Gas Darah & Hemoglobin"
+    },
+    {
+        id: "Q4_BLOOD",
+        patientId: "patient_4",
+        tool: "bloodLab",
+        toolName: "Pemeriksaan Analisis Gas Darah (AGD)",
+        stageTitle: "Keseimbangan Asam Basa & Ion Bikarbonat",
+        context: "Hasil AGD menunjukkan pCO2 meningkat dan pH darah sedikit asam (asidosis respiratorik) akibat hipoventilasi.",
+        question: "Mayoritas gas karbondioksida (sekitar 70%) diangkut di dalam sistem peredaran darah manusia dalam bentuk...",
+        options: [
+            "Gas terlarut bebas di dalam sitoplasma trombosit",
+            "Senyawa karbaminohemoglobin terikat rantai alfa globin",
+            "Ion bikarbonat (HCO3-) di dalam plasma darah setelah dikonversi oleh enzim karbonat anhidrase eritrosit",
+            "Kristal asam karbonat padat di dinding pembuluh arteri pulmonalis"
+        ],
+        correctIndex: 2,
+        hint: "Enzim karbonat anhidrase di dalam sel darah merah mengubah CO2 + H2O menjadi H2CO3 yang terdisosiasi menjadi H+ dan HCO3-.",
+        explanation: "Sebagian besar CO2 jaringan berdifusi ke dalam eritrosit, di mana enzim karbonat anhidrase mengkatalisis reaksi: CO2 + H2O <-> H2CO3 <-> H+ + HCO3-. Ion bikarbonat (HCO3-) kemudian dipompa keluar eritrosit ke plasma darah melalui fenomena pergeseran klorida (chloride shift) untuk menjaga kenetralan muatan listrik sel.",
+        topicTag: "Biokimia Respirasi & Keseimbangan Asam-Basa"
+    },
+    {
+        id: "Q4_MICROSCOPE",
+        patientId: "patient_4",
+        tool: "microscope",
+        toolName: "Mikroskop Biologi",
+        stageTitle: "Observasi Sel Alergi & Imunoglobulin E",
+        context: "Apusan dahak (sputum) Mas Reza diwarnai Wright-Giemsa dan diamati di bawah mikroskop: terlihat banyak kristal Charcot-Leyden dan sel leukosit bergranula merah-oranye terang.",
+        question: "Sel leukosit apakah yang bergranula kemerahan dan bekerja sama dengan antibodi IgE dalam reaksi hipersensitivitas/asma alergi?",
+        options: [
+            "Eosinofil",
+            "Eritrosit",
+            "Monosit",
+            "Limfosit T sitotoksik"
+        ],
+        correctIndex: 0,
+        hint: "Granulosit yang menyerap pewarna asam eosin sehingga tampak merah/jingga mencolok.",
+        explanation: "Eosinofil dicirikan oleh granula sitoplasma refraktil besar yang terwarnai merah-oranye oleh pewarna asam eosin. Pada asma alergi ekstrinsik, sel mast yang dilapisi IgE mengalami degranulasi dan melepaskan faktor kemotaktik eosinofil. Eosinofil bermigrasi ke mukosa bronkus dan melepaskan protein basa mayor (MBP) yang memicu peradangan jaringan epitel.",
+        topicTag: "Sistem Imun & Hipersensitivitas Tipe I"
+    },
+    {
+        id: "Q4_TREATMENT",
+        patientId: "patient_4",
+        tool: "treatment",
+        toolName: "Preskripsi & Terapi",
+        stageTitle: "Pemberian Inhaler Bronkodilator",
+        context: "Kamu segera memberikan inhalasi Salbutamol melalui nebulizer. Napas Mas Reza perlahan lega dan wheezing mereda.",
+        question: "Bagaimana mekanisme farmakologi agonis beta-2 adrenergik (Salbutamol) pada reseptor membran sel otot polos saluran napas?",
+        options: [
+            "Memblokade reseptor histamin H1 di seluruh permukaan kulit",
+            "Merangsang reseptor beta-2 adrenergik, meningkatkan kadar cAMP intraseluler, yang memicu relaksasi otot polos bronkus (bronkodilatasi)",
+            "Menghambat sintesis ATP di mitokondria sel epitel trakea",
+            "Mengasamkan lendir mukus agar membeku menjadi batu"
+        ],
+        correctIndex: 1,
+        hint: "Jalur protein G stimulator (Gs) -> enzim Adenilat Siklase -> peningkatan cAMP -> relaksasi otot polos.",
+        explanation: "Salbutamol bekerja secara selektif pada reseptor beta-2 adrenergik di membran sel otot polos bronkus. Pengikatan ini mengaktifkan protein Gs, yang menstimulasi enzim adenilat siklase untuk mengubah ATP menjadi cAMP (siklik AMP). Kenaikan cAMP menurunkan konsentrasi ion kalsium bebas intraseluler sehingga serat aktin-miosin relaksasi dan lumen bronkus melebar cepat.",
+        topicTag: "Transduksi Sinyal Sel & Farmakologi"
+    },
+
+    // =========================================================================
+    // KASUS 5: Kakek Hasan (65 th) - Gejala: Pembengkakan Kaki (Edema), Tekanan Darah Tinggi, Oliguria (Urine Sedikit)
+    // Topik: Sistem Ekskresi, Nefron Ginjal, Filtrasi Glomerulus, Hormon ADH & Aldosteron
+    // =========================================================================
+    {
+        id: "Q5_STETH",
+        patientId: "patient_5",
+        tool: "stethoscope",
+        toolName: "Stetoskop",
+        stageTitle: "Auskultasi Jantung & Tekanan Vaskular",
+        context: "Tekanan darah Kakek Hasan 175/100 mmHg. Saat stetoskop diletakkan di dada, terdengar suara gallop S3 akibat beban volume cairan berlebih (hipervolemia).",
+        question: "Ketika perfusi darah ke aparatus jukstaglomerulus ginjal menurun, sel jukstaglomerulus akan melepaskan enzim renin. Rangkaian sistem hormonal apakah yang diaktifkannya?",
+        options: [
+            "Sistem RAAS (Renin-Angiotensin-Aldosteron) untuk menaikkan reabsorpsi Na+ dan air serta vasokonstriksi arteriol",
+            "Sistem Insulin-Glukagon untuk menurunkan sintesis glikogen otot",
+            "Sistem Oksitosin-Prolaktin untuk merangsang pengeluaran cairan limfatik",
+            "Sistem Kalsitonin-PTH untuk merombak matriks tulang kompak"
+        ],
+        correctIndex: 0,
+        hint: "Sistem pengatur tekanan darah dan volume cairan tubuh jangka panjang yang melibatkan enzim ACE paru-paru.",
+        explanation: "Sel jukstaglomerulus di arteriol aferen mensekresi renin saat mendeteksi penurunan tekanan darah. Renin mengubah angiotensinogen (dari hati) menjadi angiotensin I. Enzim ACE di kapiler paru mengubahnya menjadi angiotensin II (vasokonstriktor poten). Angiotensin II merangsang korteks adrenal mensekresikan aldosteron untuk mereabsorpsi ion Na+ dan air di tubulus kontortus distal.",
+        topicTag: "Sistem Endokrin & Regulasi Tekanan Darah"
+    },
+    {
+        id: "Q5_THERMO",
+        patientId: "patient_5",
+        tool: "thermometer",
+        toolName: "Pemeriksaan Edema & Vitals",
+        stageTitle: "Evaluasi Pitting Edema Ekstremitas",
+        context: "Ketika kamu menekan tulang kering Kakek Hasan selama 5 detik, terbentuk cekungan yang lambat kembali (pitting edema derajat 3).",
+        question: "Edema (penumpukan cairan di ruang interstisial) pada pasien dengan gangguan filtrasi ginjal dan proteinuria terutama diakibatkan oleh...",
+        options: [
+            "Peningkatan tekanan onkotik koloid plasma akibat kelebihan albumin darah",
+            "Penurunan tekanan onkotik koloid plasma karena hilangnya protein albumin ke dalam urine (hipoalbuminemia)",
+            "Peningkatan tekanan atmosfer lingkungan di sekitar tungkai kaki",
+            "Pecahnya seluruh sel limfosit di dalam pembuluh kil"
+        ],
+        correctIndex: 1,
+        hint: "Hukum Starling kapiler: Protein albumin di pembuluh darah berfungsi menarik cairan agar tidak bocor ke jaringan interstisial.",
+        explanation: "Albumin adalah protein plasma utama yang mempertahankan tekanan onkotik koloid kapiler (sekitar 25 mmHg) yang berfungsi menahan cairan tetap berada di lumen vaskular. Jika ginjal bocor (sindrom nefrotik/proteinuria), terjadi hipoalbuminemia sehingga cairan intravaskular merembes keluar ke ruang interstisial sesuai gradien tekanan Starling.",
+        topicTag: "Fisiologi Cairan Tubuh & Hukum Starling"
+    },
+    {
+        id: "Q5_BLOOD",
+        patientId: "patient_5",
+        tool: "bloodLab",
+        toolName: "Pemeriksaan Lab Darah & Urine",
+        stageTitle: "Analisis Ureum, Kreatinin & Proteinuria",
+        context: "Kadar kreatinin serum Kakek Hasan melonjak menjadi 4.5 mg/dL (normal: 0.7-1.3 mg/dL) dan urinalisis menunjukkan proteinuria berat (++++) serta hematuria.",
+        question: "Kerusakan pada lapisan filtrasi glomerulus manakah yang menyebabkan molekul makro seperti protein albumin dan eritrosit bocor ke dalam kapsula Bowman?",
+        options: [
+            "Sel podosit dengan prosesus kaki (*pedicel*) dan membran basal glomerulus bermuatan negatif",
+            "Lapisan mikrovili brush border di tubulus proksimal",
+            "Duktus kolektivus medula ginjal",
+            "Katup spiral pada ureter"
+        ],
+        correctIndex: 0,
+        hint: "Sawar filtrasi ginjal terdiri dari sel endotel bertingkap, lamina basalis, dan sel podosit khusus.",
+        explanation: "Sawar filtrasi glomerulus terdiri dari 3 lapisan: endotel bertingkap fenestrasi, membran basal glomerulus (GBM) kaya heparan sulfat bermuatan negatif, dan slit diaphragm celah podosit. Hilangnya muatan negatif pada membran basal dan rusaknya pedikel podosit melenyapkan selektivitas muatan dan ukuran, menyebabkan protein plasma dan eritrosit lolos ke filtrat glomerulus.",
+        topicTag: "Histologi Nefron & Filtrasi Glomerulus"
+    },
+    {
+        id: "Q5_MICROSCOPE",
+        patientId: "patient_5",
+        tool: "microscope",
+        toolName: "Mikroskop Biologi",
+        stageTitle: "Observasi Sedimen Urine (Silinder Seluler)",
+        context: "Di bawah mikroskop fase kontras, terlihat formasi silinder eritrosit (RBC casts) dan kristal kalsium oksalat pada sampel urine pekat.",
+        question: "Di segmen nefron manakah terjadi reabsorpsi air secara masif yang diatur oleh aquaporin di bawah kendali hormon Antidiuretik (ADH/Vasopresin)?",
+        options: [
+            "Glomerulus kapsula Bowman",
+            "Tubulus kontortus distal dan duktus kolektivus (tubulus pengumpul)",
+            "Lengkung Henle pars asendens tebal yang kedap air",
+            "Arteriol eferen ginjal"
+        ],
+        correctIndex: 1,
+        hint: "Hormon ADH memicu insersi kanal air aquaporin-2 di segmen akhir tubulus sebelum urine masuk ke pelvis ginjal.",
+        explanation: "Hormon ADH yang disekresikan hipofisis posterior berikatan dengan reseptor V2 pada membran basolateral sel prinsipal di tubulus distal dan duktus kolektivus. Hal ini memicu fusi vesikel aquaporin-2 ke membran apikal, memungkinkan reabsorpsi air secara osmosis dari lumen tubulus kembali ke interstitium medula ginjal yang hipertonik.",
+        topicTag: "Osmoregulasi & Sistem Endokrin"
+    },
+    {
+        id: "Q5_TREATMENT",
+        patientId: "patient_5",
+        tool: "treatment",
+        toolName: "Preskripsi & Terapi",
+        stageTitle: "Prinsip Kerja Hemodialisis (Cuci Darah)",
+        context: "Kakek Hasan dipersiapkan untuk menjalani prosedur hemodialisis darurat guna membersihkan racun metabolik ureum darah.",
+        question: "Prinsip biofisika dan transpor membran apakah yang mendasari proses pembersihan darah pada mesin dialisis ginjal buatan?",
+        options: [
+            "Transpor aktif primer yang membutuhkan jutaan molekul ATP sintetis",
+            "Difusi zat terlarut menuruni gradien konsentrasi melintasi membran semipermeabel sintetis dan ultrafiltrasi osmotik",
+            "Endositosis makrofag yang menelan racun ureum dalam sirkuit mesin",
+            "Fermentasi asam cuka di dalam tabung dialiser"
+        ],
+        correctIndex: 1,
+        hint: "Molekul kecil seperti ureum dan kreatinin berpindah dari daerah berkonsentrasi tinggi ke cairan dialisat encer melalui membran semipermeabel.",
+        explanation: "Hemodialisis memanfaatkan prinsip difusi pasif dan ultrafiltrasi. Darah pasien dialirkan melewati ribuan serat berongga yang tersusun dari membran semipermeabel sintetis. Ureum, kreatinin, dan ion berlebih dalam darah berdifusi menuruni gradien konsentrasi menuju cairan dialisat bersih yang mengalir berlawanan arah (*counter-current flow*) untuk efisiensi maksimal.",
+        topicTag: "Biofisika Sel & Transpor Pasif Membran"
+    },
+
+    // =========================================================================
+    // KASUS 6: Nadia (17 th) - Gejala: Riwayat Keluarga Kelainan Darah, Splenomegali (Limpa Membesar), Mudah Lelah
+    // Topik: Genetika Molekuler, Sintesis Protein, Mutasi Gen Rantai Globin, Hukum Mendel
+    // =========================================================================
+    {
+        id: "Q6_STETH",
+        patientId: "patient_6",
+        tool: "stethoscope",
+        toolName: "Stetoskop",
+        stageTitle: "Pemeriksaan Fisik & Palpasi Abdomen",
+        context: "Kamu melakukan palpasi abdomen pada Nadia. Teraba pembesaran limpa (splenomegali Schuffner II) dan murmur fungsional jantung.",
+        question: "Mengapa pada penyakit kelainan hemoglobin herediter (seperti talasemia dan anemia sel sabit) sering terjadi pembesaran organ limpa (splenomegali)?",
+        options: [
+            "Limpa bekerja ekstra keras memfagositosis dan menghancurkan eritrosit abnormal yang rapuh dan cacat bentuk di pulpa merah",
+            "Limpa memproduksi hormon insulin cadangan dalam jumlah masif",
+            "Bakteri usus berpindah secara permanen ke dalam sinus limfa",
+            "Limpa mengalami penumpukan kalsium akibat konsumsi susu berlebih"
+        ],
+        correctIndex: 0,
+        hint: "Organ limpa (pulpa merah) merupakan tempat pemakaman dan penyaringan sel darah merah tua atau abnormal oleh makrofag.",
+        explanation: "Eritrosit yang memiliki rantai hemoglobin abnormal tidak elastis dan mudah pecah saat melewati jejaring retikuler sempit di pulpa merah limpa. Makrofag limpa aktif memfagositosis fragmen eritrosit yang rusak ini (hemolisis ekstravaskular). Beban kerja berlebih dan eritropoiesis ekstramedular menyebabkan hipertrofi limpa (splenomegali).",
+        topicTag: "Sistem Imun & Fungsi Organ Limfatik"
+    },
+    {
+        id: "Q6_BLOOD",
+        patientId: "patient_6",
+        tool: "bloodLab",
+        toolName: "Pemeriksaan Elektroforesis Hemoglobin",
+        stageTitle: "Analisis Varian Hemoglobin Protein",
+        context: "Hasil elektroforesis hemoglobin Nadia menunjukkan kadar HbA1 menurun drastis dan terdapat lonjakan signifikan pada HbF (Fetal Hemoglobin) dan HbA2.",
+        question: "Hemoglobin dewasa normal (HbA) terdiri atas kombinasi empat rantai polipeptida, yaitu...",
+        options: [
+            "Dua rantai alfa (α) dan dua rantai beta (β)",
+            "Empat rantai gama (γ) identik",
+            "Dua rantai delta (δ) dan dua rantai epsilon (ε)",
+            "Satu rantai alfa, satu beta, satu gama, dan satu delta"
+        ],
+        correctIndex: 0,
+        hint: "Tetramer protein globular utama darah manusia dewasa: 2 rantai α dan 2 rantai β (α2β2).",
+        explanation: "Struktur kuartener molekul hemoglobin manusia dewasa normal (HbA1) tersusun atas tetramer dua rantai alfa-globin (141 asam amino) dan dua rantai beta-globin (146 asam amino), dituliskan secara biologis sebagai α2β2. Masing-masing rantai mengikat satu cincin porfirin heme dengan ion Fe2+.",
+        topicTag: "Biologi Molekuler & Struktur Protein"
+    },
+    {
+        id: "Q6_MICROSCOPE",
+        patientId: "patient_6",
+        tool: "microscope",
+        toolName: "Mikroskop Biologi",
+        stageTitle: "Observasi Morfologi Sel Target & Mikrositosis",
+        context: "Di bawah mikroskop apusan darah tepi, ditemukan banyak sel target (*target cells/leptosit*) menyerupai sasaran tembak panahan dan benda Howell-Jolly.",
+        question: "Pada talasemia mayor, mutasi genetik pada kromosom nomor 11 menyebabkan kegagalan transkripsi atau translasi rantai beta-globin. Jenis mutasi DNA apakah yang umumnya memicu perubahan pembacaan kerangka (*frameshift mutation*)?",
+        options: [
+            "Delesi atau insersi satu atau dua pasang basa nitrogen yang menggeser kerangka baca kodon triplet mRNA",
+            "Substitusi basa nitrogen sinonim (silent mutation) yang mengodekan asam amino identik",
+            "Pembalikan arah sentromer kromosom tanpa kehilangan materi genetik",
+            "Pergantian basa pirimidin sitosin menjadi timin pada sekuens intron non-koding"
+        ],
+        correctIndex: 0,
+        hint: "Penambahan atau pengurangan basa yang bukan kelipatan 3 mengubah seluruh deretan kodon asam amino setelah titik mutasi.",
+        explanation: "Kode genetik dibaca dalam satuan kodon triplet (tiga nukleotida). Delesi atau insersi nukleotida yang bukan kelipatan 3 akan merusak kerangka baca (*reading frame*) mRNA saat translasi ribosom. Akibatnya, semua asam amino di hilir mutasi menjadi salah atau terbentuk kodon stop prematur (UAA, UAG, UGA), menghasilkan protein terpotong yang tidak fungsional.",
+        topicTag: "Genetika Molekuler & Mutasi Gen"
+    },
+    {
+        id: "Q6_THERMO",
+        patientId: "patient_6",
+        tool: "thermometer",
+        toolName: "Pemeriksaan Silsilah & Genogram",
+        stageTitle: "Konseling Genetik & Silsilah Keluarga",
+        context: "Kedua orang tua Nadia tampak sehat bugar secara fisik, namun setelah dites darah, keduanya merupakan pembawa sifat (*carrier/talasemia minor*).",
+        question: "Talasemia beta diwariskan secara autosom resesif (genotipe carrier: Tt). Berdasarkan hukum segregasi bebas Mendel, berapa probabilitas anak mereka menderita talasemia mayor (genotipe homozigot resesif: tt)?",
+        options: [
+            "25% (1 dari 4 kemungkinan)",
+            "50% (2 dari 4 kemungkinan)",
+            "75% (3 dari 4 kemungkinan)",
+            "100% (pasti seluruh anak menderita)"
+        ],
+        correctIndex: 0,
+        hint: "Persilangan monohibrid dua individu heterozigot (Tt x Tt) menghasilkan rasio genotipe 1 TT : 2 Tt : 1 tt.",
+        explanation: "Persilangan antara dua pembawa sifat (carrier) heterozigot: P = Tt x Tt. Gamet yang dihasilkan masing-masing adalah T (50%) dan t (50%). Kombinasi keturunan F1 pada papan catur Punnett: 1 TT (Normal, 25%), 2 Tt (Carrier talasemia minor, 50%), dan 1 tt (Talasemia mayor, 25%). Jadi peluang memiliki anak menderita talasemia mayor adalah 25%.",
+        topicTag: "Pewarisan Sifat & Hukum Mendel"
+    },
+    {
+        id: "Q6_TREATMENT",
+        patientId: "patient_6",
+        tool: "treatment",
+        toolName: "Preskripsi & Terapi",
+        stageTitle: "Terapi Transfusi & Kelasi Besi",
+        context: "Nadia membutuhkan transfusi darah rutin. Namun transfusi berkali-kali berisiko menyebabkan penumpukan zat besi beracun (hemokromatosis). Kamu harus meresepkan agen kelasi besi.",
+        question: "Mengapa tubuh manusia tidak memiliki mekanisme fisiologis aktif untuk mengekskresikan kelebihan zat besi selain melalui deskuamasi sel epitel kulit dan saluran cerna yang sangat terbatas?",
+        options: [
+            "Zat besi tidak pernah diserap ke dalam aliran darah manusia",
+            "Secara evolusi biologis, tubuh manusia beradaptasi untuk mempertahankan dan mendaur ulang zat besi secara ketat guna bertahan hidup dari kelaparan nutrisi",
+            "Semua ion besi langsung menguap melalui saluran pernapasan saat ekspirasi",
+            "Besi diubah oleh ginjal menjadi vitamin larut lemak"
+        ],
+        correctIndex: 1,
+        hint: "Tubuh mendaur ulang zat besi dari eritrosit tua melalui makrofag hati dan limpa, namun tidak punya organ khusus pembuang besi berlebih.",
+        explanation: "Secara evolusioner, mamalia beradaptasi dalam kondisi langka nutrisi sehingga tubuh mengembangkan sistem pengikatan (transferin, feritin) dan daur ulang zat besi yang sangat efisien oleh sistem retikuloendotelial tanpa adanya jalur ekskresi aktif teratur. Oleh sebab itu, pasien yang menerima transfusi rutin memerlukan obat pengikat besi (*iron chelator* seperti deferoksamin) untuk mencegah toksisitas radikal bebas hidroksil (reaksi Fenton).",
+        topicTag: "Bioinorganik & Homeostasis Logam Tubuh"
+    }
+];
+
+// Helper functions for question retrieving
+function getQuestionsForPatient(patientId) {
+    return BIOLOGY_QUESTIONS.filter(q => q.patientId === patientId);
+}
+
+function getQuestionForPatientAndTool(patientId, toolType) {
+    return BIOLOGY_QUESTIONS.find(q => q.patientId === patientId && q.tool === toolType);
+}
+
+// Export to window
+window.BIOLOGY_QUESTIONS = BIOLOGY_QUESTIONS;
+window.getQuestionsForPatient = getQuestionsForPatient;
+window.getQuestionForPatientAndTool = getQuestionForPatientAndTool;
+
+
+// --- PATIENTS WARD DATA ---
+/**
+ * Biology Champions - Patient Profiles & Medical Ward Simulation
+ * Playful Hospital Ward with animated SVG avatars, dynamic vital signs, and recovery state
+ */
+
+const PATIENTS_DATA = [
+    {
+        id: "patient_1",
+        bedNumber: "Bed 101 - Bangsal Sirkulasi",
+        name: "Pak Budi",
+        age: "52 Tahun",
+        gender: "Laki-laki",
+        condition: "Anemia Berat & Hipoksia Jaringan",
+        organSystem: "Sistem Peredaran Darah & Eritrosit",
+        badgeColor: "#00B4D8",
+        complaint: "Badan lemas luar biasa, pandangan berkunang-kunang, dan telapak tangan pucat dingin.",
+        initialVitals: {
+            hr: 115,            // Takikardia kompensasi
+            temp: 36.4,
+            spo2: 92,
+            bp: "90/60 mmHg"
+        },
+        healthyVitals: {
+            hr: 75,
+            temp: 36.6,
+            spo2: 99,
+            bp: "120/80 mmHg"
+        },
+        avatarSvg: {
+            sick: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg">
+                <!-- Hair -->
+                <path d="M30 46 C25 25, 95 20, 90 46 Z" fill="#4A5568"/>
+                <!-- Head -->
+                <circle cx="60" cy="55" r="32" fill="#E2E8F0"/>
+                <!-- Pale cheeks -->
+                <circle cx="45" cy="62" r="5" fill="#CBD5E1" opacity="0.6"/>
+                <circle cx="75" cy="62" r="5" fill="#CBD5E1" opacity="0.6"/>
+                <!-- Sleepy pale eyes -->
+                <line x1="42" y1="52" x2="52" y2="52" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+                <line x1="68" y1="52" x2="78" y2="52" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+                <!-- Droopy eyebrows -->
+                <path d="M40 45 Q47 48 54 48" stroke="#334155" stroke-width="2.5" fill="none"/>
+                <path d="M66 48 Q73 48 80 45" stroke="#334155" stroke-width="2.5" fill="none"/>
+                <!-- Weak mouth -->
+                <path d="M52 74 Q60 69 68 74" stroke="#475569" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Hospital Gown -->
+                <path d="M30 87 Q60 82 90 87 L98 120 L22 120 Z" fill="#90E0EF"/>
+                <line x1="60" y1="86" x2="60" y2="120" stroke="#0077B6" stroke-width="2" stroke-dasharray="4"/>
+                <!-- Weak sweat drop -->
+                <path d="M83 40 Q86 46 83 49 A3 3 0 0 1 80 46 Q80 43 83 40" fill="#67E8F9"/>
+            </svg>`,
+            cured: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg cured-anim">
+                <!-- Sparkles -->
+                <polygon points="15,20 18,28 26,30 18,32 15,40 12,32 4,30 12,28" fill="#FACC15"/>
+                <polygon points="105,25 107,31 113,33 107,35 105,41 103,35 97,33 103,31" fill="#FACC15"/>
+                <!-- Hair -->
+                <path d="M30 46 C25 25, 95 20, 90 46 Z" fill="#334155"/>
+                <!-- Head with healthy blush -->
+                <circle cx="60" cy="55" r="32" fill="#FED7AA"/>
+                <!-- Rosy cheeks -->
+                <circle cx="43" cy="62" r="6" fill="#F472B6" opacity="0.6"/>
+                <circle cx="77" cy="62" r="6" fill="#F472B6" opacity="0.6"/>
+                <!-- Happy curved eyes -->
+                <path d="M42 53 Q48 45 54 53" stroke="#1E293B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                <path d="M66 53 Q72 45 78 53" stroke="#1E293B" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                <!-- Cheerful smile -->
+                <path d="M48 68 Q60 84 72 68" stroke="#1E293B" stroke-width="3" fill="#E11D48"/>
+                <path d="M52 69 Q60 74 68 69" fill="#FFF"/>
+                <!-- Hospital Gown -->
+                <path d="M30 87 Q60 82 90 87 L98 120 L22 120 Z" fill="#00C9A7"/>
+                <!-- Champion badge -->
+                <circle cx="78" cy="98" r="8" fill="#FACC15"/>
+                <text x="75" y="102" font-size="10" font-weight="bold" fill="#78350F">✓</text>
+            </svg>`
+        }
+    },
+    {
+        id: "patient_2",
+        bedNumber: "Bed 102 - Bangsal Infeksi & Imun",
+        name: "Adik Citra",
+        age: "16 Tahun",
+        gender: "Perempuan",
+        condition: "Faringitis Bakteri Akut & Respon Imun",
+        organSystem: "Sistem Imun & Mikroorganisme",
+        badgeColor: "#F43F5E",
+        complaint: "Demam tinggi mendadak (39.2°C), sakit menelan, tenggorokan merah berbintik putih nanah.",
+        initialVitals: {
+            hr: 110,
+            temp: 39.2,         // Demam tinggi
+            spo2: 97,
+            bp: "110/70 mmHg"
+        },
+        healthyVitals: {
+            hr: 80,
+            temp: 36.7,
+            spo2: 99,
+            bp: "115/75 mmHg"
+        },
+        avatarSvg: {
+            sick: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg">
+                <!-- Ponytail -->
+                <path d="M25 40 Q15 65 30 75" stroke="#78350F" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <path d="M30 46 C25 20, 95 20, 90 46 Z" fill="#78350F"/>
+                <!-- Fever head (flushed) -->
+                <circle cx="60" cy="55" r="32" fill="#FDE047"/>
+                <!-- Fever red cheeks -->
+                <circle cx="43" cy="62" r="8" fill="#EF4444" opacity="0.6"/>
+                <circle cx="77" cy="62" r="8" fill="#EF4444" opacity="0.6"/>
+                <!-- Fever compress on forehead -->
+                <rect x="40" y="32" width="40" height="12" rx="4" fill="#67E8F9" stroke="#0891B2" stroke-width="1.5"/>
+                <!-- Water drops on compress -->
+                <circle cx="48" cy="38" r="2" fill="#0284C7"/>
+                <circle cx="60" cy="38" r="2" fill="#0284C7"/>
+                <!-- Sad tired eyes -->
+                <circle cx="48" cy="54" r="3" fill="#1F2937"/>
+                <circle cx="72" cy="54" r="3" fill="#1F2937"/>
+                <!-- Throat ice pack/scarf -->
+                <path d="M40 76 Q60 85 80 76 L82 86 Q60 92 38 86 Z" fill="#F43F5E"/>
+                <!-- Small sad mouth -->
+                <path d="M54 71 Q60 67 66 71" stroke="#991B1B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <!-- Hospital Gown -->
+                <path d="M30 87 Q60 82 90 87 L98 120 L22 120 Z" fill="#FBCFE8"/>
+            </svg>`,
+            cured: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg cured-anim">
+                <!-- Hair with cute hairclip -->
+                <path d="M25 40 Q15 65 30 75" stroke="#78350F" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <path d="M30 46 C25 20, 95 20, 90 46 Z" fill="#78350F"/>
+                <circle cx="78" cy="34" r="5" fill="#EC4899"/>
+                <!-- Healthy glow face -->
+                <circle cx="60" cy="55" r="32" fill="#FED7AA"/>
+                <circle cx="43" cy="62" r="6" fill="#F472B6" opacity="0.5"/>
+                <circle cx="77" cy="62" r="6" fill="#F472B6" opacity="0.5"/>
+                <!-- Happy sparkly eyes -->
+                <circle cx="48" cy="53" r="4" fill="#0F172A"/>
+                <circle cx="50" cy="51" r="1.5" fill="#FFF"/>
+                <circle cx="72" cy="53" r="4" fill="#0F172A"/>
+                <circle cx="74" cy="51" r="1.5" fill="#FFF"/>
+                <!-- Cute smiling mouth -->
+                <path d="M50 67 Q60 80 70 67" stroke="#1E293B" stroke-width="3" fill="#FB7185"/>
+                <!-- Hospital Gown -->
+                <path d="M30 87 Q60 82 90 87 L98 120 L22 120 Z" fill="#00C9A7"/>
+                <circle cx="78" cy="98" r="8" fill="#FACC15"/>
+                <text x="75" y="102" font-size="10" font-weight="bold" fill="#78350F">✓</text>
+            </svg>`
+        }
+    },
+    {
+        id: "patient_3",
+        bedNumber: "Bed 103 - Bangsal Metabolik",
+        name: "Ibu Ratna",
+        age: "45 Tahun",
+        gender: "Perempuan",
+        condition: "Diabetes Mellitus Tipe 2 & Resistensi Insulin",
+        organSystem: "Metabolisme Sel & Sinyal Hormon",
+        badgeColor: "#F59E0B",
+        complaint: "Sering kencing malam hari, haus terus-menerus, cepat lelah, luka gores di kaki sulit sembuh.",
+        initialVitals: {
+            hr: 88,
+            temp: 36.8,
+            spo2: 98,
+            bp: "140/90 mmHg"
+        },
+        healthyVitals: {
+            hr: 72,
+            temp: 36.5,
+            spo2: 99,
+            bp: "120/78 mmHg"
+        },
+        avatarSvg: {
+            sick: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg">
+                <!-- Hair bun -->
+                <circle cx="60" cy="22" r="14" fill="#374151"/>
+                <path d="M28 48 C25 25, 95 25, 92 48 Z" fill="#374151"/>
+                <!-- Head -->
+                <circle cx="60" cy="55" r="32" fill="#FFEDD5"/>
+                <!-- Thirsty dry mouth -->
+                <path d="M52 72 Q60 70 68 72" stroke="#9A3412" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Weary eyes with dark circles -->
+                <ellipse cx="46" cy="56" rx="8" ry="4" fill="#FED7AA"/>
+                <circle cx="46" cy="53" r="3" fill="#1F2937"/>
+                <ellipse cx="74" cy="56" rx="8" ry="4" fill="#FED7AA"/>
+                <circle cx="74" cy="53" r="3" fill="#1F2937"/>
+                <!-- Eyeglasses -->
+                <circle cx="46" cy="53" r="9" fill="none" stroke="#D97706" stroke-width="2"/>
+                <circle cx="74" cy="53" r="9" fill="none" stroke="#D97706" stroke-width="2"/>
+                <line x1="55" y1="53" x2="65" y2="53" stroke="#D97706" stroke-width="2"/>
+                <!-- Hospital Gown -->
+                <path d="M30 87 Q60 82 90 87 L98 120 L22 120 Z" fill="#FEF08A"/>
+                <circle cx="85" cy="40" r="3" fill="#F59E0B" opacity="0.7"/>
+            </svg>`,
+            cured: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg cured-anim">
+                <!-- Hair bun -->
+                <circle cx="60" cy="22" r="14" fill="#1F2937"/>
+                <path d="M28 48 C25 25, 95 25, 92 48 Z" fill="#1F2937"/>
+                <!-- Healthy face -->
+                <circle cx="60" cy="55" r="32" fill="#FED7AA"/>
+                <circle cx="43" cy="63" r="5" fill="#F472B6" opacity="0.6"/>
+                <circle cx="77" cy="63" r="5" fill="#F472B6" opacity="0.6"/>
+                <!-- Eyeglasses with smiling eyes -->
+                <circle cx="46" cy="53" r="9" fill="none" stroke="#0284C7" stroke-width="2.5"/>
+                <circle cx="74" cy="53" r="9" fill="none" stroke="#0284C7" stroke-width="2.5"/>
+                <line x1="55" y1="53" x2="65" y2="53" stroke="#0284C7" stroke-width="2.5"/>
+                <path d="M42 54 Q46 49 50 54" stroke="#0F172A" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M70 54 Q74 49 78 54" stroke="#0F172A" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Big happy smile -->
+                <path d="M48 68 Q60 82 72 68" stroke="#1E293B" stroke-width="3" fill="#E11D48"/>
+                <!-- Hospital Gown -->
+                <path d="M30 87 Q60 82 90 87 L98 120 L22 120 Z" fill="#00C9A7"/>
+                <circle cx="78" cy="98" r="8" fill="#FACC15"/>
+                <text x="75" y="102" font-size="10" font-weight="bold" fill="#78350F">✓</text>
+            </svg>`
+        }
+    },
+    {
+        id: "patient_4",
+        bedNumber: "Bed 104 - Bangsal Respirasi",
+        name: "Mas Reza",
+        age: "18 Tahun",
+        gender: "Laki-laki",
+        condition: "Eksaserbasi Asma Bronkial Akut",
+        organSystem: "Sistem Pernapasan & Gas Darah",
+        badgeColor: "#06B6D4",
+        complaint: "Dada terasa sangat tertekan, napas berbunyi 'ngik-ngik' nyaring, kesulitan bernapas setelah jogging sore.",
+        initialVitals: {
+            hr: 122,
+            temp: 36.7,
+            spo2: 90,            // Hipoksemia
+            bp: "135/85 mmHg"
+        },
+        healthyVitals: {
+            hr: 76,
+            temp: 36.6,
+            spo2: 99,
+            bp: "118/76 mmHg"
+        },
+        avatarSvg: {
+            sick: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg">
+                <!-- Short spiky hair -->
+                <path d="M30 45 L35 30 L45 35 L55 25 L65 35 L75 26 L85 35 L90 45 Z" fill="#1E293B"/>
+                <!-- Head with mild cyanosis tint -->
+                <circle cx="60" cy="55" r="32" fill="#E0F2FE"/>
+                <!-- Wide anxious eyes -->
+                <circle cx="46" cy="50" r="5" fill="#0F172A"/>
+                <circle cx="48" cy="48" r="1.5" fill="#FFF"/>
+                <circle cx="74" cy="50" r="5" fill="#0F172A"/>
+                <circle cx="76" cy="48" r="1.5" fill="#FFF"/>
+                <!-- Oxygen nasal cannula -->
+                <path d="M30 60 Q60 67 90 60" stroke="#38BDF8" stroke-width="2.5" fill="none"/>
+                <line x1="56" y1="62" x2="56" y2="58" stroke="#38BDF8" stroke-width="3"/>
+                <line x1="64" y1="62" x2="64" y2="58" stroke="#38BDF8" stroke-width="3"/>
+                <!-- Gasping mouth -->
+                <ellipse cx="60" cy="72" rx="6" ry="8" fill="#0284C7"/>
+                <!-- Hospital Gown -->
+                <path d="M30 87 Q60 82 90 87 L98 120 L22 120 Z" fill="#BAE6FD"/>
+                <!-- Sweat of struggle -->
+                <path d="M85 45 Q88 50 85 53 A2 2 0 0 1 82 50 Q82 47 85 45" fill="#38BDF8"/>
+            </svg>`,
+            cured: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg cured-anim">
+                <!-- Cool spiky hair -->
+                <path d="M30 45 L35 30 L45 35 L55 25 L65 35 L75 26 L85 35 L90 45 Z" fill="#0F172A"/>
+                <!-- Warm healthy face -->
+                <circle cx="60" cy="55" r="32" fill="#FED7AA"/>
+                <circle cx="43" cy="62" r="5" fill="#F472B6" opacity="0.6"/>
+                <circle cx="77" cy="62" r="5" fill="#F472B6" opacity="0.6"/>
+                <!-- Relaxed wink / confident eyes -->
+                <circle cx="46" cy="52" r="4" fill="#0F172A"/>
+                <circle cx="48" cy="50" r="1.5" fill="#FFF"/>
+                <path d="M70 52 Q74 46 78 52" stroke="#0F172A" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Relaxed smile -->
+                <path d="M48 68 Q60 80 72 68" stroke="#1E293B" stroke-width="3" fill="#E11D48"/>
+                <!-- Hospital Gown -->
+                <path d="M30 87 Q60 82 90 87 L98 120 L22 120 Z" fill="#00C9A7"/>
+                <circle cx="78" cy="98" r="8" fill="#FACC15"/>
+                <text x="75" y="102" font-size="10" font-weight="bold" fill="#78350F">✓</text>
+            </svg>`
+        }
+    },
+    {
+        id: "patient_5",
+        bedNumber: "Bed 105 - Bangsal Nefrologi",
+        name: "Kakek Hasan",
+        age: "65 Tahun",
+        gender: "Laki-laki",
+        condition: "Sindrom Nefrotik & Kegagalan Filtrasi Ginjal",
+        organSystem: "Sistem Ekskresi & Osmoregulasi",
+        badgeColor: "#8B5CF6",
+        complaint: "Kedua tungkai kaki bengkak (edema), buang air kecil sangat sedikit dan berbusa, tekanan darah melonjak tinggi.",
+        initialVitals: {
+            hr: 82,
+            temp: 36.5,
+            spo2: 96,
+            bp: "175/100 mmHg"    // Hipertensi renal
+        },
+        healthyVitals: {
+            hr: 70,
+            temp: 36.5,
+            spo2: 98,
+            bp: "125/80 mmHg"
+        },
+        avatarSvg: {
+            sick: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg">
+                <!-- Gray hair on sides & bald top -->
+                <path d="M26 55 Q24 35 34 32 Q36 45 32 60 Z" fill="#94A3B8"/>
+                <path d="M94 55 Q96 35 86 32 Q84 45 88 60 Z" fill="#94A3B8"/>
+                <ellipse cx="60" cy="40" rx="28" ry="16" fill="#F1F5F9"/>
+                <!-- Puffy swollen face (edema) -->
+                <ellipse cx="60" cy="58" rx="36" ry="32" fill="#E2E8F0"/>
+                <!-- Puffy bags under eyes -->
+                <ellipse cx="44" cy="58" rx="8" ry="5" fill="#CBD5E1"/>
+                <ellipse cx="76" cy="58" rx="8" ry="5" fill="#CBD5E1"/>
+                <line x1="40" y1="52" x2="48" y2="52" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+                <line x1="72" y1="52" x2="80" y2="52" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+                <!-- Gray mustache -->
+                <path d="M48 68 Q60 64 72 68 Q60 74 48 68" fill="#94A3B8"/>
+                <!-- Worried mouth line -->
+                <path d="M54 75 Q60 72 66 75" stroke="#475569" stroke-width="2.5" fill="none"/>
+                <!-- Hospital Gown -->
+                <path d="M26 89 Q60 84 94 89 L100 120 L20 120 Z" fill="#DDD6FE"/>
+            </svg>`,
+            cured: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg cured-anim">
+                <!-- Hair -->
+                <path d="M26 55 Q24 35 34 32 Q36 45 32 60 Z" fill="#94A3B8"/>
+                <path d="M94 55 Q96 35 86 32 Q84 45 88 60 Z" fill="#94A3B8"/>
+                <ellipse cx="60" cy="40" rx="26" ry="15" fill="#FED7AA"/>
+                <!-- Healthy head without swelling -->
+                <circle cx="60" cy="55" r="31" fill="#FED7AA"/>
+                <!-- Gentle warm eyes with smile lines -->
+                <path d="M40 52 Q46 47 52 52" stroke="#1E293B" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M68 52 Q74 47 80 52" stroke="#1E293B" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Cheerful mustache & smile -->
+                <path d="M46 66 Q60 62 74 66 Q60 72 46 66" fill="#64748B"/>
+                <path d="M52 73 Q60 80 68 73" stroke="#1E293B" stroke-width="2.5" fill="#E11D48"/>
+                <!-- Hospital Gown -->
+                <path d="M28 87 Q60 82 92 87 L98 120 L22 120 Z" fill="#00C9A7"/>
+                <circle cx="78" cy="98" r="8" fill="#FACC15"/>
+                <text x="75" y="102" font-size="10" font-weight="bold" fill="#78350F">✓</text>
+            </svg>`
+        }
+    },
+    {
+        id: "patient_6",
+        bedNumber: "Bed 106 - Bangsal Genetika Molekuler",
+        name: "Nadia",
+        age: "17 Tahun",
+        gender: "Perempuan",
+        condition: "Talasemia Beta & Gangguan Rantai Globin",
+        organSystem: "Genetika & Sintesis Protein",
+        badgeColor: "#10B981",
+        complaint: "Kulit tampak kekuningan (ikterus ringan), perut membesar akibat splenomegali, lelah saat aktivitas sekolah.",
+        initialVitals: {
+            hr: 104,
+            temp: 36.8,
+            spo2: 94,
+            bp: "100/65 mmHg"
+        },
+        healthyVitals: {
+            hr: 74,
+            temp: 36.6,
+            spo2: 99,
+            bp: "115/75 mmHg"
+        },
+        avatarSvg: {
+            sick: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg">
+                <!-- Long dark hair with bangs -->
+                <path d="M30 40 Q20 85 24 100" stroke="#0F172A" stroke-width="12" fill="none" stroke-linecap="round"/>
+                <path d="M90 40 Q100 85 96 100" stroke="#0F172A" stroke-width="12" fill="none" stroke-linecap="round"/>
+                <path d="M28 45 C25 18, 95 18, 92 45 Z" fill="#0F172A"/>
+                <rect x="36" y="32" width="48" height="15" rx="3" fill="#0F172A"/>
+                <!-- Slightly jaundiced pale face -->
+                <circle cx="60" cy="56" r="31" fill="#FEF3C7"/>
+                <!-- Sad eyes with yellow sclera tinge -->
+                <ellipse cx="46" cy="54" rx="5" ry="4" fill="#FEF9C3"/>
+                <circle cx="46" cy="54" r="3" fill="#1E293B"/>
+                <ellipse cx="74" cy="54" rx="5" ry="4" fill="#FEF9C3"/>
+                <circle cx="74" cy="54" r="3" fill="#1E293B"/>
+                <!-- Gentle faint smile -->
+                <path d="M52 72 Q60 70 68 72" stroke="#78350F" stroke-width="2.5" fill="none"/>
+                <!-- Hospital Gown -->
+                <path d="M30 87 Q60 82 90 87 L98 120 L22 120 Z" fill="#CCFBF1"/>
+            </svg>`,
+            cured: `
+            <svg viewBox="0 0 120 120" class="patient-avatar-svg cured-anim">
+                <!-- Shiny dark hair with flower pin -->
+                <path d="M30 40 Q20 85 24 100" stroke="#0F172A" stroke-width="12" fill="none" stroke-linecap="round"/>
+                <path d="M90 40 Q100 85 96 100" stroke="#0F172A" stroke-width="12" fill="none" stroke-linecap="round"/>
+                <path d="M28 45 C25 18, 95 18, 92 45 Z" fill="#0F172A"/>
+                <rect x="36" y="32" width="48" height="15" rx="3" fill="#0F172A"/>
+                <!-- Flower pin -->
+                <circle cx="82" cy="36" r="5" fill="#38BDF8"/>
+                <circle cx="82" cy="36" r="2" fill="#FDE047"/>
+                <!-- Bright glowing face -->
+                <circle cx="60" cy="56" r="31" fill="#FED7AA"/>
+                <circle cx="44" cy="64" r="5" fill="#F472B6" opacity="0.6"/>
+                <circle cx="76" cy="64" r="5" fill="#F472B6" opacity="0.6"/>
+                <!-- Sparkling animated eyes -->
+                <circle cx="47" cy="53" r="4.5" fill="#0F172A"/>
+                <circle cx="49" cy="51" r="1.5" fill="#FFF"/>
+                <circle cx="73" cy="53" r="4.5" fill="#0F172A"/>
+                <circle cx="75" cy="51" r="1.5" fill="#FFF"/>
+                <!-- Radiant smile -->
+                <path d="M49 68 Q60 82 71 68" stroke="#1E293B" stroke-width="3" fill="#E11D48"/>
+                <!-- Hospital Gown -->
+                <path d="M30 87 Q60 82 90 87 L98 120 L22 120 Z" fill="#00C9A7"/>
+                <circle cx="78" cy="98" r="8" fill="#FACC15"/>
+                <text x="75" y="102" font-size="10" font-weight="bold" fill="#78350F">✓</text>
+            </svg>`
+        }
+    }
+];
+
+// Helper to get patient by ID
+function getPatientById(id) {
+    return PATIENTS_DATA.find(p => p.id === id);
+}
+
+// Export to window
+window.PATIENTS_DATA = PATIENTS_DATA;
+window.getPatientById = getPatientById;
+
+
+// --- MAIN GAME CONTROLLER ---
+/**
+ * Biology Champions - Game Engine & Interactive Nurse Controller
+ * Manages game state, patient interactions, quiz flow, EKG canvas, and celebrations
+ */
+
+class BiologyGame {
+    constructor() {
+        // Player State
+        this.nurseName = "Perawat Maya";
+        this.nurseAvatar = "👩‍⚕️";
+        this.nurseRank = "Perawat Magang";
+        this.xp = 0;
+        this.stars = 0;
+        this.curedCount = 0;
+
+        // Ward State
+        this.activePatientId = "patient_1";
+        this.patientProgress = {}; // { [patientId]: { completedTools: Set, recovery: 0, isCured: false } }
+        
+        // Active Question State
+        this.currentQuestion = null;
+        this.currentTool = null;
+        this.hasAnswered = false;
+
+        // EKG Canvas State
+        this.ekgCanvas = null;
+        this.ekgCtx = null;
+        this.ekgAnimId = null;
+        this.ekgPoints = [];
+        this.ekgX = 0;
+        this.currentHeartRate = 80;
+
+        // Confetti Canvas State
+        this.confettiCanvas = null;
+        this.confettiCtx = null;
+        this.confettiParticles = [];
+        this.confettiAnimId = null;
+
+        // Init progress tracker for each patient
+        PATIENTS_DATA.forEach(p => {
+            this.patientProgress[p.id] = {
+                completedTools: new Set(),
+                recovery: 0,
+                isCured: false
+            };
+        });
+    }
+
+    init() {
+        this.setupDOMElements();
+        this.bindEvents();
+        this.initEKG();
+        this.initConfetti();
+        this.renderRoster();
+    }
+
+    setupDOMElements() {
+        // Screens
+        this.welcomeScreen = document.getElementById('welcomeScreen');
+        this.wardScreen = document.getElementById('wardScreen');
+
+        // Modals
+        this.questionModal = document.getElementById('questionModal');
+        this.celebrationModal = document.getElementById('celebrationModal');
+        this.encyclopediaModal = document.getElementById('encyclopediaModal');
+        this.microscopeModal = document.getElementById('microscopeModal');
+
+        // Topbar displays
+        this.dispNurseName = document.getElementById('dispNurseName');
+        this.dispNurseRank = document.getElementById('dispNurseRank');
+        this.dispNurseAvatar = document.getElementById('dispNurseAvatar');
+        this.dispXp = document.getElementById('dispXp');
+        this.dispPatientsCount = document.getElementById('dispPatientsCount');
+
+        // Bed & Patient displays
+        this.patientBedNumber = document.getElementById('patientBedNumber');
+        this.patientName = document.getElementById('patientName');
+        this.patientMeta = document.getElementById('patientMeta');
+        this.patientComplaint = document.getElementById('patientComplaint');
+        this.patientAvatarBox = document.getElementById('patientAvatarBox');
+        this.recoveryFill = document.getElementById('recoveryFill');
+        this.recoveryPercentText = document.getElementById('recoveryPercentText');
+
+        // Vital Signs Displays
+        this.vitalHR = document.getElementById('vitalHR');
+        this.vitalSpO2 = document.getElementById('vitalSpO2');
+        this.vitalTemp = document.getElementById('vitalTemp');
+        this.vitalBP = document.getElementById('vitalBP');
+        this.organTagBadge = document.getElementById('organTagBadge');
+        this.clinicalDiagnosis = document.getElementById('clinicalDiagnosis');
+
+        // Medical Tools
+        this.toolButtons = document.querySelectorAll('.medical-tool-btn');
+    }
+
+    bindEvents() {
+        // Welcome avatar selections
+        const avatarChoices = document.querySelectorAll('.avatar-choice');
+        avatarChoices.forEach(choice => {
+            choice.addEventListener('click', (e) => {
+                avatarChoices.forEach(c => c.classList.remove('active'));
+                choice.classList.add('active');
+                this.nurseAvatar = choice.dataset.avatar || "👩‍⚕️";
+                window.soundSystem.playToolClick();
+            });
+        });
+
+        // Start shift button
+        const btnStartGame = document.getElementById('btnStartGame');
+        if (btnStartGame) {
+            btnStartGame.addEventListener('click', () => this.startShift());
+        }
+
+        // Sound Mute Toggle
+        const btnToggleSound = document.getElementById('btnToggleSound');
+        if (btnToggleSound) {
+            btnToggleSound.addEventListener('click', () => {
+                const muted = window.soundSystem.toggleMute();
+                btnToggleSound.innerHTML = muted ? '🔇' : '🔊';
+                btnToggleSound.title = muted ? 'Aktifkan Suara' : 'Bisukan Suara';
+            });
+        }
+
+        // Ambient Music Toggle
+        const btnToggleMusic = document.getElementById('btnToggleMusic');
+        if (btnToggleMusic) {
+            btnToggleMusic.addEventListener('click', () => {
+                const playing = window.soundSystem.toggleAmbient();
+                btnToggleMusic.style.borderColor = playing ? '#00C9A7' : '#CBD5E1';
+                btnToggleMusic.style.background = playing ? '#F0FDFA' : 'white';
+            });
+        }
+
+        // Pocket Book / Encyclopedia Toggle
+        const btnOpenBook = document.getElementById('btnOpenBook');
+        const btnCloseEncyclopedia = document.getElementById('btnCloseEncyclopedia');
+        if (btnOpenBook) {
+            btnOpenBook.addEventListener('click', () => this.openEncyclopedia());
+        }
+        if (btnCloseEncyclopedia) {
+            btnCloseEncyclopedia.addEventListener('click', () => this.closeEncyclopedia());
+        }
+
+        // Encyclopedia tabs
+        const encyclopediaTabs = document.querySelectorAll('.encyclopedia-tab');
+        encyclopediaTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                encyclopediaTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const targetTopic = tab.dataset.topic;
+                document.querySelectorAll('.encyclopedia-topic-content').forEach(c => c.classList.remove('active'));
+                const targetContent = document.getElementById(`topic_${targetTopic}`);
+                if (targetContent) targetContent.classList.add('active');
+                window.soundSystem.playToolClick();
+            });
+        });
+
+        // Tool buttons click
+        this.toolButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const toolType = btn.dataset.tool;
+                this.handleToolClick(toolType);
+            });
+        });
+
+        // Question modal close
+        const btnCloseQuestion = document.getElementById('btnCloseQuestion');
+        if (btnCloseQuestion) {
+            btnCloseQuestion.addEventListener('click', () => this.closeQuestionModal());
+        }
+
+        // Hint button
+        const btnHint = document.getElementById('btnHint');
+        if (btnHint) {
+            btnHint.addEventListener('click', () => this.showQuestionHint());
+        }
+
+        // Continue next button
+        const btnContinueNext = document.getElementById('btnContinueNext');
+        if (btnContinueNext) {
+            btnContinueNext.addEventListener('click', () => this.closeQuestionModal());
+        }
+
+        // Celebration Next Patient button
+        const btnNextPatient = document.getElementById('btnNextPatient');
+        if (btnNextPatient) {
+            btnNextPatient.addEventListener('click', () => this.handleNextPatient());
+        }
+
+        // Close microscope modal
+        const btnCloseMicroscope = document.getElementById('btnCloseMicroscope');
+        if (btnCloseMicroscope) {
+            btnCloseMicroscope.addEventListener('click', () => {
+                this.microscopeModal.classList.remove('active');
+            });
+        }
+    }
+
+    startShift() {
+        const inputName = document.getElementById('nurseNameInput');
+        if (inputName && inputName.value.trim()) {
+            this.nurseName = inputName.value.trim();
+        }
+
+        this.dispNurseName.textContent = this.nurseName;
+        this.dispNurseAvatar.textContent = this.nurseAvatar;
+        this.dispNurseRank.textContent = this.nurseRank;
+
+        window.soundSystem.playCorrect();
+        this.welcomeScreen.style.display = 'none';
+        this.wardScreen.style.display = 'grid';
+
+        // Load default first patient
+        this.loadPatient(this.activePatientId);
+    }
+
+    renderRoster() {
+        const rosterContainer = document.getElementById('patientRosterList');
+        if (!rosterContainer) return;
+
+        rosterContainer.innerHTML = '';
+        PATIENTS_DATA.forEach(patient => {
+            const progress = this.patientProgress[patient.id];
+            const isCured = progress.isCured;
+            const isActive = patient.id === this.activePatientId;
+
+            const item = document.createElement('div');
+            item.className = `patient-roster-item ${isActive ? 'active' : ''} ${isCured ? 'cured' : ''}`;
+            item.onclick = () => this.loadPatient(patient.id);
+
+            item.innerHTML = `
+                <div class="roster-avatar-box">
+                    ${isCured ? '💖' : '🩺'}
+                </div>
+                <div class="roster-info">
+                    <div class="roster-name">${patient.name} (${patient.age})</div>
+                    <div class="roster-condition">${patient.condition}</div>
+                    <span class="roster-status-badge ${isCured ? 'status-cured' : 'status-treating'}">
+                        ${isCured ? '✓ Sudah Sembuh' : `Dalam Perawatan (${progress.recovery}%)`}
+                    </span>
+                </div>
+            `;
+            rosterContainer.appendChild(item);
+        });
+    }
+
+    loadPatient(patientId) {
+        this.activePatientId = patientId;
+        const patient = getPatientById(patientId);
+        if (!patient) return;
+
+        const progress = this.patientProgress[patientId];
+
+        // Update Bed displays
+        this.patientBedNumber.textContent = patient.bedNumber;
+        this.patientName.textContent = patient.name;
+        this.patientMeta.textContent = `${patient.age} • ${patient.gender} • ${patient.condition}`;
+        this.patientComplaint.textContent = `"${patient.complaint}"`;
+        this.organTagBadge.textContent = patient.organSystem;
+        this.clinicalDiagnosis.textContent = patient.condition;
+
+        // Update avatar
+        this.patientAvatarBox.innerHTML = progress.isCured ? patient.avatarSvg.cured : patient.avatarSvg.sick;
+
+        // Update Recovery bar
+        this.updateRecoveryDisplay(progress.recovery);
+
+        // Update Vitals based on recovery
+        this.updateVitals(patient, progress.recovery);
+
+        // Update Tools button state
+        this.updateToolButtonsState(patientId);
+
+        // Re-render roster to reflect active class
+        this.renderRoster();
+
+        window.soundSystem.playHeartbeat();
+    }
+
+    updateRecoveryDisplay(percent) {
+        this.recoveryFill.style.width = `${percent}%`;
+        this.recoveryPercentText.textContent = `${percent}% Kesembuhan`;
+
+        if (percent === 100) {
+            this.recoveryFill.style.background = 'linear-gradient(90deg, #10B981, #00C9A7)';
+        } else {
+            this.recoveryFill.style.background = 'linear-gradient(90deg, #00B4D8, #00C9A7)';
+        }
+    }
+
+    updateVitals(patient, recoveryPercent) {
+        const factor = recoveryPercent / 100;
+        const init = patient.initialVitals;
+        const target = patient.healthyVitals;
+
+        // Smoothly interpolate HR
+        const currentHR = Math.round(init.hr + (target.hr - init.hr) * factor);
+        this.currentHeartRate = currentHR;
+        this.vitalHR.textContent = currentHR;
+
+        // Temp
+        const currentTemp = (init.temp + (target.temp - init.temp) * factor).toFixed(1);
+        this.vitalTemp.textContent = `${currentTemp}°C`;
+
+        // SpO2
+        const currentSpO2 = Math.round(init.spo2 + (target.spo2 - init.spo2) * factor);
+        this.vitalSpO2.textContent = `${currentSpO2}%`;
+
+        // BP
+        this.vitalBP.textContent = recoveryPercent === 100 ? target.bp : init.bp;
+    }
+
+    updateToolButtonsState(patientId) {
+        const progress = this.patientProgress[patientId];
+        const completed = progress.completedTools;
+
+        this.toolButtons.forEach(btn => {
+            const toolType = btn.dataset.tool;
+            btn.classList.remove('completed', 'ready');
+
+            if (completed.has(toolType)) {
+                btn.classList.add('completed');
+            } else {
+                // If not completed, make it ready to click
+                btn.classList.add('ready');
+            }
+        });
+    }
+
+    handleToolClick(toolType) {
+        window.soundSystem.playToolClick();
+
+        const patient = getPatientById(this.activePatientId);
+        const progress = this.patientProgress[this.activePatientId];
+
+        // Check if question exists for this tool
+        const question = getQuestionForPatientAndTool(this.activePatientId, toolType);
+
+        if (!question) {
+            alert("Tidak ada interaksi khusus untuk alat ini pada pasien ini.");
+            return;
+        }
+
+        // If microscope, show brief specimen view before clipboard
+        if (toolType === 'microscope') {
+            this.showMicroscopeSlide(patient, question);
+        } else {
+            this.openQuestionModal(question, toolType);
+        }
+    }
+
+    showMicroscopeSlide(patient, question) {
+        const specimenSvgBox = document.getElementById('microscopeSpecimenSvg');
+        const specimenTitle = document.getElementById('microscopeSpecimenTitle');
+
+        if (specimenTitle) {
+            specimenTitle.textContent = `Apusan Mikroskopis: ${patient.name} (${question.stageTitle})`;
+        }
+
+        // Render dynamic cell specimen graphic based on patient
+        let cellSvg = '';
+        if (patient.id === 'patient_1') {
+            // Pale microcytic RBCs
+            cellSvg = `
+                <svg viewBox="0 0 100 100" class="specimen-cell-svg">
+                    <circle cx="50" cy="50" r="42" fill="#FDA4AF" stroke="#E11D48" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="24" fill="#FFE4E6"/>
+                    <circle cx="28" cy="28" r="8" fill="#FDA4AF"/>
+                    <circle cx="75" cy="30" r="9" fill="#FDA4AF"/>
+                    <circle cx="70" cy="72" r="10" fill="#FDA4AF"/>
+                </svg>
+            `;
+        } else if (patient.id === 'patient_2') {
+            // Bacteria Gram-positive chains
+            cellSvg = `
+                <svg viewBox="0 0 100 100" class="specimen-cell-svg">
+                    <circle cx="25" cy="35" r="10" fill="#7C3AED" stroke="#4C1D95" stroke-width="2"/>
+                    <circle cx="40" cy="42" r="10" fill="#7C3AED" stroke="#4C1D95" stroke-width="2"/>
+                    <circle cx="55" cy="50" r="10" fill="#7C3AED" stroke="#4C1D95" stroke-width="2"/>
+                    <circle cx="70" cy="58" r="10" fill="#7C3AED" stroke="#4C1D95" stroke-width="2"/>
+                    <circle cx="82" cy="70" r="9" fill="#7C3AED" stroke="#4C1D95" stroke-width="2"/>
+                </svg>
+            `;
+        } else {
+            // General cellular slide
+            cellSvg = `
+                <svg viewBox="0 0 100 100" class="specimen-cell-svg">
+                    <rect x="15" y="15" width="70" height="70" rx="35" fill="#38BDF8" stroke="#0284C7" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="18" fill="#1E3E62"/>
+                    <circle cx="53" cy="47" r="6" fill="#67E8F9"/>
+                </svg>
+            `;
+        }
+
+        if (specimenSvgBox) specimenSvgBox.innerHTML = cellSvg;
+        this.microscopeModal.classList.add('active');
+
+        // Automatically open question after 1.4s or on click
+        const btnInspectQuestion = document.getElementById('btnInspectQuestion');
+        if (btnInspectQuestion) {
+            btnInspectQuestion.onclick = () => {
+                this.microscopeModal.classList.remove('active');
+                this.openQuestionModal(question, 'microscope');
+            };
+        }
+    }
+
+    openQuestionModal(question, toolType) {
+        this.currentQuestion = question;
+        this.currentTool = toolType;
+        this.hasAnswered = false;
+
+        const patient = getPatientById(this.activePatientId);
+
+        // Set Headers
+        document.getElementById('modalToolBadge').textContent = `🩺 Interaksi: ${question.toolName}`;
+        document.getElementById('modalTopicTag').textContent = `Materi SMA: ${question.topicTag}`;
+        document.getElementById('modalContextText').textContent = question.context;
+        document.getElementById('modalQuestionText').textContent = question.question;
+
+        // Reset Feedback
+        const feedbackBox = document.getElementById('modalFeedbackBox');
+        feedbackBox.className = 'feedback-box';
+        feedbackBox.style.display = 'none';
+
+        // Reset Continue button
+        const btnContinue = document.getElementById('btnContinueNext');
+        btnContinue.classList.remove('active');
+
+        // Render Options
+        const optionsContainer = document.getElementById('modalOptionsList');
+        optionsContainer.innerHTML = '';
+
+        const letters = ['A', 'B', 'C', 'D'];
+        question.options.forEach((optText, index) => {
+            const optDiv = document.createElement('div');
+            optDiv.className = 'option-item';
+            optDiv.innerHTML = `
+                <div class="option-letter">${letters[index]}</div>
+                <div class="option-text">${optText}</div>
+            `;
+            optDiv.onclick = () => this.handleOptionSelect(index, optDiv);
+            optionsContainer.appendChild(optDiv);
+        });
+
+        this.questionModal.classList.add('active');
+    }
+
+    handleOptionSelect(selectedIndex, selectedDiv) {
+        if (this.hasAnswered) return;
+
+        const q = this.currentQuestion;
+        const isCorrect = selectedIndex === q.correctIndex;
+        const allOptionElements = document.querySelectorAll('.option-item');
+        const feedbackBox = document.getElementById('modalFeedbackBox');
+        const feedbackTitle = document.getElementById('modalFeedbackTitle');
+        const feedbackText = document.getElementById('modalFeedbackText');
+        const btnContinue = document.getElementById('btnContinueNext');
+
+        if (isCorrect) {
+            this.hasAnswered = true;
+            window.soundSystem.playCorrect();
+
+            selectedDiv.classList.add('correct');
+            allOptionElements.forEach(el => el.classList.add('disabled'));
+
+            // Show explanation
+            feedbackBox.className = 'feedback-box success active';
+            feedbackTitle.innerHTML = '🎉 Jawaban Tepat! Analisis Klinis Valid!';
+            feedbackText.innerHTML = `<strong>Pembahasan Ilmiah:</strong> ${q.explanation}`;
+
+            // Add Rewards
+            this.addRewards(150, 1);
+
+            // Progress patient recovery
+            this.applySuccessfulTool(this.activePatientId, this.currentTool);
+
+            btnContinue.classList.add('active');
+        } else {
+            window.soundSystem.playWrong();
+            selectedDiv.classList.add('wrong');
+
+            feedbackBox.className = 'feedback-box error active';
+            feedbackTitle.innerHTML = '⚠️ Kurang Tepat, Perawat Champion!';
+            feedbackText.innerHTML = `
+                <strong>Petunjuk Biologis:</strong> ${q.hint}<br>
+                <em>Coba analisis ulang mekanisme seluler atau organ yang terlibat.</em>
+            `;
+
+            // Allow student to retry another option
+            setTimeout(() => {
+                selectedDiv.classList.remove('wrong');
+            }, 900);
+        }
+    }
+
+    applySuccessfulTool(patientId, toolType) {
+        const progress = this.patientProgress[patientId];
+        if (!progress.completedTools.has(toolType)) {
+            progress.completedTools.add(toolType);
+
+            // 5 tools per patient -> 20% each
+            const newRecovery = Math.min(100, progress.completedTools.size * 20);
+            progress.recovery = newRecovery;
+
+            this.updateRecoveryDisplay(newRecovery);
+            const patient = getPatientById(patientId);
+            this.updateVitals(patient, newRecovery);
+            this.updateToolButtonsState(patientId);
+            this.renderRoster();
+
+            // Check if 100% Cured!
+            if (newRecovery >= 100 && !progress.isCured) {
+                progress.isCured = true;
+                this.curedCount++;
+                this.dispPatientsCount.textContent = `${this.curedCount} Sembuh`;
+                this.renderRoster();
+
+                // Wait for question modal close before triggering grand celebration
+                this.triggerCelebrationPending = true;
+            }
+        }
+    }
+
+    addRewards(xpPoints, starsCount) {
+        this.xp += xpPoints;
+        this.stars += starsCount;
+
+        this.dispXp.textContent = `${this.xp} XP`;
+
+        // Check Rank Up
+        if (this.xp >= 1500) {
+            this.nurseRank = "Master Biology Champion 🌟";
+        } else if (this.xp >= 900) {
+            this.nurseRank = "Kepala Ruangan Rawat Inap";
+        } else if (this.xp >= 450) {
+            this.nurseRank = "Perawat Primer Spesialis";
+        } else if (this.xp >= 150) {
+            this.nurseRank = "Perawat Muda Cekatan";
+        }
+        this.dispNurseRank.textContent = this.nurseRank;
+    }
+
+    showQuestionHint() {
+        if (!this.currentQuestion) return;
+        const feedbackBox = document.getElementById('modalFeedbackBox');
+        const feedbackTitle = document.getElementById('modalFeedbackTitle');
+        const feedbackText = document.getElementById('modalFeedbackText');
+
+        feedbackBox.className = 'feedback-box error active';
+        feedbackTitle.innerHTML = '💡 Petunjuk Medis & Biologi:';
+        feedbackText.textContent = this.currentQuestion.hint;
+        window.soundSystem.playToolClick();
+    }
+
+    closeQuestionModal() {
+        this.questionModal.classList.remove('active');
+
+        // If patient was just fully cured, launch grand celebration!
+        if (this.triggerCelebrationPending) {
+            this.triggerCelebrationPending = false;
+            setTimeout(() => this.triggerCureCelebration(), 300);
+        }
+    }
+
+    triggerCureCelebration() {
+        const patient = getPatientById(this.activePatientId);
+        window.soundSystem.playPatientCured();
+        this.startConfetti();
+
+        // Update Avatar to Cured
+        this.patientAvatarBox.innerHTML = patient.avatarSvg.cured;
+
+        // Fill Certificate details
+        document.getElementById('certPatientName').textContent = patient.name;
+        document.getElementById('certCondition').textContent = patient.condition;
+        document.getElementById('certOrgan').textContent = patient.organSystem;
+        document.getElementById('certNurseSignature').textContent = `${this.nurseName} (${this.nurseRank})`;
+
+        this.celebrationModal.classList.add('active');
+    }
+
+    handleNextPatient() {
+        this.celebrationModal.classList.remove('active');
+        this.stopConfetti();
+
+        // Find next uncured patient
+        const nextPatient = PATIENTS_DATA.find(p => !this.patientProgress[p.id].isCured);
+        if (nextPatient) {
+            this.loadPatient(nextPatient.id);
+        } else {
+            alert(`🎉 LUAR BIASA! Seluruh pasien di Rumah Sakit Bio Medika telah berhasil kamu sembuhkan, ${this.nurseName}! Kamu adalah Biology Champion sejati!`);
+        }
+    }
+
+    openEncyclopedia() {
+        window.soundSystem.playToolClick();
+        this.encyclopediaModal.classList.add('active');
+    }
+
+    closeEncyclopedia() {
+        this.encyclopediaModal.classList.remove('active');
+    }
+
+    // =========================================================================
+    // EKG Oscilloscope Visualizer
+    // =========================================================================
+    initEKG() {
+        this.ekgCanvas = document.getElementById('ekgCanvas');
+        if (!this.ekgCanvas) return;
+        this.ekgCtx = this.ekgCanvas.getContext('2d');
+        this.resizeEKG();
+        window.addEventListener('resize', () => this.resizeEKG());
+        this.animateEKG();
+    }
+
+    resizeEKG() {
+        if (!this.ekgCanvas) return;
+        const rect = this.ekgCanvas.parentElement.getBoundingClientRect();
+        this.ekgCanvas.width = rect.width;
+        this.ekgCanvas.height = 75;
+    }
+
+    animateEKG() {
+        if (!this.ekgCtx || !this.ekgCanvas) return;
+
+        const ctx = this.ekgCtx;
+        const width = this.ekgCanvas.width;
+        const height = this.ekgCanvas.height;
+        const midY = height / 2;
+
+        // Clear with fade trail
+        ctx.fillStyle = 'rgba(4, 13, 26, 0.15)';
+        ctx.fillRect(0, 0, width, height);
+
+        // Speed depends on heart rate (BPM)
+        const speed = Math.max(2, this.currentHeartRate / 35);
+        this.ekgX = (this.ekgX + speed) % width;
+
+        // Generate ECG waveform pattern (P wave, QRS complex, T wave)
+        const cycle = this.ekgX % 120;
+        let y = midY;
+
+        if (cycle > 20 && cycle < 35) {
+            // P wave (atrial depolarization)
+            y = midY - Math.sin((cycle - 20) / 15 * Math.PI) * 7;
+        } else if (cycle >= 45 && cycle < 48) {
+            // Q dip
+            y = midY + 5;
+        } else if (cycle >= 48 && cycle < 53) {
+            // R spike (ventricular depolarization)
+            y = midY - 26;
+            if (cycle === 50 && Math.random() > 0.4) {
+                window.soundSystem.playEkgBeep(this.currentHeartRate > 100);
+            }
+        } else if (cycle >= 53 && cycle < 57) {
+            // S dip
+            y = midY + 12;
+        } else if (cycle > 70 && cycle < 95) {
+            // T wave (ventricular repolarization)
+            y = midY - Math.sin((cycle - 70) / 25 * Math.PI) * 9;
+        }
+
+        // Draw glowing point
+        ctx.beginPath();
+        ctx.arc(this.ekgX, y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#00C9A7';
+        ctx.shadowColor = '#00C9A7';
+        ctx.shadowBlur = 10;
+        ctx.fill();
+
+        this.ekgAnimId = requestAnimationFrame(() => this.animateEKG());
+    }
+
+    // =========================================================================
+    // Confetti Particle System
+    // =========================================================================
+    initConfetti() {
+        this.confettiCanvas = document.getElementById('confettiCanvas');
+        if (!this.confettiCanvas) return;
+        this.confettiCtx = this.confettiCanvas.getContext('2d');
+        this.resizeConfetti();
+        window.addEventListener('resize', () => this.resizeConfetti());
+    }
+
+    resizeConfetti() {
+        if (!this.confettiCanvas) return;
+        this.confettiCanvas.width = window.innerWidth;
+        this.confettiCanvas.height = window.innerHeight;
+    }
+
+    startConfetti() {
+        this.resizeConfetti();
+        this.confettiParticles = [];
+        const colors = ['#00C9A7', '#00B4D8', '#FACC15', '#F43F5E', '#8B5CF6', '#10B981'];
+
+        for (let i = 0; i < 120; i++) {
+            this.confettiParticles.push({
+                x: Math.random() * this.confettiCanvas.width,
+                y: Math.random() * -this.confettiCanvas.height * 0.5,
+                w: Math.random() * 10 + 6,
+                h: Math.random() * 8 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                vx: (Math.random() - 0.5) * 4,
+                vy: Math.random() * 4 + 3,
+                angle: Math.random() * 360,
+                vAngle: (Math.random() - 0.5) * 8
+            });
+        }
+        this.renderConfetti();
+    }
+
+    renderConfetti() {
+        if (!this.confettiCtx || this.confettiParticles.length === 0) return;
+
+        this.confettiCtx.clearRect(0, 0, this.confettiCanvas.width, this.confettiCanvas.height);
+
+        this.confettiParticles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.angle += p.vAngle;
+
+            this.confettiCtx.save();
+            this.confettiCtx.translate(p.x, p.y);
+            this.confettiCtx.rotate((p.angle * Math.PI) / 180);
+            this.confettiCtx.fillStyle = p.color;
+            this.confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            this.confettiCtx.restore();
+        });
+
+        // Keep looping while particles on screen
+        const alive = this.confettiParticles.some(p => p.y < this.confettiCanvas.height);
+        if (alive) {
+            this.confettiAnimId = requestAnimationFrame(() => this.renderConfetti());
+        } else {
+            this.stopConfetti();
+        }
+    }
+
+    stopConfetti() {
+        if (this.confettiAnimId) cancelAnimationFrame(this.confettiAnimId);
+        if (this.confettiCtx && this.confettiCanvas) {
+            this.confettiCtx.clearRect(0, 0, this.confettiCanvas.width, this.confettiCanvas.height);
+        }
+        this.confettiParticles = [];
+    }
+}
+
+// Instantiate and launch on DOM loaded
+window.addEventListener('DOMContentLoaded', () => {
+    window.game = new BiologyGame();
+    window.game.init();
+});
+
+</script>
+</body>
+</html>
