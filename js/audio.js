@@ -1,6 +1,7 @@
 /**
- * Biology Champions - Web Audio API Sound Synthesizer
- * Provides medical soundscapes (heartbeat, EKG beep, stethoscope, correct chime, error buzz, victory fanfare)
+ * Biology Champions: Klinik Dokter Usagi (Chiikawa Bio Hospital)
+ * Web Audio API Sound Synthesizer
+ * Provides medical soundscapes & Usagi sound effects (heartbeat, EKG beep, stethoscope, Yaha, Ura, Haa, footsteps, medicine pickup)
  * Zero external audio files needed!
  */
 
@@ -10,6 +11,7 @@ class SoundSystem {
         this.isMuted = false;
         this.ambientPlaying = false;
         this.ambientTimer = null;
+        this.lastFootstepTime = 0;
         this.initOnUserGesture();
     }
 
@@ -122,6 +124,7 @@ class SoundSystem {
         notes.forEach((freq, idx) => {
             this.playTone(freq, 'triangle', 0.28, 0.14, idx * 0.08);
         });
+        this.playUsagiYaha();
     }
 
     // Wrong Answer - Gentle low bounce
@@ -129,6 +132,7 @@ class SoundSystem {
         if (this.isMuted) return;
         this.playTone(330, 'sawtooth', 0.18, 0.08, 0);
         this.playTone(260, 'sawtooth', 0.25, 0.08, 0.14);
+        this.playUsagiHaa();
     }
 
     // Tool click / Stethoscope attach
@@ -162,7 +166,61 @@ class SoundSystem {
         osc.stop(t + 0.09);
     }
 
-    // Patient cured - Grand celebratory fanfare
+    // Usagi's joyful chirp: "YAHA!"
+    playUsagiYaha() {
+        if (this.isMuted) return;
+        // Bright energetic triplet arpeggio
+        const tones = [587.33, 880, 1174.66]; // D5, A5, D6
+        tones.forEach((freq, i) => {
+            this.playTone(freq, 'sine', 0.14, 0.12, 0.05 + i * 0.07);
+        });
+    }
+
+    // Usagi's excited voice: "URA!"
+    playUsagiUra() {
+        if (this.isMuted) return;
+        this.playTone(740, 'triangle', 0.12, 0.15, 0);
+        this.playTone(987.77, 'sine', 0.15, 0.15, 0.09);
+    }
+
+    // Usagi's confused voice: "HAA?!"
+    playUsagiHaa() {
+        if (this.isMuted) return;
+        this.initContext();
+        if (!this.ctx) return;
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(450, t);
+        osc.frequency.linearRampToValueAtTime(280, t + 0.22);
+        gain.gain.setValueAtTime(0.15, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.22);
+    }
+
+    // Soft cute footstep sound when walking
+    playFootstep() {
+        if (this.isMuted) return;
+        const now = Date.now();
+        if (now - this.lastFootstepTime < 220) return; // throttle
+        this.lastFootstepTime = now;
+        this.playTone(420 + Math.random() * 80, 'sine', 0.04, 0.035, 0);
+    }
+
+    // Picking up medicine sound from the pharmacy shelf
+    playItemPickup() {
+        if (this.isMuted) return;
+        const notes = [659.25, 880, 1318.51]; // E5, A5, E6
+        notes.forEach((freq, idx) => {
+            this.playTone(freq, 'triangle', 0.18, 0.13, idx * 0.07);
+        });
+    }
+
+    // Patient cured - Grand celebratory fanfare with Usagi cheer
     playPatientCured() {
         if (this.isMuted) return;
         const chords = [
@@ -176,6 +234,7 @@ class SoundSystem {
         chords.forEach(c => {
             this.playTone(c.f, 'triangle', 0.45, 0.18, c.t);
         });
+        setTimeout(() => this.playUsagiYaha(), 600);
     }
 
     // Level Up sound

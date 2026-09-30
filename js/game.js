@@ -1,14 +1,16 @@
 /**
- * Biology Champions - Game Engine & Interactive Nurse Controller
- * Manages game state, patient interactions, quiz flow, EKG canvas, and celebrations
+ * Biology Champions: Klinik Dokter Usagi (Chiikawa Bio Care)
+ * Game Engine & Interactive Doctor Usagi Controller
+ * Manages 2-room exploration (Ruang Pemeriksaan & Ruang Obat), character walking,
+ * patient interactions, quiz flow, medicine retrieval, and celebrations
  */
 
 class BiologyGame {
     constructor() {
-        // Player State
-        this.nurseName = "Perawat Maya";
-        this.nurseAvatar = "👩‍⚕️";
-        this.nurseRank = "Perawat Magang";
+        // Player & Doctor Usagi State
+        this.nurseName = "Dokter Usagi";
+        this.nurseAvatar = "🐰";
+        this.nurseRank = "Dokter Spesialis Biologi SMA";
         this.xp = 0;
         this.stars = 0;
         this.curedCount = 0;
@@ -21,6 +23,29 @@ class BiologyGame {
         this.currentQuestion = null;
         this.currentTool = null;
         this.hasAnswered = false;
+
+        // Inventory & Medicine Pickup State
+        this.carryingMedicine = null; // null or medicine object
+        this.activeMission = "Periksa pasien di Ruang Pemeriksaan!";
+
+        // Usagi Walking & Physics State
+        this.usagiX = 240;      // Start near patient bed in Ruang Periksa
+        this.usagiY = 240;
+        this.usagiSpeed = 220;  // Pixels per second
+        this.targetX = null;    // For click-to-walk
+        this.targetY = null;
+        this.keysDown = {};
+        this.facingRight = true;
+        this.isWalking = false;
+        this.activeInteractTarget = null; // 'bed' or 'pharmacy' or null
+        this.animFrameId = null;
+        this.lastFrameTime = performance.now();
+
+        // World Bounds (Width: 1080px, Height: 420px)
+        this.worldWidth = 1080;
+        this.worldHeight = 420;
+        this.bedPos = { x: 130, y: 220 };
+        this.shelvesPos = { x: 820, y: 170 };
 
         // EKG Canvas State
         this.ekgCanvas = null;
@@ -51,6 +76,7 @@ class BiologyGame {
         this.bindEvents();
         this.initEKG();
         this.initConfetti();
+        this.initUsagiController();
         this.renderRoster();
     }
 
@@ -64,6 +90,7 @@ class BiologyGame {
         this.celebrationModal = document.getElementById('celebrationModal');
         this.encyclopediaModal = document.getElementById('encyclopediaModal');
         this.microscopeModal = document.getElementById('microscopeModal');
+        this.medicineCabinetModal = document.getElementById('medicineCabinetModal');
 
         // Topbar displays
         this.dispNurseName = document.getElementById('dispNurseName');
@@ -91,16 +118,32 @@ class BiologyGame {
 
         // Medical Tools
         this.toolButtons = document.querySelectorAll('.medical-tool-btn');
+
+        // Interactive Walkable Hospital Elements
+        this.hospitalStage = document.getElementById('hospitalStage');
+        this.hospitalWorld = document.getElementById('hospitalWorld');
+        this.usagiCharacter = document.getElementById('usagiCharacter');
+        this.usagiCarriedItem = document.getElementById('usagiCarriedItem');
+        this.usagiSpeechBubble = document.getElementById('usagiSpeechBubble');
+        this.stageInteractPrompt = document.getElementById('stageInteractPrompt');
+        this.missionBannerText = document.getElementById('missionBannerText');
+        this.usagiInventoryText = document.getElementById('usagiInventoryText');
+
+        // Stage Bed & Shelves
+        this.stagePatientBed = document.getElementById('stagePatientBed');
+        this.stagePatientAvatar = document.getElementById('stagePatientAvatar');
+        this.stageBedComplaint = document.getElementById('stageBedComplaint');
+        this.stagePharmacyShelves = document.getElementById('stagePharmacyShelves');
     }
 
     bindEvents() {
         // Welcome avatar selections
         const avatarChoices = document.querySelectorAll('.avatar-choice');
         avatarChoices.forEach(choice => {
-            choice.addEventListener('click', (e) => {
+            choice.addEventListener('click', () => {
                 avatarChoices.forEach(c => c.classList.remove('active'));
                 choice.classList.add('active');
-                this.nurseAvatar = choice.dataset.avatar || "👩‍⚕️";
+                this.nurseAvatar = choice.dataset.avatar || "🐰";
                 window.soundSystem.playToolClick();
             });
         });
@@ -194,6 +237,108 @@ class BiologyGame {
                 this.microscopeModal.classList.remove('active');
             });
         }
+
+        // Close Medicine Cabinet Modal
+        const btnCloseCabinet = document.getElementById('btnCloseCabinet');
+        if (btnCloseCabinet) {
+            btnCloseCabinet.addEventListener('click', () => {
+                if (this.medicineCabinetModal) this.medicineCabinetModal.classList.remove('active');
+            });
+        }
+
+        // Quick Travel buttons
+        const btnGoExam = document.getElementById('btnGoExam');
+        if (btnGoExam) {
+            btnGoExam.addEventListener('click', () => {
+                this.walkTo(250, 240);
+                this.showUsagiSpeech("YAHA! Menuju Ruang Periksa!");
+            });
+        }
+
+        const btnGoPharmacy = document.getElementById('btnGoPharmacy');
+        if (btnGoPharmacy) {
+            btnGoPharmacy.addEventListener('click', () => {
+                this.walkTo(780, 240);
+                this.showUsagiSpeech("URA! Menuju Ruang Obat!");
+            });
+        }
+
+        // Mobile On-Screen D-Pad and Action button
+        const dpadUp = document.getElementById('dpadUp');
+        const dpadDown = document.getElementById('dpadDown');
+        const dpadLeft = document.getElementById('dpadLeft');
+        const dpadRight = document.getElementById('dpadRight');
+        const btnMobileAction = document.getElementById('btnMobileAction');
+
+        const bindDpadButton = (btn, keyName) => {
+            if (!btn) return;
+            const startPress = (e) => {
+                e.preventDefault();
+                this.keysDown[keyName] = true;
+                this.targetX = null; // override click-to-walk
+                this.targetY = null;
+            };
+            const endPress = (e) => {
+                e.preventDefault();
+                this.keysDown[keyName] = false;
+            };
+            btn.addEventListener('mousedown', startPress);
+            btn.addEventListener('mouseup', endPress);
+            btn.addEventListener('mouseleave', endPress);
+            btn.addEventListener('touchstart', startPress, { passive: false });
+            btn.addEventListener('touchend', endPress, { passive: false });
+        };
+
+        bindDpadButton(dpadUp, 'ArrowUp');
+        bindDpadButton(dpadDown, 'ArrowDown');
+        bindDpadButton(dpadLeft, 'ArrowLeft');
+        bindDpadButton(dpadRight, 'ArrowRight');
+
+        if (btnMobileAction) {
+            btnMobileAction.addEventListener('click', () => this.handleActionTrigger());
+        }
+
+        // Stage click/tap to walk
+        if (this.hospitalWorld) {
+            this.hospitalWorld.addEventListener('click', (e) => {
+                // If clicked an interactive button or popup, don't walk
+                if (e.target.closest('.interactive-clickable') || e.target.closest('button')) {
+                    return;
+                }
+                const rect = this.hospitalWorld.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const clickY = e.clientY - rect.top;
+                this.walkTo(clickX, clickY);
+            });
+        }
+
+        // Interactive stage objects click
+        if (this.stagePatientBed) {
+            this.stagePatientBed.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Walk toward bed and interact
+                this.walkTo(this.bedPos.x + 90, this.bedPos.y + 20, () => {
+                    this.handleActionTrigger();
+                });
+            });
+        }
+
+        if (this.stagePharmacyShelves) {
+            this.stagePharmacyShelves.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Walk toward shelves and open cabinet
+                this.walkTo(this.shelvesPos.x, this.shelvesPos.y + 70, () => {
+                    this.handleActionTrigger();
+                });
+            });
+        }
+
+        if (this.stageInteractPrompt) {
+            this.stageInteractPrompt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.handleActionTrigger();
+            });
+        }
     }
 
     startShift() {
@@ -207,11 +352,17 @@ class BiologyGame {
         this.dispNurseRank.textContent = this.nurseRank;
 
         window.soundSystem.playCorrect();
+        this.showUsagiSpeech("YAHA! Selamat Datang di Klinik Bio!");
         this.welcomeScreen.style.display = 'none';
         this.wardScreen.style.display = 'grid';
 
         // Load default first patient
         this.loadPatient(this.activePatientId);
+
+        // Position Usagi in examination room
+        this.usagiX = 250;
+        this.usagiY = 240;
+        this.updateUsagiPositionVisual();
     }
 
     renderRoster() {
@@ -230,10 +381,10 @@ class BiologyGame {
 
             item.innerHTML = `
                 <div class="roster-avatar-box">
-                    ${isCured ? '💖' : '🩺'}
+                    ${isCured ? '💖' : '🐰'}
                 </div>
                 <div class="roster-info">
-                    <div class="roster-name">${patient.name} (${patient.age})</div>
+                    <div class="roster-name">${patient.name}</div>
                     <div class="roster-condition">${patient.condition}</div>
                     <span class="roster-status-badge ${isCured ? 'status-cured' : 'status-treating'}">
                         ${isCured ? '✓ Sudah Sembuh' : `Dalam Perawatan (${progress.recovery}%)`}
@@ -259,8 +410,15 @@ class BiologyGame {
         this.organTagBadge.textContent = patient.organSystem;
         this.clinicalDiagnosis.textContent = patient.condition;
 
-        // Update avatar
-        this.patientAvatarBox.innerHTML = progress.isCured ? patient.avatarSvg.cured : patient.avatarSvg.sick;
+        // Update Bed avatars
+        const avatarSvg = progress.isCured ? patient.avatarSvg.cured : patient.avatarSvg.sick;
+        this.patientAvatarBox.innerHTML = avatarSvg;
+        if (this.stagePatientAvatar) {
+            this.stagePatientAvatar.innerHTML = avatarSvg;
+        }
+        if (this.stageBedComplaint) {
+            this.stageBedComplaint.textContent = progress.isCured ? `"${patient.curedDialog}"` : `"${patient.complaint}"`;
+        }
 
         // Update Recovery bar
         this.updateRecoveryDisplay(progress.recovery);
@@ -270,6 +428,9 @@ class BiologyGame {
 
         // Update Tools button state
         this.updateToolButtonsState(patientId);
+
+        // Update Mission HUD
+        this.updateMissionHUD();
 
         // Re-render roster to reflect active class
         this.renderRoster();
@@ -331,9 +492,6 @@ class BiologyGame {
         window.soundSystem.playToolClick();
 
         const patient = getPatientById(this.activePatientId);
-        const progress = this.patientProgress[this.activePatientId];
-
-        // Check if question exists for this tool
         const question = getQuestionForPatientAndTool(this.activePatientId, toolType);
 
         if (!question) {
@@ -360,25 +518,27 @@ class BiologyGame {
         // Render dynamic cell specimen graphic based on patient
         let cellSvg = '';
         if (patient.id === 'patient_1') {
-            // Pale microcytic RBCs
+            // Stomach mucosa cells with mucus
             cellSvg = `
                 <svg viewBox="0 0 100 100" class="specimen-cell-svg">
-                    <circle cx="50" cy="50" r="42" fill="#FDA4AF" stroke="#E11D48" stroke-width="2"/>
-                    <circle cx="50" cy="50" r="24" fill="#FFE4E6"/>
-                    <circle cx="28" cy="28" r="8" fill="#FDA4AF"/>
-                    <circle cx="75" cy="30" r="9" fill="#FDA4AF"/>
-                    <circle cx="70" cy="72" r="10" fill="#FDA4AF"/>
+                    <rect x="10" y="10" width="80" height="80" rx="10" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+                    <circle cx="35" cy="35" r="14" fill="#F472B6"/>
+                    <circle cx="65" cy="35" r="14" fill="#F472B6"/>
+                    <circle cx="50" cy="65" r="16" fill="#F472B6"/>
+                    <circle cx="35" cy="35" r="5" fill="#831843"/>
+                    <circle cx="65" cy="35" r="5" fill="#831843"/>
+                    <circle cx="50" cy="65" r="6" fill="#831843"/>
                 </svg>
             `;
         } else if (patient.id === 'patient_2') {
-            // Bacteria Gram-positive chains
+            // Microcytic pale RBCs
             cellSvg = `
                 <svg viewBox="0 0 100 100" class="specimen-cell-svg">
-                    <circle cx="25" cy="35" r="10" fill="#7C3AED" stroke="#4C1D95" stroke-width="2"/>
-                    <circle cx="40" cy="42" r="10" fill="#7C3AED" stroke="#4C1D95" stroke-width="2"/>
-                    <circle cx="55" cy="50" r="10" fill="#7C3AED" stroke="#4C1D95" stroke-width="2"/>
-                    <circle cx="70" cy="58" r="10" fill="#7C3AED" stroke="#4C1D95" stroke-width="2"/>
-                    <circle cx="82" cy="70" r="9" fill="#7C3AED" stroke="#4C1D95" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="38" fill="#FDA4AF" stroke="#E11D48" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="22" fill="#FFE4E6"/>
+                    <circle cx="26" cy="26" r="8" fill="#FDA4AF"/>
+                    <circle cx="76" cy="28" r="9" fill="#FDA4AF"/>
+                    <circle cx="72" cy="74" r="10" fill="#FDA4AF"/>
                 </svg>
             `;
         } else {
@@ -395,7 +555,6 @@ class BiologyGame {
         if (specimenSvgBox) specimenSvgBox.innerHTML = cellSvg;
         this.microscopeModal.classList.add('active');
 
-        // Automatically open question after 1.4s or on click
         const btnInspectQuestion = document.getElementById('btnInspectQuestion');
         if (btnInspectQuestion) {
             btnInspectQuestion.onclick = () => {
@@ -409,8 +568,6 @@ class BiologyGame {
         this.currentQuestion = question;
         this.currentTool = toolType;
         this.hasAnswered = false;
-
-        const patient = getPatientById(this.activePatientId);
 
         // Set Headers
         document.getElementById('modalToolBadge').textContent = `🩺 Interaksi: ${question.toolName}`;
@@ -464,10 +621,10 @@ class BiologyGame {
             selectedDiv.classList.add('correct');
             allOptionElements.forEach(el => el.classList.add('disabled'));
 
-            // Show explanation
+            // Show explanation with Usagi's joyful vibe
             feedbackBox.className = 'feedback-box success active';
-            feedbackTitle.innerHTML = '🎉 Jawaban Tepat! Analisis Klinis Valid!';
-            feedbackText.innerHTML = `<strong>Pembahasan Ilmiah:</strong> ${q.explanation}`;
+            feedbackTitle.innerHTML = '🎉 YAHA! Jawaban Tepat!';
+            feedbackText.innerHTML = `<strong>Pembahasan Biologi SMA:</strong> ${q.explanation}`;
 
             // Add Rewards
             this.addRewards(150, 1);
@@ -475,19 +632,26 @@ class BiologyGame {
             // Progress patient recovery
             this.applySuccessfulTool(this.activePatientId, this.currentTool);
 
+            // If this was prescription/treatment tool, hint the player to fetch medicine from pharmacy
+            if (this.currentTool === 'treatment') {
+                const patient = getPatientById(this.activePatientId);
+                this.showUsagiSpeech("YAHA! Resep selesai! Ayo ke Ruang Obat!");
+                this.activeMission = `Jalan ke Ruang Obat dan ambil: ${patient.targetMedicineName}!`;
+                this.updateMissionHUD();
+            }
+
             btnContinue.classList.add('active');
         } else {
             window.soundSystem.playWrong();
             selectedDiv.classList.add('wrong');
 
             feedbackBox.className = 'feedback-box error active';
-            feedbackTitle.innerHTML = '⚠️ Kurang Tepat, Perawat Champion!';
+            feedbackTitle.innerHTML = '⚠️ Haa?! Usagi Menggeleng!';
             feedbackText.innerHTML = `
                 <strong>Petunjuk Biologis:</strong> ${q.hint}<br>
-                <em>Coba analisis ulang mekanisme seluler atau organ yang terlibat.</em>
+                <em>Coba pikirkan fungsi organ tubuh dan konsep dasarnya ya!</em>
             `;
 
-            // Allow student to retry another option
             setTimeout(() => {
                 selectedDiv.classList.remove('wrong');
             }, 900);
@@ -499,8 +663,8 @@ class BiologyGame {
         if (!progress.completedTools.has(toolType)) {
             progress.completedTools.add(toolType);
 
-            // 5 tools per patient -> 20% each
-            const newRecovery = Math.min(100, progress.completedTools.size * 20);
+            // Each tool gives progress
+            const newRecovery = Math.min(80, progress.completedTools.size * 16);
             progress.recovery = newRecovery;
 
             this.updateRecoveryDisplay(newRecovery);
@@ -508,17 +672,6 @@ class BiologyGame {
             this.updateVitals(patient, newRecovery);
             this.updateToolButtonsState(patientId);
             this.renderRoster();
-
-            // Check if 100% Cured!
-            if (newRecovery >= 100 && !progress.isCured) {
-                progress.isCured = true;
-                this.curedCount++;
-                this.dispPatientsCount.textContent = `${this.curedCount} Sembuh`;
-                this.renderRoster();
-
-                // Wait for question modal close before triggering grand celebration
-                this.triggerCelebrationPending = true;
-            }
         }
     }
 
@@ -530,13 +683,13 @@ class BiologyGame {
 
         // Check Rank Up
         if (this.xp >= 1500) {
-            this.nurseRank = "Master Biology Champion 🌟";
+            this.nurseRank = "Master Dokter Usagi 🌟";
         } else if (this.xp >= 900) {
-            this.nurseRank = "Kepala Ruangan Rawat Inap";
+            this.nurseRank = "Dokter Utama Klinik Chiikawa";
         } else if (this.xp >= 450) {
-            this.nurseRank = "Perawat Primer Spesialis";
+            this.nurseRank = "Dokter Muda Teladan";
         } else if (this.xp >= 150) {
-            this.nurseRank = "Perawat Muda Cekatan";
+            this.nurseRank = "Dokter Usagi Spesialis Biologi SMA";
         }
         this.dispNurseRank.textContent = this.nurseRank;
     }
@@ -548,36 +701,161 @@ class BiologyGame {
         const feedbackText = document.getElementById('modalFeedbackText');
 
         feedbackBox.className = 'feedback-box error active';
-        feedbackTitle.innerHTML = '💡 Petunjuk Medis & Biologi:';
+        feedbackTitle.innerHTML = '💡 Petunjuk Dokter Usagi:';
         feedbackText.textContent = this.currentQuestion.hint;
         window.soundSystem.playToolClick();
     }
 
     closeQuestionModal() {
         this.questionModal.classList.remove('active');
+    }
 
-        // If patient was just fully cured, launch grand celebration!
-        if (this.triggerCelebrationPending) {
-            this.triggerCelebrationPending = false;
-            setTimeout(() => this.triggerCureCelebration(), 300);
+    // =========================================================================
+    // Pharmacy / Ruangan Obat-obatan System
+    // =========================================================================
+    openMedicineCabinet() {
+        const patient = getPatientById(this.activePatientId);
+        const progress = this.patientProgress[this.activePatientId];
+
+        const cabinetModal = this.medicineCabinetModal;
+        const cabinetPatientCase = document.getElementById('cabinetPatientCase');
+        const cabinetMedicineGrid = document.getElementById('cabinetMedicineGrid');
+
+        if (!cabinetModal || !cabinetMedicineGrid) return;
+
+        window.soundSystem.playToolClick();
+        this.showUsagiSpeech("PULULU! Pilih obat yang tepat!");
+
+        // Set Patient Case Summary
+        if (cabinetPatientCase) {
+            cabinetPatientCase.innerHTML = `
+                <div class="cabinet-patient-badge">Pasien: <strong>${patient.name}</strong></div>
+                <div class="cabinet-case-detail">
+                    <strong>Keluhan:</strong> ${patient.complaint}<br>
+                    <strong>Target Biologi:</strong> ${patient.organSystem} (${patient.condition})
+                </div>
+            `;
+        }
+
+        // Render Medicines
+        cabinetMedicineGrid.innerHTML = '';
+        PHARMACY_MEDICINES.forEach(med => {
+            const isTarget = med.id === patient.targetMedicineId;
+            const medCard = document.createElement('div');
+            medCard.className = 'medicine-card-item';
+            medCard.innerHTML = `
+                <div class="med-icon-box" style="background: ${med.color}22; border-color: ${med.color}">
+                    <span class="med-emoji">${med.icon}</span>
+                </div>
+                <div class="med-card-info">
+                    <span class="med-shelf-tag">${med.shelfTag}</span>
+                    <h4 class="med-card-name">${med.name}</h4>
+                    <p class="med-card-target">🎯 ${med.organTarget}</p>
+                    <p class="med-card-desc">${med.description}</p>
+                </div>
+                <button class="btn-select-medicine">Ambil Obat 📦</button>
+            `;
+
+            medCard.onclick = () => this.handleMedicineSelect(med, isTarget);
+            cabinetMedicineGrid.appendChild(medCard);
+        });
+
+        cabinetModal.classList.add('active');
+    }
+
+    handleMedicineSelect(medicine, isCorrect) {
+        const patient = getPatientById(this.activePatientId);
+
+        if (isCorrect) {
+            // Correct medicine selected!
+            this.carryingMedicine = medicine;
+            window.soundSystem.playItemPickup();
+            this.showUsagiSpeech("YAHA! Obat berhasil diambil!");
+
+            // Update inventory HUD
+            if (this.usagiInventoryText) {
+                this.usagiInventoryText.innerHTML = `Membawa: <strong>${medicine.icon} ${medicine.name}</strong>`;
+            }
+            if (this.usagiCarriedItem) {
+                this.usagiCarriedItem.innerHTML = medicine.icon;
+                this.usagiCarriedItem.style.display = 'block';
+            }
+
+            // Update Mission HUD
+            this.activeMission = `Bawa ${medicine.name} kembali ke Ruang Pemeriksaan untuk ${patient.name}!`;
+            this.updateMissionHUD();
+
+            // Close modal
+            if (this.medicineCabinetModal) {
+                this.medicineCabinetModal.classList.remove('active');
+            }
+
+            // Walk back hint
+            setTimeout(() => {
+                this.showUsagiSpeech("Ayo berikan obatnya ke pasien!");
+            }, 600);
+        } else {
+            // Wrong medicine selected
+            window.soundSystem.playWrong();
+            this.showUsagiSpeech("HAA?! Bukan obat ini!");
+            alert(`Haa?! Usagi menggeleng: ${medicine.name} bukan obat yang tepat untuk ${patient.name} (${patient.condition})!\n\nPetunjuk: Periksa kembali organ sasaran dan keluhan biologinya.`);
         }
     }
 
-    triggerCureCelebration() {
+    administerMedicine() {
         const patient = getPatientById(this.activePatientId);
+        const progress = this.patientProgress[this.activePatientId];
+
+        if (!this.carryingMedicine || this.carryingMedicine.id !== patient.targetMedicineId) {
+            alert(`Usagi belum membawa obat yang sesuai! Jalan ke Ruangan Obat di sebelah kanan untuk mengambil ${patient.targetMedicineName}.`);
+            return;
+        }
+
+        // Successfully administer medicine!
+        progress.isCured = true;
+        progress.recovery = 100;
+        this.curedCount++;
+
+        this.updateRecoveryDisplay(100);
+        this.updateVitals(patient, 100);
+        this.dispPatientsCount.textContent = `${this.curedCount} Sembuh`;
+
+        // Update Bed displays to cured
+        this.patientAvatarBox.innerHTML = patient.avatarSvg.cured;
+        if (this.stagePatientAvatar) {
+            this.stagePatientAvatar.innerHTML = patient.avatarSvg.cured;
+        }
+        if (this.stageBedComplaint) {
+            this.stageBedComplaint.textContent = `"${patient.curedDialog}"`;
+        }
+
+        // Clear carried medicine
+        this.carryingMedicine = null;
+        if (this.usagiInventoryText) {
+            this.usagiInventoryText.innerHTML = `Tas Kosong (Siap bertugas)`;
+        }
+        if (this.usagiCarriedItem) {
+            this.usagiCarriedItem.style.display = 'none';
+        }
+
+        // Add victory rewards
+        this.addRewards(200, 2);
+        this.renderRoster();
+
+        // Celebration
         window.soundSystem.playPatientCured();
         this.startConfetti();
+        this.showUsagiSpeech("YAHA! PULULU! PASIEN SEMBUH!");
 
-        // Update Avatar to Cured
-        this.patientAvatarBox.innerHTML = patient.avatarSvg.cured;
-
-        // Fill Certificate details
+        // Open Celebration Modal
         document.getElementById('certPatientName').textContent = patient.name;
         document.getElementById('certCondition').textContent = patient.condition;
         document.getElementById('certOrgan').textContent = patient.organSystem;
         document.getElementById('certNurseSignature').textContent = `${this.nurseName} (${this.nurseRank})`;
 
-        this.celebrationModal.classList.add('active');
+        setTimeout(() => {
+            this.celebrationModal.classList.add('active');
+        }, 500);
     }
 
     handleNextPatient() {
@@ -588,9 +866,220 @@ class BiologyGame {
         const nextPatient = PATIENTS_DATA.find(p => !this.patientProgress[p.id].isCured);
         if (nextPatient) {
             this.loadPatient(nextPatient.id);
+            this.walkTo(250, 240);
+            this.showUsagiSpeech(`Pasien berikutnya: ${nextPatient.name}! YAHA!`);
         } else {
-            alert(`🎉 LUAR BIASA! Seluruh pasien di Rumah Sakit Bio Medika telah berhasil kamu sembuhkan, ${this.nurseName}! Kamu adalah Biology Champion sejati!`);
+            alert(`🎉 LUAR BIASA! Seluruh pasien Chiikawa di Klinik Dokter Usagi telah berhasil kamu sembuhkan, ${this.nurseName}! Kamu adalah Master Biologi SMA sejati!`);
         }
+    }
+
+    updateMissionHUD() {
+        const patient = getPatientById(this.activePatientId);
+        const progress = this.patientProgress[this.activePatientId];
+
+        if (progress.isCured) {
+            this.activeMission = `Pasien ${patient.name} sudah sembuh total! Silakan pilih pasien lain di daftar!`;
+        } else if (this.carryingMedicine) {
+            this.activeMission = `Bawa ${this.carryingMedicine.name} ke ranjang periksa dan berikan ke ${patient.name}!`;
+        } else {
+            this.activeMission = `Periksa ${patient.name} di ranjang periksa, lalu ambil ${patient.targetMedicineName} di Ruang Obat!`;
+        }
+
+        if (this.missionBannerText) {
+            this.missionBannerText.textContent = this.activeMission;
+        }
+    }
+
+    // =========================================================================
+    // Dokter Usagi Walking Controller & Physics
+    // =========================================================================
+    initUsagiController() {
+        window.addEventListener('keydown', (e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(e.code)) {
+                this.keysDown[e.code] = true;
+                this.targetX = null; // override click-to-walk
+                this.targetY = null;
+            }
+            if (e.code === 'Space' || e.code === 'Enter') {
+                if (!this.questionModal.classList.contains('active') && !this.celebrationModal.classList.contains('active')) {
+                    e.preventDefault();
+                    this.handleActionTrigger();
+                }
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(e.code)) {
+                this.keysDown[e.code] = false;
+            }
+        });
+
+        this.animFrameId = requestAnimationFrame((t) => this.gameLoop(t));
+    }
+
+    walkTo(x, y, onArrivalCallback = null) {
+        this.targetX = Math.max(50, Math.min(this.worldWidth - 50, x));
+        this.targetY = Math.max(120, Math.min(this.worldHeight - 50, y));
+        this.onArrivalCallback = onArrivalCallback;
+    }
+
+    gameLoop(now) {
+        const delta = Math.min(0.1, (now - this.lastFrameTime) / 1000);
+        this.lastFrameTime = now;
+
+        this.updateUsagiPhysics(delta);
+        this.checkProximityTriggers();
+
+        this.animFrameId = requestAnimationFrame((t) => this.gameLoop(t));
+    }
+
+    updateUsagiPhysics(delta) {
+        let dx = 0;
+        let dy = 0;
+
+        // Check Keyboard controls
+        if (this.keysDown['ArrowLeft'] || this.keysDown['KeyA']) dx -= 1;
+        if (this.keysDown['ArrowRight'] || this.keysDown['KeyD']) dx += 1;
+        if (this.keysDown['ArrowUp'] || this.keysDown['KeyW']) dy -= 1;
+        if (this.keysDown['ArrowDown'] || this.keysDown['KeyS']) dy += 1;
+
+        // Check Click-to-walk target
+        if (this.targetX !== null && this.targetY !== null) {
+            const diffX = this.targetX - this.usagiX;
+            const diffY = this.targetY - this.usagiY;
+            const dist = Math.hypot(diffX, diffY);
+
+            if (dist > 8) {
+                dx = diffX / dist;
+                dy = diffY / dist;
+            } else {
+                this.targetX = null;
+                this.targetY = null;
+                if (this.onArrivalCallback) {
+                    const cb = this.onArrivalCallback;
+                    this.onArrivalCallback = null;
+                    cb();
+                }
+            }
+        }
+
+        // Apply Movement
+        if (dx !== 0 || dy !== 0) {
+            this.isWalking = true;
+            this.usagiX += dx * this.usagiSpeed * delta;
+            this.usagiY += dy * this.usagiSpeed * delta;
+
+            if (dx > 0) this.facingRight = true;
+            if (dx < 0) this.facingRight = false;
+
+            window.soundSystem.playFootstep();
+        } else {
+            this.isWalking = false;
+        }
+
+        // Clamp to Room World Boundaries
+        this.usagiX = Math.max(40, Math.min(this.worldWidth - 50, this.usagiX));
+        this.usagiY = Math.max(120, Math.min(this.worldHeight - 50, this.usagiY));
+
+        this.updateUsagiPositionVisual();
+    }
+
+    updateUsagiPositionVisual() {
+        if (!this.usagiCharacter) return;
+
+        this.usagiCharacter.style.left = `${this.usagiX}px`;
+        this.usagiCharacter.style.top = `${this.usagiY}px`;
+
+        if (this.facingRight) {
+            this.usagiCharacter.classList.remove('facing-left');
+        } else {
+            this.usagiCharacter.classList.add('facing-left');
+        }
+
+        if (this.isWalking) {
+            this.usagiCharacter.classList.add('walking');
+        } else {
+            this.usagiCharacter.classList.remove('walking');
+        }
+
+        // Auto-scroll viewport if stage overflows
+        if (this.hospitalStage) {
+            const scrollTarget = this.usagiX - this.hospitalStage.clientWidth / 2;
+            this.hospitalStage.scrollLeft = Math.max(0, scrollTarget);
+        }
+    }
+
+    checkProximityTriggers() {
+        if (!this.stageInteractPrompt) return;
+
+        const patient = getPatientById(this.activePatientId);
+        const progress = this.patientProgress[this.activePatientId];
+
+        const distToBed = Math.hypot(this.usagiX - this.bedPos.x, this.usagiY - this.bedPos.y);
+        const distToShelves = Math.hypot(this.usagiX - this.shelvesPos.x, this.usagiY - this.shelvesPos.y);
+
+        if (distToBed < 120) {
+            this.activeInteractTarget = 'bed';
+            this.stageInteractPrompt.style.display = 'flex';
+            this.stageInteractPrompt.style.left = `${this.bedPos.x}px`;
+            this.stageInteractPrompt.style.top = `${this.bedPos.y - 80}px`;
+
+            if (this.carryingMedicine && this.carryingMedicine.id === patient.targetMedicineId) {
+                this.stageInteractPrompt.innerHTML = `<span>💊</span> <strong>SPASI / KLIK:</strong> Berikan ${this.carryingMedicine.name} ke ${patient.name}!`;
+                this.stageInteractPrompt.className = 'stage-interact-prompt action-cure pulse';
+            } else if (progress.isCured) {
+                this.stageInteractPrompt.innerHTML = `<span>💖</span> <strong>${patient.name} sudah sembuh total!</strong>`;
+                this.stageInteractPrompt.className = 'stage-interact-prompt action-done';
+            } else {
+                this.stageInteractPrompt.innerHTML = `<span>🩺</span> <strong>SPASI / KLIK:</strong> Periksa Pasien ${patient.name}!`;
+                this.stageInteractPrompt.className = 'stage-interact-prompt action-exam pulse';
+            }
+        } else if (distToShelves < 150) {
+            this.activeInteractTarget = 'pharmacy';
+            this.stageInteractPrompt.style.display = 'flex';
+            this.stageInteractPrompt.style.left = `${this.shelvesPos.x}px`;
+            this.stageInteractPrompt.style.top = `${this.shelvesPos.y - 70}px`;
+            this.stageInteractPrompt.innerHTML = `<span>📦</span> <strong>SPASI / KLIK:</strong> Buka Lemari Obat Farmasi!`;
+            this.stageInteractPrompt.className = 'stage-interact-prompt action-pharmacy pulse';
+        } else {
+            this.activeInteractTarget = null;
+            this.stageInteractPrompt.style.display = 'none';
+        }
+    }
+
+    handleActionTrigger() {
+        if (this.activeInteractTarget === 'bed') {
+            const patient = getPatientById(this.activePatientId);
+            const progress = this.patientProgress[this.activePatientId];
+
+            if (this.carryingMedicine && this.carryingMedicine.id === patient.targetMedicineId) {
+                this.administerMedicine();
+            } else if (progress.isCured) {
+                this.showUsagiSpeech("Pasien sudah sehat bugar! YAHA!");
+            } else {
+                // Open first uncompleted tool or default stethoscope question
+                const tools = ['stethoscope', 'thermometer', 'bloodLab', 'microscope', 'treatment'];
+                const nextTool = tools.find(t => !progress.completedTools.has(t)) || 'stethoscope';
+                this.handleToolClick(nextTool);
+            }
+        } else if (this.activeInteractTarget === 'pharmacy') {
+            this.openMedicineCabinet();
+        } else {
+            // General Usagi chirp
+            window.soundSystem.playUsagiUra();
+            this.showUsagiSpeech("YAHA! URA!");
+        }
+    }
+
+    showUsagiSpeech(text) {
+        if (!this.usagiSpeechBubble) return;
+        this.usagiSpeechBubble.textContent = text;
+        this.usagiSpeechBubble.classList.add('active');
+
+        if (this.speechTimeout) clearTimeout(this.speechTimeout);
+        this.speechTimeout = setTimeout(() => {
+            if (this.usagiSpeechBubble) this.usagiSpeechBubble.classList.remove('active');
+        }, 2200);
     }
 
     openEncyclopedia() {
@@ -629,51 +1118,42 @@ class BiologyGame {
         const height = this.ekgCanvas.height;
         const midY = height / 2;
 
-        // Clear with fade trail
         ctx.fillStyle = 'rgba(4, 13, 26, 0.15)';
         ctx.fillRect(0, 0, width, height);
 
-        // Speed depends on heart rate (BPM)
         const speed = Math.max(2, this.currentHeartRate / 35);
         this.ekgX = (this.ekgX + speed) % width;
 
-        // Generate ECG waveform pattern (P wave, QRS complex, T wave)
         const cycle = this.ekgX % 120;
         let y = midY;
 
         if (cycle > 20 && cycle < 35) {
-            // P wave (atrial depolarization)
             y = midY - Math.sin((cycle - 20) / 15 * Math.PI) * 7;
         } else if (cycle >= 45 && cycle < 48) {
-            // Q dip
             y = midY + 5;
         } else if (cycle >= 48 && cycle < 53) {
-            // R spike (ventricular depolarization)
-            y = midY - 26;
-            if (cycle === 50 && Math.random() > 0.4) {
-                window.soundSystem.playEkgBeep(this.currentHeartRate > 100);
-            }
+            y = midY - 28; // R peak
         } else if (cycle >= 53 && cycle < 57) {
-            // S dip
-            y = midY + 12;
+            y = midY + 12; // S dip
         } else if (cycle > 70 && cycle < 95) {
-            // T wave (ventricular repolarization)
-            y = midY - Math.sin((cycle - 70) / 25 * Math.PI) * 9;
+            y = midY - Math.sin((cycle - 70) / 25 * Math.PI) * 10;
         }
 
-        // Draw glowing point
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#00C9A7';
+        ctx.shadowColor = '#00C9A7';
+        ctx.shadowBlur = 8;
+
         ctx.beginPath();
         ctx.arc(this.ekgX, y, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = '#00C9A7';
-        ctx.shadowColor = '#00C9A7';
-        ctx.shadowBlur = 10;
+        ctx.fillStyle = '#48E5C2';
         ctx.fill();
 
         this.ekgAnimId = requestAnimationFrame(() => this.animateEKG());
     }
 
     // =========================================================================
-    // Confetti Particle System
+    // Confetti Celebrator
     // =========================================================================
     initConfetti() {
         this.confettiCanvas = document.getElementById('confettiCanvas');
@@ -690,47 +1170,52 @@ class BiologyGame {
     }
 
     startConfetti() {
+        if (!this.confettiCanvas || !this.confettiCtx) return;
         this.resizeConfetti();
-        this.confettiParticles = [];
-        const colors = ['#00C9A7', '#00B4D8', '#FACC15', '#F43F5E', '#8B5CF6', '#10B981'];
+        this.confettiCanvas.style.display = 'block';
 
-        for (let i = 0; i < 120; i++) {
+        const colors = ['#00C9A7', '#00B4D8', '#FACC15', '#F43F5E', '#8B5CF6', '#10B981'];
+        this.confettiParticles = [];
+
+        for (let i = 0; i < 90; i++) {
             this.confettiParticles.push({
                 x: Math.random() * this.confettiCanvas.width,
-                y: Math.random() * -this.confettiCanvas.height * 0.5,
-                w: Math.random() * 10 + 6,
-                h: Math.random() * 8 + 4,
+                y: -20 - Math.random() * 200,
+                size: 6 + Math.random() * 8,
                 color: colors[Math.floor(Math.random() * colors.length)],
-                vx: (Math.random() - 0.5) * 4,
-                vy: Math.random() * 4 + 3,
-                angle: Math.random() * 360,
-                vAngle: (Math.random() - 0.5) * 8
+                speedY: 2 + Math.random() * 4,
+                speedX: (Math.random() - 0.5) * 3,
+                rotation: Math.random() * 360,
+                rotSpeed: (Math.random() - 0.5) * 8
             });
         }
+
         this.renderConfetti();
     }
 
     renderConfetti() {
-        if (!this.confettiCtx || this.confettiParticles.length === 0) return;
+        if (!this.confettiCtx || !this.confettiCanvas) return;
+        const ctx = this.confettiCtx;
+        ctx.clearRect(0, 0, this.confettiCanvas.width, this.confettiCanvas.height);
 
-        this.confettiCtx.clearRect(0, 0, this.confettiCanvas.width, this.confettiCanvas.height);
-
+        let activeCount = 0;
         this.confettiParticles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-            p.angle += p.vAngle;
+            p.y += p.speedY;
+            p.x += p.speedX;
+            p.rotation += p.rotSpeed;
 
-            this.confettiCtx.save();
-            this.confettiCtx.translate(p.x, p.y);
-            this.confettiCtx.rotate((p.angle * Math.PI) / 180);
-            this.confettiCtx.fillStyle = p.color;
-            this.confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-            this.confettiCtx.restore();
+            if (p.y < this.confettiCanvas.height + 40) {
+                activeCount++;
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation * Math.PI / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                ctx.restore();
+            }
         });
 
-        // Keep looping while particles on screen
-        const alive = this.confettiParticles.some(p => p.y < this.confettiCanvas.height);
-        if (alive) {
+        if (activeCount > 0) {
             this.confettiAnimId = requestAnimationFrame(() => this.renderConfetti());
         } else {
             this.stopConfetti();
@@ -738,16 +1223,18 @@ class BiologyGame {
     }
 
     stopConfetti() {
-        if (this.confettiAnimId) cancelAnimationFrame(this.confettiAnimId);
-        if (this.confettiCtx && this.confettiCanvas) {
-            this.confettiCtx.clearRect(0, 0, this.confettiCanvas.width, this.confettiCanvas.height);
+        if (this.confettiAnimId) {
+            cancelAnimationFrame(this.confettiAnimId);
+            this.confettiAnimId = null;
         }
-        this.confettiParticles = [];
+        if (this.confettiCanvas) {
+            this.confettiCanvas.style.display = 'none';
+        }
     }
 }
 
-// Instantiate and launch on DOM loaded
+// Instantiate and start on DOM load
 window.addEventListener('DOMContentLoaded', () => {
-    window.game = new BiologyGame();
-    window.game.init();
+    window.biologyGame = new BiologyGame();
+    window.biologyGame.init();
 });
