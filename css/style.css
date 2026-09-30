@@ -304,105 +304,156 @@ body::after {
     position: relative;
 }
 
-.welcome-card {
-    background: var(--glass-bg);
-    border: 2px solid var(--glass-border);
-    backdrop-filter: blur(16px);
-    border-radius: var(--radius-xl);
-    padding: 40px 48px;
-    max-width: 640px;
-    width: 100%;
-    box-shadow: var(--glass-shadow);
+/* ==================== SCREEN 1: Welcome & Setup (Ultra-Cute Chiikawa Aesthetic) ==================== */
+.welcome-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 120px);
+    text-align: center;
     position: relative;
-    animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    padding: 20px;
+}
+
+.welcome-card {
+    background: rgba(255, 255, 255, 0.96);
+    border: 3px solid #6EE7B7;
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 36px 42px;
+    max-width: 660px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 201, 167, 0.22), 0 0 0 6px rgba(110, 231, 183, 0.15);
+    position: relative;
+    animation: popUpScale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.welcome-header-badges {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
 }
 
 .hospital-badge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: #E0F7FA;
-    color: var(--color-cyan-deep);
-    border: 1.5px solid var(--color-cyan-vibrant);
-    padding: 6px 16px;
+    gap: 6px;
+    background: #ECFDF5;
+    color: #065F46;
+    border: 1.5px solid #6EE7B7;
+    padding: 5px 14px;
     border-radius: var(--radius-full);
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 800;
-    letter-spacing: 0.5px;
-    margin-bottom: 16px;
+    letter-spacing: 0.3px;
+}
+
+.cloud-badge-welcome {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.76rem;
+    background: #EFF6FF;
+    border: 1.5px solid #93C5FD;
+    color: #1D4ED8;
+    padding: 5px 14px;
+    border-radius: var(--radius-full);
+    font-weight: 800;
 }
 
 .welcome-title {
     font-family: var(--font-heading);
-    font-size: 2.2rem;
+    font-size: 1.95rem;
     font-weight: 900;
     color: var(--color-navy-dark);
-    margin-bottom: 8px;
-    line-height: 1.2;
+    margin: 8px 0 10px;
+    line-height: 1.25;
 }
 
 .welcome-title span {
-    color: var(--color-tosca-primary);
+    background: linear-gradient(135deg, #00C9A7, #00B4D8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.welcome-subtitle {
-    font-size: 0.95rem;
-    color: var(--color-slate-light);
-    margin-bottom: 28px;
+.welcome-intro-box {
+    background: linear-gradient(135deg, #F0FDFA, #FEF3C7);
+    border: 1.5px solid #CCFBF1;
+    border-radius: 16px;
+    padding: 12px 18px;
+    margin-bottom: 22px;
+    font-size: 0.88rem;
+    color: #334155;
     line-height: 1.5;
+}
+
+.welcome-intro-box strong {
+    color: #0F766E;
 }
 
 /* Nurse Character Selection */
 .character-select-title {
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 800;
     text-transform: uppercase;
-    color: var(--color-cyan-deep);
+    color: #0284C7;
     margin-bottom: 12px;
+    letter-spacing: 0.6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
 .avatar-options {
     display: flex;
     justify-content: center;
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 14px;
+    margin-bottom: 20px;
 }
 
 .avatar-choice {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
+    width: 66px;
+    height: 66px;
+    border-radius: 20px;
     background: white;
-    border: 3px solid #CBD5E1;
+    border: 2.5px solid #E2E8F0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 32px;
     cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
     transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .avatar-choice:hover {
-    transform: scale(1.1);
-    border-color: var(--color-cyan-vibrant);
+    transform: translateY(-4px) scale(1.08);
+    border-color: #00C9A7;
+    box-shadow: 0 8px 18px rgba(0, 201, 167, 0.25);
 }
 
 .avatar-choice.active {
-    border-color: var(--color-tosca-primary);
-    background: #E6FFFA;
-    transform: scale(1.15);
-    box-shadow: 0 0 0 5px rgba(0, 201, 167, 0.25);
+    border-color: #00C9A7;
+    background: linear-gradient(135deg, #ECFDF5, #CCFBF1);
+    transform: translateY(-4px) scale(1.12);
+    box-shadow: 0 0 0 4px rgba(0, 201, 167, 0.3), 0 8px 20px rgba(0, 201, 167, 0.3);
 }
 
 .nurse-name-input-group {
-    margin-bottom: 24px;
+    margin-bottom: 22px;
     text-align: left;
 }
 
 .nurse-name-input-group label {
     display: block;
-    font-size: 0.82rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    font-weight: 800;
     color: var(--color-navy-dark);
     margin-bottom: 6px;
 }
@@ -423,8 +474,8 @@ body::after {
     width: 100%;
     padding: 12px 16px 12px 44px;
     font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 700;
     border: 2px solid #CBD5E1;
     border-radius: var(--radius-md);
     background: white;
@@ -438,47 +489,66 @@ body::after {
     box-shadow: 0 0 0 4px rgba(0, 201, 167, 0.2);
 }
 
-/* Difficulty & Subject tags */
-.curriculum-pills {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+/* Neat 3x2 Grid for Curriculum Topics */
+.curriculum-section-label {
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.curriculum-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .curriculum-pill {
-    background: #F1F5F9;
-    border: 1px solid #E2E8F0;
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.76rem;
+    background: #F8FAFC;
+    border: 1.5px solid #E2E8F0;
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-size: 0.74rem;
     font-weight: 700;
-    color: var(--color-slate-text);
+    color: #334155;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+}
+
+.curriculum-pill:hover {
+    background: #F0FDFA;
+    border-color: #5EEAD4;
+    transform: translateY(-1px);
 }
 
 .btn-start-game {
     width: 100%;
     padding: 16px 28px;
-    background: linear-gradient(135deg, var(--color-tosca-primary) 0%, var(--color-cyan-vibrant) 100%);
+    background: linear-gradient(135deg, #00C9A7 0%, #00B4D8 100%);
     border: none;
-    border-radius: var(--radius-lg);
+    border-radius: 16px;
     font-family: var(--font-heading);
     font-size: 1.15rem;
     font-weight: 900;
     color: white;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0, 201, 167, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 201, 167, 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btn-start-game:hover {
-    transform: translateY(-3px) scale(1.01);
-    box-shadow: 0 12px 30px rgba(0, 201, 167, 0.55);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 14px 32px rgba(0, 201, 167, 0.55);
 }
 
 .btn-start-game:active {
@@ -487,10 +557,17 @@ body::after {
 
 /* ==================== Screen 2: Ward & Patient Simulation (POV Perawat) ==================== */
 .ward-screen {
-    display: grid;
-    grid-template-columns: 310px 1fr 340px;
-    gap: 20px;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 14px;
+}
+
+.ward-center-stage {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 /* Left Column: Patient Ward Roster */
@@ -1954,20 +2031,23 @@ body::after {
 }
 
 /* Walkable Hospital Stage Viewport */
+/* ==================== 3D WALKABLE HOSPITAL STAGE & ROOMS ==================== */
 .hospital-stage-viewport {
     width: 100%;
-    height: 420px;
-    background: #E2E8F0;
-    border-radius: var(--radius-xl);
-    border: 3px solid rgba(0, 201, 167, 0.4);
-    box-shadow: 0 16px 40px -8px rgba(0, 180, 216, 0.2), inset 0 2px 10px rgba(0, 0, 0, 0.08);
+    height: 520px;
+    background: #0B1329;
+    border-radius: 28px;
+    border: 3.5px solid #00C9A7;
+    box-shadow: 0 25px 60px rgba(0, 201, 167, 0.25), inset 0 2px 25px rgba(0, 0, 0, 0.5);
     position: relative;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
     user-select: none;
     -webkit-user-select: none;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+    perspective: 1200px;
+    perspective-origin: 50% 28%;
 }
 
 /* Custom Stage Scrollbar */
@@ -1975,7 +2055,7 @@ body::after {
     height: 8px;
 }
 .hospital-stage-viewport::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.15);
     border-radius: 4px;
 }
 .hospital-stage-viewport::-webkit-scrollbar-thumb {
@@ -1983,57 +2063,172 @@ body::after {
     border-radius: 4px;
 }
 
-/* Full Hospital 2-Room World Layer (1080px wide) */
+/* Full Hospital 2-Room 3D World Container (1200px wide, 520px high) */
 .hospital-world {
-    width: 1080px;
-    height: 420px;
+    width: 1200px;
+    height: 520px;
     position: relative;
     display: flex;
+    transform-style: preserve-3d;
     cursor: crosshair;
 }
 
-/* ==================== ROOM 1: Ruangan Pemeriksaan (Left: 0 to 500px) ==================== */
+/* ==================== ROOM 1: Ruangan Pemeriksaan (Left: 0 to 530px) ==================== */
 .stage-room-exam {
-    width: 500px;
+    width: 530px;
     height: 100%;
     position: relative;
     background: 
-        repeating-linear-gradient(0deg, rgba(0, 201, 167, 0.04) 0px, rgba(0, 201, 167, 0.04) 20px, transparent 20px, transparent 40px),
-        repeating-linear-gradient(90deg, rgba(0, 201, 167, 0.04) 0px, rgba(0, 201, 167, 0.04) 20px, transparent 20px, transparent 40px),
-        linear-gradient(180deg, #F0FDFA 0%, #CCFBF1 65%, #99F6E4 100%);
-    border-right: 3px dashed #0D9488;
+        repeating-linear-gradient(0deg, rgba(0, 201, 167, 0.08) 0px, rgba(0, 201, 167, 0.08) 32px, transparent 32px, transparent 64px),
+        repeating-linear-gradient(90deg, rgba(0, 201, 167, 0.08) 0px, rgba(0, 201, 167, 0.08) 32px, transparent 32px, transparent 64px),
+        linear-gradient(180deg, #F0FDFA 0%, #CCFBF1 35%, #99F6E4 85%, #5EEAD4 100%);
+    box-shadow: inset 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 .stage-room-header-badge {
     position: absolute;
     top: 14px;
-    left: 18px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1.5px solid var(--color-tosca-primary);
-    padding: 5px 12px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--color-tosca-primary);
+    padding: 6px 14px;
     border-radius: var(--radius-full);
     font-family: var(--font-heading);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 800;
     color: var(--color-navy-dark);
     display: flex;
     align-items: center;
     gap: 6px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    z-index: 10;
+    box-shadow: 0 4px 14px rgba(0, 201, 167, 0.2);
+    z-index: 15;
 }
 
-/* Biology Poster on the Wall */
+/* PINTU 1: Pintu Masuk Utama Klinik (Left Entrance Door) */
+.stage-entrance-door {
+    position: absolute;
+    left: 12px;
+    top: 60px;
+    width: 76px;
+    height: 220px;
+    background: #0F766E;
+    border: 3px solid #115E59;
+    border-radius: 10px 10px 0 0;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4), 0 10px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8px;
+    z-index: 5;
+    transition: all 0.3s ease;
+}
+
+.entrance-door-sign {
+    background: #134E4A;
+    color: #5EEAD4;
+    font-size: 0.52rem;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #2DD4BF;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.entrance-door-sensor {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #FACC15;
+    box-shadow: 0 0 8px #FACC15;
+    margin-bottom: 6px;
+    transition: all 0.3s ease;
+}
+
+.stage-entrance-door.door-open .entrance-door-sensor {
+    background: #10B981;
+    box-shadow: 0 0 12px #10B981;
+}
+
+.entrance-glass-panel {
+    width: 62px;
+    height: 155px;
+    background: linear-gradient(135deg, rgba(204, 251, 241, 0.5), rgba(153, 246, 228, 0.25));
+    border: 2px solid #5EEAD4;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.stage-entrance-door.door-open .entrance-glass-panel {
+    transform: scaleX(0.2) translateX(-40px);
+    opacity: 0.3;
+}
+
+.cross-emblem {
+    font-size: 1.5rem;
+    color: #00C9A7;
+    filter: drop-shadow(0 0 6px rgba(0, 201, 167, 0.6));
+}
+
+/* Sunny Hospital Window */
+.stage-window {
+    position: absolute;
+    top: 20px;
+    left: 110px;
+    width: 105px;
+    height: 75px;
+    background: linear-gradient(180deg, #38BDF8 0%, #BAE6FD 100%);
+    border: 3.5px solid white;
+    border-radius: 10px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08), inset 0 0 10px rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.window-sun {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FACC15;
+    box-shadow: 0 0 12px #FACC15;
+}
+
+.window-cloud {
+    position: absolute;
+    bottom: 12px;
+    left: 8px;
+    width: 42px;
+    height: 15px;
+    background: white;
+    border-radius: 10px;
+    opacity: 0.9;
+    animation: driftCloud 14s infinite linear;
+}
+
+@keyframes driftCloud {
+    0% { transform: translateX(-50px); }
+    100% { transform: translateX(120px); }
+}
+
+/* Biology Anatomy Poster on Wall */
 .stage-wall-poster {
     position: absolute;
-    top: 12px;
-    left: 230px;
-    width: 140px;
-    height: 75px;
+    top: 20px;
+    left: 240px;
+    width: 150px;
+    height: 80px;
     background: white;
     border: 2px solid #CBD5E1;
-    border-radius: 6px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     padding: 6px;
     text-align: center;
     pointer-events: none;
@@ -2041,68 +2236,69 @@ body::after {
 }
 
 .poster-title {
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     font-weight: 800;
     color: #0284C7;
     text-transform: uppercase;
 }
 
 .poster-icons {
-    font-size: 1rem;
+    font-size: 1.1rem;
     margin-top: 4px;
     display: flex;
     justify-content: space-around;
 }
 
 .poster-sub {
-    font-size: 0.55rem;
+    font-size: 0.58rem;
     color: #64748B;
-    margin-top: 3px;
+    margin-top: 2px;
 }
 
-/* Bed in the Stage */
+/* 3D Hospital Bed Object */
 .stage-bed-object {
     position: absolute;
-    left: 60px;
-    top: 130px;
-    width: 140px;
-    height: 180px;
+    left: 70px;
+    top: 150px;
+    width: 155px;
+    height: 200px;
     cursor: pointer;
     z-index: 5;
-    transition: transform 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.16));
 }
 
 .stage-bed-object:hover {
-    transform: scale(1.03);
+    transform: scale(1.04) translateY(-3px);
 }
 
 .stage-bed-frame {
     width: 100%;
     height: 100%;
     background: #FFF;
-    border: 3px solid #00A887;
-    border-radius: 16px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: 3.5px solid #00A887;
+    border-radius: 18px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 8px;
+    padding-top: 10px;
 }
 
 .stage-pillow {
-    width: 75px;
-    height: 28px;
+    width: 85px;
+    height: 32px;
     background: #E0F2FE;
-    border-radius: 14px;
-    border: 1.5px solid #93C5FD;
-    margin-bottom: 4px;
+    border-radius: 16px;
+    border: 2px solid #93C5FD;
+    margin-bottom: 6px;
 }
 
 .stage-patient-avatar-box {
-    width: 76px;
-    height: 76px;
+    width: 84px;
+    height: 84px;
     z-index: 6;
 }
 
@@ -2111,65 +2307,116 @@ body::after {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 65px;
+    height: 75px;
     background: linear-gradient(180deg, #5EEAD4 0%, #14B8A6 100%);
-    border-top: 3px solid #0D9488;
-    border-radius: 0 0 13px 13px;
+    border-top: 3.5px solid #0D9488;
+    border-radius: 0 0 14px 14px;
 }
 
 .stage-bed-label {
     position: absolute;
-    bottom: -22px;
+    bottom: -24px;
     left: 50%;
     transform: translateX(-50%);
     background: var(--color-navy-dark);
     color: white;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 800;
-    padding: 2px 10px;
-    border-radius: 10px;
+    padding: 3px 12px;
+    border-radius: 12px;
     white-space: nowrap;
-    border: 1px solid var(--color-tosca-primary);
+    border: 1.5px solid var(--color-tosca-primary);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Patient Speech Bubble on Bed */
 .stage-bed-bubble {
     position: absolute;
-    top: -55px;
+    top: -65px;
     left: -10px;
-    width: 170px;
+    width: 180px;
     background: white;
-    border: 2px solid #F472B6;
-    border-radius: 12px;
-    padding: 6px 10px;
-    font-size: 0.72rem;
-    color: var(--color-slate-text);
-    box-shadow: 0 4px 12px rgba(244, 114, 182, 0.25);
+    border: 2.5px solid #F472B6;
+    border-radius: 14px;
+    padding: 8px 12px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #831843;
+    box-shadow: 0 6px 16px rgba(244, 114, 182, 0.3);
     z-index: 12;
-    line-height: 1.25;
+    line-height: 1.3;
 }
 
 .stage-bed-bubble::after {
     content: '';
     position: absolute;
-    bottom: -8px;
+    bottom: -9px;
     left: 45px;
-    border-width: 8px 6px 0;
+    border-width: 9px 7px 0;
     border-style: solid;
     border-color: #F472B6 transparent;
+}
+
+/* 3D IV Drip Stand (Tiang Infus) */
+.stage-iv-stand {
+    position: absolute;
+    left: 235px;
+    top: 130px;
+    width: 24px;
+    height: 170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.iv-pole {
+    width: 4px;
+    height: 145px;
+    background: linear-gradient(90deg, #CBD5E1, #94A3B8);
+    border-radius: 2px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.15);
+}
+
+.iv-bottle {
+    width: 22px;
+    height: 34px;
+    background: rgba(224, 242, 254, 0.88);
+    border: 1.5px solid #38BDF8;
+    border-radius: 6px 6px 10px 10px;
+    position: absolute;
+    top: -12px;
+    box-shadow: 0 4px 10px rgba(56, 189, 248, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iv-bubble {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #0284C7;
+    animation: dripPulse 1.4s infinite ease-in;
+}
+
+@keyframes dripPulse {
+    0% { transform: translateY(-8px); opacity: 1; }
+    100% { transform: translateY(16px); opacity: 0; }
 }
 
 /* Doctor's Desk in Stage */
 .stage-desk-object {
     position: absolute;
-    left: 280px;
-    top: 140px;
-    width: 110px;
-    height: 80px;
+    left: 310px;
+    top: 160px;
+    width: 125px;
+    height: 90px;
     background: #F8FAFC;
-    border: 2px solid #94A3B8;
-    border-radius: 10px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+    border: 2.5px solid #94A3B8;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2179,49 +2426,115 @@ body::after {
 }
 
 .stage-desk-items {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
 }
 
 .stage-desk-label {
-    font-size: 0.65rem;
-    font-weight: 700;
+    font-size: 0.68rem;
+    font-weight: 800;
     color: #475569;
 }
 
-/* ==================== CORRIDOR / DOORWAY ARCHWAY (Middle: 500 to 600px) ==================== */
+/* ==================== PINTU 2: Pintu Otomatis Penghubung (Center Corridor Door) ==================== */
 .stage-corridor {
-    width: 100px;
+    width: 140px;
     height: 100%;
     position: relative;
     background: 
-        repeating-linear-gradient(180deg, #CBD5E1 0px, #CBD5E1 30px, #E2E8F0 30px, #E2E8F0 60px);
+        repeating-linear-gradient(180deg, #94A3B8 0px, #94A3B8 32px, #CBD5E1 32px, #CBD5E1 64px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 3;
+    z-index: 6;
+    border-left: 2px solid #64748B;
+    border-right: 2px solid #64748B;
 }
 
-.stage-corridor-sign {
-    background: var(--color-navy-dark);
-    color: var(--color-yellow-star);
-    border: 2px solid var(--color-yellow-star);
-    padding: 6px 8px;
-    border-radius: 8px;
-    font-family: var(--font-heading);
-    font-size: 0.68rem;
-    font-weight: 900;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+.stage-center-door {
     position: absolute;
-    top: 24px;
-    line-height: 1.3;
+    top: 45px;
+    width: 116px;
+    height: 250px;
+    background: #334155;
+    border: 3.5px solid #1E293B;
+    border-radius: 12px 12px 0 0;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5), 0 12px 28px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8px;
+    overflow: hidden;
+}
+
+.center-door-sign {
+    background: #0F172A;
+    color: #FACC15;
+    font-size: 0.58rem;
+    font-weight: 900;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid #FACC15;
+    margin-bottom: 6px;
+    text-align: center;
+    line-height: 1.25;
+    z-index: 8;
+    white-space: nowrap;
+}
+
+.center-door-sensor {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #EAB308;
+    box-shadow: 0 0 8px #EAB308;
+    margin-bottom: 8px;
+    z-index: 8;
+    transition: all 0.3s ease;
+}
+
+.stage-center-door.door-open .center-door-sensor {
+    background: #22C55E;
+    box-shadow: 0 0 14px #22C55E;
+}
+
+.center-sliding-doors-wrap {
+    width: 102px;
+    height: 185px;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    border: 2px solid #64748B;
+    border-radius: 6px;
+    background: rgba(15, 23, 42, 0.4);
+}
+
+.sliding-door-left, .sliding-door-right {
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(224, 242, 254, 0.9), rgba(186, 230, 253, 0.7));
+    border: 1.5px solid #0284C7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.stage-center-door.door-open .sliding-door-left {
+    transform: translateX(-100%);
+}
+
+.stage-center-door.door-open .sliding-door-right {
+    transform: translateX(100%);
 }
 
 .stage-floor-arrows {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: var(--color-tosca-primary);
     animation: pulseArrow 1.2s infinite ease-in-out;
+    position: absolute;
+    bottom: 40px;
 }
 
 @keyframes pulseArrow {
@@ -2229,51 +2542,92 @@ body::after {
     50% { transform: scale(1.2); opacity: 1; }
 }
 
-/* ==================== ROOM 2: Ruangan Obat-obatan / Pharmacy (Right: 600 to 1080px) ==================== */
+/* ==================== ROOM 2: Ruangan Obat-obatan / Pharmacy (Right: 530px) ==================== */
 .stage-room-pharmacy {
-    width: 480px;
+    width: 530px;
     height: 100%;
     position: relative;
     background: 
-        repeating-linear-gradient(0deg, rgba(217, 119, 6, 0.04) 0px, rgba(217, 119, 6, 0.04) 20px, transparent 20px, transparent 40px),
-        repeating-linear-gradient(90deg, rgba(217, 119, 6, 0.04) 0px, rgba(217, 119, 6, 0.04) 20px, transparent 20px, transparent 40px),
-        linear-gradient(180deg, #FEF3C7 0%, #FDE68A 65%, #FCD34D 100%);
-    border-left: 3px dashed #D97706;
+        repeating-linear-gradient(0deg, rgba(217, 119, 6, 0.08) 0px, rgba(217, 119, 6, 0.08) 32px, transparent 32px, transparent 64px),
+        repeating-linear-gradient(90deg, rgba(217, 119, 6, 0.08) 0px, rgba(217, 119, 6, 0.08) 32px, transparent 32px, transparent 64px),
+        linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 35%, #FDE68A 85%, #FCD34D 100%);
+    box-shadow: inset 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 .stage-room-pharmacy .stage-room-header-badge {
     left: auto;
-    right: 18px;
+    right: 20px;
     border-color: #D97706;
     color: #92400E;
 }
 
-/* Pharmacy Medicine Shelves Object */
+/* PINTU 3: Pintu Gudang Resep (Right Wall Door) */
+.stage-pharmacy-door {
+    position: absolute;
+    right: 14px;
+    top: 65px;
+    width: 68px;
+    height: 215px;
+    background: #92400E;
+    border: 3px solid #78350F;
+    border-radius: 8px 8px 0 0;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8px;
+    z-index: 5;
+}
+
+.pharmacy-door-sign {
+    background: #451A03;
+    color: #FEF3C7;
+    font-size: 0.52rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #B45309;
+    text-transform: uppercase;
+}
+
+.door-knob {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #FACC15;
+    border: 1px solid #CA8A04;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 10px;
+    top: 110px;
+}
+
+/* 3D Pharmacy Medicine Shelves Object */
 .stage-shelves-object {
     position: absolute;
-    left: 40px;
-    top: 60px;
-    width: 390px;
-    height: 150px;
+    left: 50px;
+    top: 70px;
+    width: 410px;
+    height: 165px;
     background: #78350F;
-    border: 3px solid #451A03;
-    border-radius: 14px;
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-    padding: 10px;
+    border: 3.5px solid #451A03;
+    border-radius: 16px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+    padding: 12px;
     cursor: pointer;
     z-index: 5;
-    transition: transform 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .stage-shelves-object:hover {
-    transform: scale(1.02);
-    box-shadow: 0 14px 30px rgba(217, 119, 6, 0.35);
+    transform: scale(1.03) translateY(-2px);
+    box-shadow: 0 16px 35px rgba(217, 119, 6, 0.4);
 }
 
 .shelves-header-title {
     font-family: var(--font-heading);
-    font-size: 0.76rem;
-    font-weight: 800;
+    font-size: 0.78rem;
+    font-weight: 900;
     color: #FEF3C7;
     text-align: center;
     margin-bottom: 8px;
@@ -2288,7 +2642,7 @@ body::after {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 6px;
-    height: 80px;
+    height: 85px;
 }
 
 .shelf-tile {
@@ -2312,11 +2666,11 @@ body::after {
 }
 
 .shelf-icon {
-    font-size: 1.3rem;
+    font-size: 1.35rem;
 }
 
 .shelf-name {
-    font-size: 0.55rem;
+    font-size: 0.56rem;
     font-weight: 800;
     color: #78350F;
     margin-top: 2px;
@@ -2326,9 +2680,9 @@ body::after {
 .shelves-click-hint {
     background: #FACC15;
     color: #78350F;
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     font-weight: 900;
-    padding: 3px 12px;
+    padding: 4px 14px;
     border-radius: var(--radius-full);
     margin: 8px auto 0;
     width: fit-content;
@@ -2338,14 +2692,14 @@ body::after {
 /* Pharmacy Dispenser Table */
 .stage-dispenser-desk {
     position: absolute;
-    left: 120px;
-    top: 250px;
-    width: 240px;
-    height: 80px;
+    left: 130px;
+    top: 280px;
+    width: 250px;
+    height: 85px;
     background: #FFFBEB;
-    border: 2px solid #D97706;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    border: 2.5px solid #D97706;
+    border-radius: 14px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -2357,13 +2711,76 @@ body::after {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 0.7rem;
-    font-weight: 700;
+    font-size: 0.72rem;
+    font-weight: 800;
     color: #92400E;
 }
 
 .dispenser-prop span:first-child {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+}
+
+/* Floating Action HUD on Top of the Stage */
+.stage-hud-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 2px solid #E2E8F0;
+    backdrop-filter: blur(14px);
+    border-radius: 20px;
+    padding: 10px 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.stage-hud-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-hud-action {
+    background: white;
+    border: 1.5px solid #CBD5E1;
+    color: var(--color-navy-dark);
+    padding: 8px 14px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-hud-action:hover {
+    transform: translateY(-2px);
+    border-color: #00C9A7;
+    box-shadow: 0 6px 16px rgba(0, 201, 167, 0.25);
+}
+
+.btn-hud-action.roster-btn {
+    border-color: #38BDF8;
+    color: #0369A1;
+    background: #F0F9FF;
+}
+
+.btn-hud-action.trolley-btn {
+    border-color: #34D399;
+    color: #065F46;
+    background: #ECFDF5;
+}
+
+.btn-hud-action.vitals-btn {
+    border-color: #F472B6;
+    color: #9D174D;
+    background: #FDF2F8;
 }
 
 /* ==================== PLAYABLE DOKTER USAGI SPRITE ==================== */
@@ -2742,3 +3159,310 @@ body::after {
         padding: 20px 18px;
     }
 }
+
+/* ==================== FIREBASE CLOUD STATUS & LEADERBOARD UI ==================== */
+.stat-chip.firebase-chip {
+    background: #EFF6FF;
+    border-color: #93C5FD;
+    color: #1E40AF;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.stat-chip.firebase-chip.online {
+    background: #ECFDF5;
+    border-color: #6EE7B7;
+    color: #065F46;
+}
+
+.stat-chip.firebase-chip.syncing {
+    background: #FFFBEB;
+    border-color: #FCD34D;
+    color: #92400E;
+    animation: gentlePulse 1.2s infinite ease-in-out;
+}
+
+.stat-chip.firebase-chip.offline {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #64748B;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.online {
+    background: #10B981;
+    box-shadow: 0 0 8px #10B981;
+}
+
+.status-dot.syncing {
+    background: #F59E0B;
+    box-shadow: 0 0 8px #F59E0B;
+}
+
+.status-dot.offline {
+    background: #94A3B8;
+}
+
+.btn-leaderboard {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
+    transition: all 0.2s ease;
+}
+
+.btn-leaderboard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(217, 119, 6, 0.4);
+}
+
+/* Leaderboard Modal */
+.leaderboard-modal-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 28px 30px;
+    max-width: 620px;
+    width: 100%;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    position: relative;
+    animation: popUpScale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #F1F5F9;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+}
+
+.leaderboard-title-group h3 {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--color-navy-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.leaderboard-title-group p {
+    font-size: 0.8rem;
+    color: var(--color-slate-light);
+    margin: 4px 0 0;
+}
+
+.leaderboard-sync-banner {
+    background: linear-gradient(135deg, #F0FDFA, #E0F2FE);
+    border: 1.5px solid #BAE6FD;
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: #0369A1;
+}
+
+.leaderboard-sync-banner strong {
+    color: #0C4A6E;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    max-height: 380px;
+    padding-right: 4px;
+    margin-bottom: 16px;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid #E2E8F0;
+    background: #FFF;
+    transition: all 0.2s ease;
+}
+
+.leaderboard-item:hover {
+    border-color: var(--color-tosca-primary);
+    transform: translateX(3px);
+}
+
+.leaderboard-item.rank-1 {
+    background: linear-gradient(90deg, #FEF3C7, #FFF);
+    border-color: #F59E0B;
+}
+
+.leaderboard-item.rank-2 {
+    background: linear-gradient(90deg, #F1F5F9, #FFF);
+    border-color: #94A3B8;
+}
+
+.leaderboard-item.rank-3 {
+    background: linear-gradient(90deg, #FFEDD5, #FFF);
+    border-color: #FB923C;
+}
+
+.leaderboard-item.current-user {
+    border-color: var(--color-tosca-primary);
+    box-shadow: 0 0 0 2px rgba(0, 201, 167, 0.25);
+}
+
+.lb-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.lb-rank-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 0.86rem;
+    font-weight: 900;
+    background: #F1F5F9;
+    color: #475569;
+}
+
+.rank-1 .lb-rank-badge {
+    background: #FACC15;
+    color: #78350F;
+}
+
+.rank-2 .lb-rank-badge {
+    background: #CBD5E1;
+    color: #334155;
+}
+
+.rank-3 .lb-rank-badge {
+    background: #FB923C;
+    color: #7C2D12;
+}
+
+.lb-avatar {
+    font-size: 1.5rem;
+}
+
+.lb-doctor-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.lb-doctor-name {
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--color-navy-dark);
+}
+
+.lb-doctor-rank {
+    font-size: 0.7rem;
+    color: var(--color-slate-light);
+}
+
+.lb-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.lb-stat-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.lb-xp-text {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #D97706;
+}
+
+.lb-cured-text {
+    font-size: 0.7rem;
+    color: #059669;
+    font-weight: 700;
+}
+
+.leaderboard-footer-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.btn-sync-cloud {
+    flex: 1;
+    background: linear-gradient(135deg, var(--color-tosca-primary), var(--color-cyan-vibrant));
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.15s ease;
+}
+
+.btn-sync-cloud:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0, 201, 167, 0.35);
+}
+
+.btn-refresh-lb {
+    background: #F1F5F9;
+    color: #475569;
+    border: 1.5px solid #CBD5E1;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-refresh-lb:hover {
+    background: #E2E8F0;
+    color: #1E293B;
+}
+

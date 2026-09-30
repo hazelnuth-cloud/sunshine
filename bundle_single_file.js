@@ -5,6 +5,7 @@ const cssPath = path.join(__dirname, 'css/style.css');
 const audioPath = path.join(__dirname, 'js/audio.js');
 const questionsPath = path.join(__dirname, 'js/questions.js');
 const patientsPath = path.join(__dirname, 'js/patients.js');
+const firebasePath = path.join(__dirname, 'js/firebase.js');
 const gamePath = path.join(__dirname, 'js/game.js');
 const htmlPath = path.join(__dirname, 'index.html');
 
@@ -12,6 +13,7 @@ const css = fs.readFileSync(cssPath, 'utf8');
 const audioJs = fs.readFileSync(audioPath, 'utf8');
 const questionsJs = fs.readFileSync(questionsPath, 'utf8');
 const patientsJs = fs.readFileSync(patientsPath, 'utf8');
+const firebaseJs = fs.readFileSync(firebasePath, 'utf8');
 const gameJs = fs.readFileSync(gamePath, 'utf8');
 let html = fs.readFileSync(htmlPath, 'utf8');
 
@@ -34,6 +36,9 @@ ${questionsJs}
 
 // --- PATIENTS WARD DATA ---
 ${patientsJs}
+
+// --- FIREBASE CLOUD INTEGRATION ---
+${firebaseJs}
 
 // --- MAIN GAME CONTROLLER ---
 ${gameJs}

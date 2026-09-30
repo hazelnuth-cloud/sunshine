@@ -77,6 +77,7 @@ class BiologyGame {
         this.initEKG();
         this.initConfetti();
         this.initUsagiController();
+        this.initFirebase();
         this.renderRoster();
     }
 
@@ -91,6 +92,18 @@ class BiologyGame {
         this.encyclopediaModal = document.getElementById('encyclopediaModal');
         this.microscopeModal = document.getElementById('microscopeModal');
         this.medicineCabinetModal = document.getElementById('medicineCabinetModal');
+        this.leaderboardModal = document.getElementById('leaderboardModal');
+
+        // Firebase Cloud & Leaderboard UI
+        this.firebaseStatusChip = document.getElementById('firebaseStatusChip');
+        this.firebaseStatusDot = document.getElementById('firebaseStatusDot');
+        this.firebaseStatusText = document.getElementById('firebaseStatusText');
+        this.leaderboardList = document.getElementById('leaderboardList');
+        this.btnOpenLeaderboard = document.getElementById('btnOpenLeaderboard');
+        this.btnCloseLeaderboard = document.getElementById('btnCloseLeaderboard');
+        this.btnSyncCloudScore = document.getElementById('btnSyncCloudScore');
+        this.btnRefreshLeaderboard = document.getElementById('btnRefreshLeaderboard');
+        this.lbCloudStatusTag = document.getElementById('lbCloudStatusTag');
 
         // Topbar displays
         this.dispNurseName = document.getElementById('dispNurseName');
@@ -246,6 +259,25 @@ class BiologyGame {
             });
         }
 
+        // Leaderboard modal buttons
+        if (this.btnOpenLeaderboard) {
+            this.btnOpenLeaderboard.addEventListener('click', () => this.openLeaderboard());
+        }
+        if (this.btnCloseLeaderboard) {
+            this.btnCloseLeaderboard.addEventListener('click', () => {
+                if (this.leaderboardModal) this.leaderboardModal.classList.remove('active');
+            });
+        }
+        if (this.btnSyncCloudScore) {
+            this.btnSyncCloudScore.addEventListener('click', () => this.syncScoreToCloud(true));
+        }
+        if (this.btnRefreshLeaderboard) {
+            this.btnRefreshLeaderboard.addEventListener('click', () => this.refreshLeaderboard());
+        }
+        if (this.firebaseStatusChip) {
+            this.firebaseStatusChip.addEventListener('click', () => this.openLeaderboard());
+        }
+
         // Quick Travel buttons
         const btnGoExam = document.getElementById('btnGoExam');
         if (btnGoExam) {
@@ -350,6 +382,9 @@ class BiologyGame {
         this.dispNurseName.textContent = this.nurseName;
         this.dispNurseAvatar.textContent = this.nurseAvatar;
         this.dispNurseRank.textContent = this.nurseRank;
+
+        // Sync initial session to Firebase Cloud
+        this.syncScoreToCloud(false);
 
         window.soundSystem.playCorrect();
         this.showUsagiSpeech("YAHA! Selamat Datang di Klinik Bio!");
@@ -842,6 +877,9 @@ class BiologyGame {
         this.addRewards(200, 2);
         this.renderRoster();
 
+        // Auto-sync cured patient and score to Firebase Cloud
+        this.syncScoreToCloud(false);
+
         // Celebration
         window.soundSystem.playPatientCured();
         this.startConfetti();
@@ -1229,6 +1267,133 @@ class BiologyGame {
         }
         if (this.confettiCanvas) {
             this.confettiCanvas.style.display = 'none';
+        }
+    }
+
+    // =========================================================================
+    // Firebase Cloud & Leaderboard Controllers
+    // =========================================================================
+    initFirebase() {
+        if (!window.firebaseManager) return;
+
+        window.firebaseManager.onStatusChange((status, message) => {
+            this.updateFirebaseStatusHUD(status, message);
+        });
+
+        window.firebaseManager.init().catch(err => {
+            console.warn("Firebase init caught:", err);
+        });
+    }
+
+    updateFirebaseStatusHUD(status, message) {
+        if (!this.firebaseStatusChip || !this.firebaseStatusText || !this.firebaseStatusDot) return;
+
+        this.firebaseStatusChip.className = `stat-chip firebase-chip ${status}`;
+        this.firebaseStatusDot.className = `status-dot ${status}`;
+
+        let label = 'Firebase Aktif';
+        if (status === 'syncing') label = 'Menyimpan...';
+        else if (status === 'offline') label = 'Lokal';
+        else if (status === 'saved') label = 'Tersimpan!';
+        else if (status === 'connecting') label = 'Menghubungkan';
+
+        this.firebaseStatusText.textContent = label;
+        this.firebaseStatusChip.title = `${message} (Klik untuk buka Papan Peringkat)`;
+
+        const lbCloudTag = document.getElementById('lbCloudStatusTag');
+        if (lbCloudTag) {
+            lbCloudTag.textContent = status === 'offline' ? '○ Offline (Lokal)' : '● Terhubung';
+            lbCloudTag.style.color = status === 'offline' ? '#64748B' : '#059669';
+        }
+    }
+
+    async openLeaderboard() {
+        if (!this.leaderboardModal) return;
+        window.soundSystem.playToolClick();
+        this.leaderboardModal.classList.add('active');
+        await this.refreshLeaderboard();
+    }
+
+    async refreshLeaderboard() {
+        if (!this.leaderboardList) return;
+        this.leaderboardList.innerHTML = `
+            <div style="text-align: center; padding: 30px; color: #64748B; font-weight: 700;">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">⏳</div>
+                Mengambil peringkat dari Firebase Cloud (biology-911)...
+            </div>
+        `;
+
+        try {
+            const doctors = await window.firebaseManager.getLeaderboard(15);
+            this.renderLeaderboardList(doctors);
+        } catch (e) {
+            this.leaderboardList.innerHTML = `
+                <div style="text-align: center; padding: 20px; color: #EF4444; font-weight: 700;">
+                    Gagal memuat papan peringkat. Coba lagi nanti.
+                </div>
+            `;
+        }
+    }
+
+    renderLeaderboardList(doctors) {
+        if (!this.leaderboardList) return;
+        if (!doctors || doctors.length === 0) {
+            this.leaderboardList.innerHTML = `
+                <div style="text-align: center; padding: 25px; color: #64748B;">
+                    Belum ada data dokter tersimpan. Jadilah dokter pertama yang menyimpan skor!
+                </div>
+            `;
+            return;
+        }
+
+        this.leaderboardList.innerHTML = '';
+        doctors.forEach((doc, idx) => {
+            const rank = idx + 1;
+            const rankClass = rank === 1 ? 'rank-1' : (rank === 2 ? 'rank-2' : (rank === 3 ? 'rank-3' : ''));
+            const isMe = doc.doctorName && (doc.doctorName.toLowerCase().includes(this.nurseName.toLowerCase()) || doc.doctorName.includes('(Kamu)'));
+
+            const item = document.createElement('div');
+            item.className = `leaderboard-item ${rankClass} ${isMe ? 'current-user' : ''}`;
+            item.innerHTML = `
+                <div class="lb-left">
+                    <div class="lb-rank-badge">${rank === 1 ? '🥇' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : rank))}</div>
+                    <div class="lb-avatar">${doc.doctorAvatar || '🐰'}</div>
+                    <div class="lb-doctor-info">
+                        <div class="lb-doctor-name">${doc.doctorName}</div>
+                        <div class="lb-doctor-rank">${doc.doctorRank || 'Dokter Spesialis Biologi SMA'}</div>
+                    </div>
+                </div>
+                <div class="lb-right">
+                    <div class="lb-stat-badge">
+                        <span class="lb-xp-text">${doc.xp} XP</span>
+                        <span class="lb-cured-text">💖 ${doc.curedCount} Sembuh</span>
+                    </div>
+                </div>
+            `;
+            this.leaderboardList.appendChild(item);
+        });
+    }
+
+    async syncScoreToCloud(manualAlert = false) {
+        if (!window.firebaseManager) return;
+        if (manualAlert) window.soundSystem.playToolClick();
+
+        const res = await window.firebaseManager.saveScore({
+            nurseName: this.nurseName,
+            nurseAvatar: this.nurseAvatar,
+            nurseRank: this.nurseRank,
+            xp: this.xp,
+            stars: this.stars,
+            curedCount: this.curedCount
+        });
+
+        if (manualAlert) {
+            if (res && res.success) {
+                alert(`✨ YAHA! Skor ${this.nurseName} (${this.xp} XP, ${this.curedCount} Pasien Sembuh) berhasil disimpan ke Firebase Cloud (biology-911)!`);
+            } else {
+                alert(`💾 Skor disimpan di memori perangkat lokal. Akan disinkronkan ke Firebase Cloud saat terhubung.`);
+            }
+            await this.refreshLeaderboard();
         }
     }
 }
