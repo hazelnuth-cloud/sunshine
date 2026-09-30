@@ -246,6 +246,21 @@ class SoundSystem {
         });
     }
 
+    // Door Open sound - Gentle chime & door whoosh
+    playDoorOpen() {
+        if (this.isMuted) return;
+        this.playTone(523.25, 'sine', 0.15, 0.08, 0);       // C5
+        this.playTone(783.99, 'triangle', 0.22, 0.07, 0.07); // G5
+        this.playTone(1046.50, 'sine', 0.28, 0.05, 0.14);   // C6
+    }
+
+    // Door Close sound - Soft gentle hospital latch
+    playDoorClose() {
+        if (this.isMuted) return;
+        this.playTone(392.00, 'triangle', 0.1, 0.06, 0);    // G4
+        this.playTone(261.63, 'sine', 0.14, 0.05, 0.05);    // C4
+    }
+
     // Gentle ambient hospital clinic melody loop
     toggleAmbient() {
         if (this.ambientPlaying) {

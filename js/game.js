@@ -41,11 +41,18 @@ class BiologyGame {
         this.animFrameId = null;
         this.lastFrameTime = performance.now();
 
-        // World Bounds (Width: 1080px, Height: 420px)
-        this.worldWidth = 1080;
-        this.worldHeight = 420;
-        this.bedPos = { x: 130, y: 220 };
-        this.shelvesPos = { x: 820, y: 170 };
+        // World Bounds (Fullscreen 1350px 3D Hospital World)
+        this.worldWidth = 1350;
+        this.worldHeight = 520;
+        this.bedPos = { x: 130, y: 240 };
+        this.doorExamPos = { x: 480, y: 220 };
+        this.corridorCenterPos = { x: 675, y: 240 };
+        this.doorPharmacyPos = { x: 840, y: 220 };
+        this.shelvesPos = { x: 1080, y: 170 };
+
+        // 3D Interactive Doors State
+        this.isExamDoorOpen = false;
+        this.isPharmacyDoorOpen = false;
 
         // EKG Canvas State
         this.ekgCanvas = null;
@@ -147,6 +154,17 @@ class BiologyGame {
         this.stagePatientAvatar = document.getElementById('stagePatientAvatar');
         this.stageBedComplaint = document.getElementById('stageBedComplaint');
         this.stagePharmacyShelves = document.getElementById('stagePharmacyShelves');
+
+        // 3D Interactive Doors
+        this.doorExam = document.getElementById('doorExam');
+        this.doorPharmacy = document.getElementById('doorPharmacy');
+
+        // Fullscreen Sliding Drawers & Floating Dock
+        this.patientRosterDrawer = document.getElementById('patientRosterDrawer');
+        this.nurseTrolleyDrawer = document.getElementById('nurseTrolleyDrawer');
+        this.vitalsMonitorDrawer = document.getElementById('vitalsMonitorDrawer');
+        this.dockBpmText = document.getElementById('dockBpmText');
+        this.dockPatientBadge = document.getElementById('dockPatientBadge');
     }
 
     bindEvents() {
@@ -287,11 +305,74 @@ class BiologyGame {
             });
         }
 
+        const btnGoCorridor = document.getElementById('btnGoCorridor');
+        if (btnGoCorridor) {
+            btnGoCorridor.addEventListener('click', () => {
+                this.walkTo(675, 240);
+                this.showUsagiSpeech("YAHA! Menuju Koridor Klinik!");
+            });
+        }
+
         const btnGoPharmacy = document.getElementById('btnGoPharmacy');
         if (btnGoPharmacy) {
             btnGoPharmacy.addEventListener('click', () => {
-                this.walkTo(780, 240);
+                this.walkTo(1050, 240);
                 this.showUsagiSpeech("URA! Menuju Ruang Obat!");
+            });
+        }
+
+        // Fullscreen Floating Dock & Sliding Drawer Toggles
+        const btnToggleRoster = document.getElementById('btnToggleRoster');
+        const btnCloseRoster = document.getElementById('btnCloseRoster');
+        if (btnToggleRoster) {
+            btnToggleRoster.addEventListener('click', () => this.toggleDrawer('roster'));
+        }
+        if (btnCloseRoster) {
+            btnCloseRoster.addEventListener('click', () => this.closeDrawers());
+        }
+
+        const btnToggleTrolley = document.getElementById('btnToggleTrolley');
+        const btnCloseTrolley = document.getElementById('btnCloseTrolley');
+        if (btnToggleTrolley) {
+            btnToggleTrolley.addEventListener('click', () => this.toggleDrawer('trolley'));
+        }
+        if (btnCloseTrolley) {
+            btnCloseTrolley.addEventListener('click', () => this.closeDrawers());
+        }
+
+        const btnToggleVitals = document.getElementById('btnToggleVitals');
+        const btnCloseVitals = document.getElementById('btnCloseVitals');
+        if (btnToggleVitals) {
+            btnToggleVitals.addEventListener('click', () => this.toggleDrawer('vitals'));
+        }
+        if (btnCloseVitals) {
+            btnCloseVitals.addEventListener('click', () => this.closeDrawers());
+        }
+
+        // 3D Door Interactive Clicks
+        if (this.doorExam) {
+            this.doorExam.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.walkTo(this.doorExamPos.x, this.doorExamPos.y, () => {
+                    this.openDoor('exam');
+                    setTimeout(() => {
+                        this.walkTo(620, 240);
+                        this.showUsagiSpeech("YAHA! Melewati Pintu Periksa!");
+                    }, 250);
+                });
+            });
+        }
+
+        if (this.doorPharmacy) {
+            this.doorPharmacy.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.walkTo(this.doorPharmacyPos.x, this.doorPharmacyPos.y, () => {
+                    this.openDoor('pharmacy');
+                    setTimeout(() => {
+                        this.walkTo(960, 240);
+                        this.showUsagiSpeech("YAHA! Melewati Pintu Apotek!");
+                    }, 250);
+                });
             });
         }
 
@@ -389,7 +470,7 @@ class BiologyGame {
         window.soundSystem.playCorrect();
         this.showUsagiSpeech("YAHA! Selamat Datang di Klinik Bio!");
         this.welcomeScreen.style.display = 'none';
-        this.wardScreen.style.display = 'grid';
+        this.wardScreen.style.display = 'flex';
 
         // Load default first patient
         this.loadPatient(this.activePatientId);
@@ -428,6 +509,10 @@ class BiologyGame {
             `;
             rosterContainer.appendChild(item);
         });
+
+        if (this.dockPatientBadge) {
+            this.dockPatientBadge.textContent = `${this.curedCount}/6 Sembuh`;
+        }
     }
 
     loadPatient(patientId) {
@@ -504,6 +589,10 @@ class BiologyGame {
 
         // BP
         this.vitalBP.textContent = recoveryPercent === 100 ? target.bp : init.bp;
+
+        if (this.dockBpmText) {
+            this.dockBpmText.textContent = `${currentHR}`;
+        }
     }
 
     updateToolButtonsState(patientId) {
@@ -1048,6 +1137,29 @@ class BiologyGame {
     }
 
     checkProximityTriggers() {
+        // Proximity detection for 3D Interactive Doors
+        const distToDoorExam = Math.hypot(this.usagiX - this.doorExamPos.x, this.usagiY - this.doorExamPos.y);
+        if (distToDoorExam < 85 && !this.isExamDoorOpen) {
+            this.isExamDoorOpen = true;
+            if (this.doorExam) this.doorExam.classList.add('door-open');
+            window.soundSystem.playDoorOpen();
+        } else if (distToDoorExam > 125 && this.isExamDoorOpen) {
+            this.isExamDoorOpen = false;
+            if (this.doorExam) this.doorExam.classList.remove('door-open');
+            window.soundSystem.playDoorClose();
+        }
+
+        const distToDoorPharmacy = Math.hypot(this.usagiX - this.doorPharmacyPos.x, this.usagiY - this.doorPharmacyPos.y);
+        if (distToDoorPharmacy < 85 && !this.isPharmacyDoorOpen) {
+            this.isPharmacyDoorOpen = true;
+            if (this.doorPharmacy) this.doorPharmacy.classList.add('door-open');
+            window.soundSystem.playDoorOpen();
+        } else if (distToDoorPharmacy > 125 && this.isPharmacyDoorOpen) {
+            this.isPharmacyDoorOpen = false;
+            if (this.doorPharmacy) this.doorPharmacy.classList.remove('door-open');
+            window.soundSystem.playDoorClose();
+        }
+
         if (!this.stageInteractPrompt) return;
 
         const patient = getPatientById(this.activePatientId);
@@ -1095,10 +1207,9 @@ class BiologyGame {
             } else if (progress.isCured) {
                 this.showUsagiSpeech("Pasien sudah sehat bugar! YAHA!");
             } else {
-                // Open first uncompleted tool or default stethoscope question
-                const tools = ['stethoscope', 'thermometer', 'bloodLab', 'microscope', 'treatment'];
-                const nextTool = tools.find(t => !progress.completedTools.has(t)) || 'stethoscope';
-                this.handleToolClick(nextTool);
+                // Auto-open nurse trolley drawer for seamless tool picking
+                this.toggleDrawer('trolley');
+                this.showUsagiSpeech("Pilih tindakan dari Troli Medis!");
             }
         } else if (this.activeInteractTarget === 'pharmacy') {
             this.openMedicineCabinet();
@@ -1106,6 +1217,61 @@ class BiologyGame {
             // General Usagi chirp
             window.soundSystem.playUsagiUra();
             this.showUsagiSpeech("YAHA! URA!");
+        }
+    }
+
+    toggleDrawer(type) {
+        window.soundSystem.playToolClick();
+        const isRosterOpen = this.patientRosterDrawer && this.patientRosterDrawer.classList.contains('active');
+        const isTrolleyOpen = this.nurseTrolleyDrawer && this.nurseTrolleyDrawer.classList.contains('active');
+        const isVitalsOpen = this.vitalsMonitorDrawer && this.vitalsMonitorDrawer.classList.contains('active');
+
+        this.closeDrawers();
+
+        if (type === 'roster' && !isRosterOpen) {
+            if (this.patientRosterDrawer) this.patientRosterDrawer.classList.add('active');
+            const btn = document.getElementById('btnToggleRoster');
+            if (btn) btn.classList.add('active');
+        } else if (type === 'trolley' && !isTrolleyOpen) {
+            if (this.nurseTrolleyDrawer) this.nurseTrolleyDrawer.classList.add('active');
+            const btn = document.getElementById('btnToggleTrolley');
+            if (btn) btn.classList.add('active');
+        } else if (type === 'vitals' && !isVitalsOpen) {
+            if (this.vitalsMonitorDrawer) this.vitalsMonitorDrawer.classList.add('active');
+            const btn = document.getElementById('btnToggleVitals');
+            if (btn) btn.classList.add('active');
+        }
+    }
+
+    closeDrawers() {
+        if (this.patientRosterDrawer) this.patientRosterDrawer.classList.remove('active');
+        if (this.nurseTrolleyDrawer) this.nurseTrolleyDrawer.classList.remove('active');
+        if (this.vitalsMonitorDrawer) this.vitalsMonitorDrawer.classList.remove('active');
+        const buttons = document.querySelectorAll('.dock-action-btn');
+        buttons.forEach(b => b.classList.remove('active'));
+    }
+
+    openDoor(doorType) {
+        if (doorType === 'exam' && this.doorExam) {
+            this.isExamDoorOpen = true;
+            this.doorExam.classList.add('door-open');
+            window.soundSystem.playDoorOpen();
+        } else if (doorType === 'pharmacy' && this.doorPharmacy) {
+            this.isPharmacyDoorOpen = true;
+            this.doorPharmacy.classList.add('door-open');
+            window.soundSystem.playDoorOpen();
+        }
+    }
+
+    closeDoor(doorType) {
+        if (doorType === 'exam' && this.doorExam) {
+            this.isExamDoorOpen = false;
+            this.doorExam.classList.remove('door-open');
+            window.soundSystem.playDoorClose();
+        } else if (doorType === 'pharmacy' && this.doorPharmacy) {
+            this.isPharmacyDoorOpen = false;
+            this.doorPharmacy.classList.remove('door-open');
+            window.soundSystem.playDoorClose();
         }
     }
 

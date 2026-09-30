@@ -323,94 +323,186 @@ body::after {
     position: relative;
 }
 
-.welcome-card {
-    background: var(--glass-bg);
-    border: 2px solid var(--glass-border);
-    backdrop-filter: blur(16px);
-    border-radius: var(--radius-xl);
-    padding: 40px 48px;
-    max-width: 640px;
-    width: 100%;
-    box-shadow: var(--glass-shadow);
+/* ==================== SCREEN 1: Welcome & Setup (Ultra-Cute Chiikawa Aesthetic) ==================== */
+/* ==================== SCREEN 1: Welcome & Setup (Ultra-Cute Chiikawa Aesthetic) ==================== */
+.welcome-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 100px);
+    text-align: center;
     position: relative;
-    animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    padding: 24px 16px;
+    z-index: 2;
+}
+
+.welcome-card {
+    background: rgba(255, 255, 255, 0.96);
+    border: 3px solid #6EE7B7;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 32px;
+    padding: 36px 40px;
+    max-width: 720px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0, 201, 167, 0.22), 0 0 0 8px rgba(110, 231, 183, 0.16);
+    position: relative;
+    animation: popUpScale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.welcome-top-badges {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
 }
 
 .hospital-badge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: #E0F7FA;
-    color: var(--color-cyan-deep);
-    border: 1.5px solid var(--color-cyan-vibrant);
+    gap: 6px;
+    background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+    color: #065F46;
+    border: 1.5px solid #6EE7B7;
     padding: 6px 16px;
     border-radius: var(--radius-full);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 800;
-    letter-spacing: 0.5px;
-    margin-bottom: 16px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+}
+
+.cloud-badge-welcome {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+    border: 1.5px solid #93C5FD;
+    color: #1D4ED8;
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
 }
 
 .welcome-title {
     font-family: var(--font-heading);
-    font-size: 2.2rem;
+    font-size: 2.1rem;
     font-weight: 900;
     color: var(--color-navy-dark);
-    margin-bottom: 8px;
-    line-height: 1.2;
+    margin: 8px 0 10px;
+    line-height: 1.25;
 }
 
 .welcome-title span {
-    color: var(--color-tosca-primary);
+    background: linear-gradient(135deg, #00C9A7, #00B4D8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .welcome-subtitle {
-    font-size: 0.95rem;
-    color: var(--color-slate-light);
-    margin-bottom: 28px;
-    line-height: 1.5;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #475569;
+    max-width: 600px;
+    margin: 0 auto 24px;
+}
+
+.welcome-subtitle strong {
+    color: #0F766E;
 }
 
 /* Nurse Character Selection */
-.character-select-title {
+.character-select-label {
+    font-family: var(--font-heading);
     font-size: 0.85rem;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
-    color: var(--color-cyan-deep);
+    color: #0284C7;
     margin-bottom: 12px;
-}
-
-.avatar-options {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 24px;
-}
-
-.avatar-choice {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: white;
-    border: 3px solid #CBD5E1;
+    letter-spacing: 0.6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
+    gap: 6px;
+}
+
+.avatar-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.avatar-choice {
+    background: white;
+    border: 2.5px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 12px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
     cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    user-select: none;
+}
+
+.avatar-choice .avatar-emoji {
+    font-size: 2.2rem;
+    line-height: 1;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.1));
+    transition: transform 0.2s ease;
+}
+
+.avatar-choice .avatar-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.avatar-choice .avatar-name {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--color-navy-dark);
+}
+
+.avatar-choice .avatar-role {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #64748B;
+    background: #F1F5F9;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
 }
 
 .avatar-choice:hover {
-    transform: scale(1.1);
-    border-color: var(--color-cyan-vibrant);
+    transform: translateY(-4px) scale(1.04);
+    border-color: #00C9A7;
+    box-shadow: 0 8px 20px rgba(0, 201, 167, 0.25);
+}
+
+.avatar-choice:hover .avatar-emoji {
+    transform: scale(1.15) rotate(5deg);
 }
 
 .avatar-choice.active {
-    border-color: var(--color-tosca-primary);
-    background: #E6FFFA;
-    transform: scale(1.15);
-    box-shadow: 0 0 0 5px rgba(0, 201, 167, 0.25);
+    border-color: #00C9A7;
+    background: linear-gradient(135deg, #ECFDF5, #CCFBF1);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 0 0 3.5px rgba(0, 201, 167, 0.35), 0 12px 24px rgba(0, 201, 167, 0.25);
+}
+
+.avatar-choice.active .avatar-role {
+    background: #00C9A7;
+    color: white;
 }
 
 .nurse-name-input-group {
@@ -421,7 +513,7 @@ body::after {
 .nurse-name-input-group label {
     display: block;
     font-size: 0.82rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--color-navy-dark);
     margin-bottom: 6px;
 }
@@ -432,23 +524,18 @@ body::after {
     align-items: center;
 }
 
-.input-with-icon span {
-    position: absolute;
-    left: 14px;
-    font-size: 18px;
-}
-
 .nurse-name-input {
     width: 100%;
-    padding: 12px 16px 12px 44px;
+    padding: 12px 18px;
     font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 700;
     border: 2px solid #CBD5E1;
-    border-radius: var(--radius-md);
+    border-radius: 16px;
     background: white;
     color: var(--color-navy-dark);
     transition: all 0.2s ease;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .nurse-name-input:focus {
@@ -457,105 +544,250 @@ body::after {
     box-shadow: 0 0 0 4px rgba(0, 201, 167, 0.2);
 }
 
-/* Difficulty & Subject tags */
-.curriculum-pills {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 28px;
+/* Neat 3x2 Grid for Curriculum Topics */
+.curriculum-section-label {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 10px;
+    text-align: left;
 }
 
-.curriculum-pill {
-    background: #F1F5F9;
-    border: 1px solid #E2E8F0;
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
+.curriculum-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 26px;
+}
+
+.curriculum-card {
+    background: #F8FAFC;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.curriculum-card:hover {
+    background: #F0FDFA;
+    border-color: #5EEAD4;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 201, 167, 0.15);
+}
+
+.curriculum-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.curriculum-text strong {
+    display: block;
     font-size: 0.76rem;
-    font-weight: 700;
-    color: var(--color-slate-text);
+    font-weight: 800;
+    color: var(--color-navy-dark);
+}
+
+.curriculum-text small {
+    display: block;
+    font-size: 0.68rem;
+    color: #64748B;
+    line-height: 1.25;
 }
 
 .btn-start-game {
     width: 100%;
-    padding: 16px 28px;
-    background: linear-gradient(135deg, var(--color-tosca-primary) 0%, var(--color-cyan-vibrant) 100%);
+    padding: 18px 32px;
+    background: linear-gradient(135deg, #00C9A7 0%, #00B4D8 100%);
     border: none;
-    border-radius: var(--radius-lg);
+    border-radius: 20px;
     font-family: var(--font-heading);
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 900;
     color: white;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0, 201, 167, 0.4);
+    box-shadow: 0 12px 30px rgba(0, 201, 167, 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
     transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    letter-spacing: 0.3px;
 }
 
 .btn-start-game:hover {
-    transform: translateY(-3px) scale(1.01);
-    box-shadow: 0 12px 30px rgba(0, 201, 167, 0.55);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 16px 36px rgba(0, 201, 167, 0.55);
 }
 
 .btn-start-game:active {
     transform: translateY(0);
 }
 
-/* ==================== Screen 2: Ward & Patient Simulation (POV Perawat) ==================== */
+.btn-sparkle {
+    font-size: 1.3rem;
+    animation: gentleWiggle 1s infinite alternate;
+}
+
+/* ==================== Screen 2: Ward Full Screen 3D Experience (POV Perawat) ==================== */
 .ward-screen {
-    display: grid;
-    grid-template-columns: 310px 1fr 340px;
-    gap: 20px;
-    align-items: start;
+    width: 100vw;
+    height: calc(100vh - 68px);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: #0B1329;
 }
 
-/* Left Column: Patient Ward Roster */
-.ward-roster-card {
-    background: var(--glass-bg);
-    border: 1.5px solid var(--glass-border);
-    border-radius: var(--radius-lg);
-    padding: 18px;
-    box-shadow: var(--card-shadow);
+/* ==================== Floating Action Dock (Bottom Center) ==================== */
+.ward-floating-dock {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 2.5px solid rgba(0, 201, 167, 0.45);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    padding: 8px 16px;
+    border-radius: 9999px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(0, 201, 167, 0.18);
+    z-index: 100;
+    animation: dockSlideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.roster-header {
+@keyframes dockSlideUp {
+    from { transform: translateX(-50%) translateY(40px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+.dock-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 2px solid #CBD5E1;
+    border-radius: 9999px;
+    padding: 9px 18px;
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--color-navy-dark);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+.dock-action-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    border-color: #00C9A7;
+    box-shadow: 0 8px 20px rgba(0, 201, 167, 0.3);
+}
+
+.dock-action-btn.active {
+    background: linear-gradient(135deg, #ECFDF5, #CCFBF1);
+    border-color: #00C9A7;
+    box-shadow: 0 0 0 3px rgba(0, 201, 167, 0.35);
+}
+
+.dock-badge-pill {
+    background: linear-gradient(135deg, #00C9A7, #00B4D8);
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 9999px;
+    box-shadow: 0 2px 6px rgba(0, 201, 167, 0.3);
+}
+
+/* ==================== Sliding Drawer 1: Patient Roster (Left) ==================== */
+.patient-roster-drawer {
+    position: absolute;
+    left: 20px;
+    top: 60px;
+    bottom: 95px;
+    width: 320px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 2.5px solid var(--color-tosca-primary);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 26px;
+    padding: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    z-index: 95;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(calc(-100% - 40px));
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.patient-roster-drawer.active {
+    transform: translateX(0);
+}
+
+.drawer-header-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    border-bottom: 1.5px dashed rgba(0, 180, 216, 0.25);
+    margin-bottom: 8px;
 }
 
-.roster-header h3 {
+.drawer-title {
     font-family: var(--font-heading);
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     font-weight: 900;
     color: var(--color-navy-dark);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 }
 
-.roster-badge {
-    background: #E0F7FA;
-    color: var(--color-cyan-deep);
-    font-size: 0.72rem;
-    font-weight: 800;
-    padding: 2px 8px;
-    border-radius: var(--radius-full);
+.btn-drawer-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #E2E8F0;
+    background: #F8FAFC;
+    color: #64748B;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-drawer-close:hover {
+    background: #FFE4E6;
+    color: #E11D48;
+    border-color: #FDA4AF;
+    transform: scale(1.1);
+}
+
+.drawer-subtext {
+    font-size: 0.74rem;
+    color: #64748B;
+    margin-bottom: 12px;
 }
 
 .patient-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-height: calc(100vh - 200px);
     overflow-y: auto;
     padding-right: 4px;
+    flex: 1;
 }
 
 .patient-list::-webkit-scrollbar {
@@ -662,227 +894,105 @@ body::after {
     color: #065F46;
 }
 
-/* ==================== Center Column: Hospital Bed & Patient POV ==================== */
-.ward-center-stage {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+/* ==================== Sliding Drawer 2: Nurse Trolley Drawer (Center Pop-up) ==================== */
+.nurse-trolley-drawer {
+    position: absolute;
+    bottom: 95px;
+    left: 50%;
+    transform: translateX(-50%) translateY(30px) scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.96);
+    border: 2.5px solid var(--color-tosca-primary);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 26px;
+    padding: 20px 26px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 201, 167, 0.25);
+    z-index: 95;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 700px;
+    width: 92%;
 }
 
-/* Main Patient Exam Card */
-.patient-bed-card {
-    background: var(--glass-bg);
-    border: 2px solid var(--glass-border);
-    backdrop-filter: blur(14px);
-    border-radius: var(--radius-xl);
-    padding: 24px;
-    box-shadow: var(--glass-shadow);
-    position: relative;
-    overflow: hidden;
+.nurse-trolley-drawer.active {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
 }
 
-.bed-header-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 16px;
-}
-
-.bed-title-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.bed-number-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #E0F7FA;
-    color: var(--color-cyan-deep);
-    font-size: 0.74rem;
-    font-weight: 800;
-    padding: 3px 10px;
-    border-radius: var(--radius-full);
-    width: fit-content;
-}
-
-.patient-main-name {
-    font-family: var(--font-heading);
-    font-size: 1.55rem;
-    font-weight: 900;
-    color: var(--color-navy-dark);
-}
-
-.patient-sub-details {
-    font-size: 0.82rem;
-    color: var(--color-slate-light);
-}
-
-/* Recovery Progress Bar on Card */
-.recovery-container {
-    text-align: right;
-    width: 170px;
-}
-
-.recovery-label-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.72rem;
-    font-weight: 800;
-    margin-bottom: 4px;
-    color: var(--color-navy-dark);
-}
-
-.recovery-progress-track {
-    width: 100%;
-    height: 12px;
-    background: #E2E8F0;
-    border-radius: var(--radius-full);
-    overflow: hidden;
-    border: 1px solid #CBD5E1;
-    position: relative;
-}
-
-.recovery-progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #00B4D8 0%, #00C9A7 100%);
-    width: 0%;
-    border-radius: var(--radius-full);
-    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 0 10px rgba(0, 201, 167, 0.5);
-}
-
-/* Interactive Patient Bed Display */
-.patient-bed-visual {
-    background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%);
-    border: 2px solid #CBD5E1;
-    border-radius: var(--radius-lg);
+/* ==================== Sliding Drawer 3: Vitals & Diagnosis Drawer (Right) ==================== */
+.vitals-monitor-drawer {
+    position: absolute;
+    right: 20px;
+    top: 60px;
+    bottom: 95px;
+    width: 360px;
+    background: rgba(11, 25, 44, 0.95);
+    border: 2.5px solid #00B4D8;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 26px;
     padding: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 180, 216, 0.25);
+    z-index: 95;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    transform: translateX(calc(100% + 40px));
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow-y: auto;
+}
+
+.vitals-monitor-drawer.active {
+    transform: translateX(0);
+}
+
+.vitals-monitor-drawer::-webkit-scrollbar {
+    width: 5px;
+}
+.vitals-monitor-drawer::-webkit-scrollbar-thumb {
+    background: rgba(0, 180, 216, 0.4);
+    border-radius: 10px;
+}
+
+.drawer-patient-summary {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(30, 41, 59, 0.7);
+    border: 1.5px solid #334155;
+    border-radius: 18px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.drawer-avatar-wrap {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: #0F172A;
+    border: 2px solid #00C9A7;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 30px;
-    position: relative;
-    min-height: 220px;
-    box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    flex-shrink: 0;
 }
 
-/* Bed Pillow & Headboard graphic */
-.bed-headboard {
-    position: absolute;
-    top: 12px;
-    width: 90%;
-    height: 10px;
-    background: #94A3B8;
-    border-radius: 5px;
-    opacity: 0.5;
+.drawer-patient-info {
+    flex: 1;
+    min-width: 0;
 }
 
-.patient-avatar-wrapper {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.patient-avatar-svg {
-    width: 100%;
-    height: 100%;
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.1));
-    transition: all 0.3s ease;
-}
-
-.patient-avatar-svg.cured-anim {
-    animation: gentleBounce 2s infinite ease-in-out;
-}
-
-@keyframes gentleBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-/* Patient Speech / Complaint Bubble */
-.patient-complaint-bubble {
-    background: white;
-    border: 2px solid var(--color-cyan-vibrant);
-    border-radius: var(--radius-lg);
-    padding: 14px 18px;
-    max-width: 320px;
-    position: relative;
-    box-shadow: 0 4px 16px rgba(0, 180, 216, 0.15);
-}
-
-.patient-complaint-bubble::before {
-    content: '';
-    position: absolute;
-    left: -12px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-width: 8px 12px 8px 0;
-    border-style: solid;
-    border-color: transparent var(--color-cyan-vibrant) transparent transparent;
-}
-
-.patient-complaint-bubble::after {
-    content: '';
-    position: absolute;
-    left: -9px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-width: 7px 10px 7px 0;
-    border-style: solid;
-    border-color: transparent white transparent transparent;
-}
-
-.bubble-tag {
+.drawer-patient-info .bed-number-pill {
+    background: #0284C7;
+    color: white;
     font-size: 0.68rem;
     font-weight: 800;
-    color: var(--color-cyan-deep);
-    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 9999px;
     margin-bottom: 4px;
-}
-
-.bubble-text {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--color-navy-dark);
-    line-height: 1.4;
-}
-
-/* ==================== Nurse's Medical Trolley (Alat Medis Interaktif) ==================== */
-.nurse-trolley-panel {
-    background: var(--glass-bg);
-    border: 2px solid var(--glass-border);
-    backdrop-filter: blur(14px);
-    border-radius: var(--radius-xl);
-    padding: 20px 24px;
-    box-shadow: var(--glass-shadow);
-}
-
-.trolley-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-}
-
-.trolley-title-group h4 {
-    font-family: var(--font-heading);
-    font-size: 1.05rem;
-    font-weight: 900;
-    color: var(--color-navy-dark);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.trolley-instruction {
-    font-size: 0.78rem;
-    color: var(--color-slate-light);
-    font-weight: 600;
+    display: inline-block;
 }
 
 .tools-grid {
@@ -1972,21 +2082,21 @@ body::after {
     box-shadow: 0 4px 10px rgba(0, 201, 167, 0.3);
 }
 
-/* Walkable Hospital Stage Viewport */
+/* ==================== 3D WALKABLE HOSPITAL STAGE & ROOMS (FULLSCREEN 1350PX WORLD) ==================== */
 .hospital-stage-viewport {
+    flex: 1;
     width: 100%;
-    height: 420px;
-    background: #E2E8F0;
-    border-radius: var(--radius-xl);
-    border: 3px solid rgba(0, 201, 167, 0.4);
-    box-shadow: 0 16px 40px -8px rgba(0, 180, 216, 0.2), inset 0 2px 10px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    min-height: 520px;
+    background: radial-gradient(circle at 50% 30%, #1E293B 0%, #0B1329 100%);
     position: relative;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
     user-select: none;
     -webkit-user-select: none;
-    margin-bottom: 16px;
+    perspective: 1200px;
+    perspective-origin: 50% 28%;
 }
 
 /* Custom Stage Scrollbar */
@@ -1994,7 +2104,7 @@ body::after {
     height: 8px;
 }
 .hospital-stage-viewport::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.25);
     border-radius: 4px;
 }
 .hospital-stage-viewport::-webkit-scrollbar-thumb {
@@ -2002,126 +2112,236 @@ body::after {
     border-radius: 4px;
 }
 
-/* Full Hospital 2-Room World Layer (1080px wide) */
+/* Full Hospital 3D World (1350px total: Exam 550px + Corridor 250px + Pharmacy 550px) */
 .hospital-world {
-    width: 1080px;
-    height: 420px;
+    width: 1350px;
+    height: 100%;
+    min-height: 520px;
     position: relative;
     display: flex;
+    transform-style: preserve-3d;
     cursor: crosshair;
 }
 
-/* ==================== ROOM 1: Ruangan Pemeriksaan (Left: 0 to 500px) ==================== */
+/* ==================== ROOM 1: Ruangan Pemeriksaan (Left: 0 to 550px) ==================== */
 .stage-room-exam {
-    width: 500px;
+    width: 550px;
     height: 100%;
+    min-height: 520px;
     position: relative;
     background: 
-        repeating-linear-gradient(0deg, rgba(0, 201, 167, 0.04) 0px, rgba(0, 201, 167, 0.04) 20px, transparent 20px, transparent 40px),
-        repeating-linear-gradient(90deg, rgba(0, 201, 167, 0.04) 0px, rgba(0, 201, 167, 0.04) 20px, transparent 20px, transparent 40px),
-        linear-gradient(180deg, #F0FDFA 0%, #CCFBF1 65%, #99F6E4 100%);
-    border-right: 3px dashed #0D9488;
+        radial-gradient(ellipse at 50% 25%, rgba(255, 255, 255, 0.7) 0%, transparent 65%),
+        repeating-linear-gradient(0deg, rgba(0, 201, 167, 0.08) 0px, rgba(0, 201, 167, 0.08) 32px, transparent 32px, transparent 64px),
+        repeating-linear-gradient(90deg, rgba(0, 201, 167, 0.08) 0px, rgba(0, 201, 167, 0.08) 32px, transparent 32px, transparent 64px),
+        linear-gradient(180deg, #F0FDFA 0%, #CCFBF1 35%, #99F6E4 80%, #5EEAD4 100%);
+    box-shadow: inset 0 10px 40px rgba(0, 0, 0, 0.08);
+    border-right: 4px solid #14B8A6;
 }
 
 .stage-room-header-badge {
     position: absolute;
     top: 14px;
-    left: 18px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1.5px solid var(--color-tosca-primary);
-    padding: 5px 12px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 2px solid var(--color-tosca-primary);
+    padding: 6px 14px;
     border-radius: var(--radius-full);
     font-family: var(--font-heading);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 800;
     color: var(--color-navy-dark);
     display: flex;
     align-items: center;
     gap: 6px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    z-index: 10;
+    box-shadow: 0 4px 14px rgba(0, 201, 167, 0.2);
+    z-index: 15;
 }
 
-/* Biology Poster on the Wall */
+/* Pintu Masuk Utama Klinik (Left Entrance Door) */
+.stage-entrance-door {
+    position: absolute;
+    left: 12px;
+    top: 60px;
+    width: 76px;
+    height: 220px;
+    background: #0F766E;
+    border: 3px solid #115E59;
+    border-radius: 10px 10px 0 0;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4), 0 10px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8px;
+    z-index: 5;
+    transition: all 0.3s ease;
+}
+
+.entrance-door-sign {
+    background: #134E4A;
+    color: #5EEAD4;
+    font-size: 0.52rem;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #2DD4BF;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.entrance-door-sensor {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #FACC15;
+    box-shadow: 0 0 8px #FACC15;
+    margin-bottom: 6px;
+    transition: all 0.3s ease;
+}
+
+.entrance-glass-panel {
+    width: 62px;
+    height: 155px;
+    background: linear-gradient(135deg, rgba(204, 251, 241, 0.5), rgba(153, 246, 228, 0.25));
+    border: 2px solid #5EEAD4;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.cross-emblem {
+    font-size: 1.5rem;
+    color: #00C9A7;
+    filter: drop-shadow(0 0 6px rgba(0, 201, 167, 0.6));
+}
+
+/* Sunny Hospital Window */
+.stage-window {
+    position: absolute;
+    top: 20px;
+    left: 105px;
+    width: 100px;
+    height: 72px;
+    background: linear-gradient(180deg, #38BDF8 0%, #BAE6FD 100%);
+    border: 3.5px solid white;
+    border-radius: 10px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08), inset 0 0 10px rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.window-sun {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FACC15;
+    box-shadow: 0 0 12px #FACC15;
+}
+
+.window-cloud {
+    position: absolute;
+    bottom: 12px;
+    left: 8px;
+    width: 42px;
+    height: 15px;
+    background: white;
+    border-radius: 10px;
+    opacity: 0.9;
+    animation: driftCloud 14s infinite linear;
+}
+
+@keyframes driftCloud {
+    0% { transform: translateX(-50px); }
+    100% { transform: translateX(120px); }
+}
+
+/* Biology Anatomy Poster on Wall */
 .stage-wall-poster {
     position: absolute;
-    top: 12px;
-    left: 230px;
+    top: 20px;
+    left: 220px;
     width: 140px;
     height: 75px;
     background: white;
     border: 2px solid #CBD5E1;
-    border-radius: 6px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
-    padding: 6px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 5px;
     text-align: center;
     pointer-events: none;
     z-index: 2;
 }
 
 .poster-title {
-    font-size: 0.65rem;
+    font-size: 0.66rem;
     font-weight: 800;
     color: #0284C7;
     text-transform: uppercase;
 }
 
 .poster-icons {
-    font-size: 1rem;
-    margin-top: 4px;
+    font-size: 1.05rem;
+    margin-top: 2px;
     display: flex;
     justify-content: space-around;
 }
 
 .poster-sub {
-    font-size: 0.55rem;
+    font-size: 0.56rem;
     color: #64748B;
-    margin-top: 3px;
+    margin-top: 1px;
 }
 
-/* Bed in the Stage */
+/* 3D Hospital Bed Object */
 .stage-bed-object {
     position: absolute;
-    left: 60px;
-    top: 130px;
-    width: 140px;
-    height: 180px;
+    left: 55px;
+    top: 150px;
+    width: 155px;
+    height: 200px;
     cursor: pointer;
     z-index: 5;
-    transition: transform 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.16));
 }
 
 .stage-bed-object:hover {
-    transform: scale(1.03);
+    transform: scale(1.04) translateY(-3px);
 }
 
 .stage-bed-frame {
     width: 100%;
     height: 100%;
     background: #FFF;
-    border: 3px solid #00A887;
-    border-radius: 16px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: 3.5px solid #00A887;
+    border-radius: 18px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 8px;
+    padding-top: 10px;
 }
 
 .stage-pillow {
-    width: 75px;
-    height: 28px;
+    width: 85px;
+    height: 32px;
     background: #E0F2FE;
-    border-radius: 14px;
-    border: 1.5px solid #93C5FD;
-    margin-bottom: 4px;
+    border-radius: 16px;
+    border: 2px solid #93C5FD;
+    margin-bottom: 6px;
 }
 
 .stage-patient-avatar-box {
-    width: 76px;
-    height: 76px;
+    width: 84px;
+    height: 84px;
     z-index: 6;
 }
 
@@ -2130,65 +2350,116 @@ body::after {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 65px;
+    height: 75px;
     background: linear-gradient(180deg, #5EEAD4 0%, #14B8A6 100%);
-    border-top: 3px solid #0D9488;
-    border-radius: 0 0 13px 13px;
+    border-top: 3.5px solid #0D9488;
+    border-radius: 0 0 14px 14px;
 }
 
 .stage-bed-label {
     position: absolute;
-    bottom: -22px;
+    bottom: -24px;
     left: 50%;
     transform: translateX(-50%);
     background: var(--color-navy-dark);
     color: white;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 800;
-    padding: 2px 10px;
-    border-radius: 10px;
+    padding: 3px 12px;
+    border-radius: 12px;
     white-space: nowrap;
-    border: 1px solid var(--color-tosca-primary);
+    border: 1.5px solid var(--color-tosca-primary);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Patient Speech Bubble on Bed */
 .stage-bed-bubble {
     position: absolute;
-    top: -55px;
+    top: -65px;
     left: -10px;
-    width: 170px;
+    width: 180px;
     background: white;
-    border: 2px solid #F472B6;
-    border-radius: 12px;
-    padding: 6px 10px;
-    font-size: 0.72rem;
-    color: var(--color-slate-text);
-    box-shadow: 0 4px 12px rgba(244, 114, 182, 0.25);
+    border: 2.5px solid #F472B6;
+    border-radius: 14px;
+    padding: 8px 12px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #831843;
+    box-shadow: 0 6px 16px rgba(244, 114, 182, 0.3);
     z-index: 12;
-    line-height: 1.25;
+    line-height: 1.3;
 }
 
 .stage-bed-bubble::after {
     content: '';
     position: absolute;
-    bottom: -8px;
+    bottom: -9px;
     left: 45px;
-    border-width: 8px 6px 0;
+    border-width: 9px 7px 0;
     border-style: solid;
     border-color: #F472B6 transparent;
+}
+
+/* 3D IV Drip Stand (Tiang Infus) */
+.stage-iv-stand {
+    position: absolute;
+    left: 220px;
+    top: 135px;
+    width: 24px;
+    height: 170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.iv-pole {
+    width: 4px;
+    height: 145px;
+    background: linear-gradient(90deg, #CBD5E1, #94A3B8);
+    border-radius: 2px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.15);
+}
+
+.iv-bottle {
+    width: 22px;
+    height: 34px;
+    background: rgba(224, 242, 254, 0.88);
+    border: 1.5px solid #38BDF8;
+    border-radius: 6px 6px 10px 10px;
+    position: absolute;
+    top: -12px;
+    box-shadow: 0 4px 10px rgba(56, 189, 248, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iv-bubble {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #0284C7;
+    animation: dripPulse 1.4s infinite ease-in;
+}
+
+@keyframes dripPulse {
+    0% { transform: translateY(-8px); opacity: 1; }
+    100% { transform: translateY(16px); opacity: 0; }
 }
 
 /* Doctor's Desk in Stage */
 .stage-desk-object {
     position: absolute;
-    left: 280px;
-    top: 140px;
-    width: 110px;
-    height: 80px;
+    left: 285px;
+    top: 165px;
+    width: 120px;
+    height: 88px;
     background: #F8FAFC;
-    border: 2px solid #94A3B8;
-    border-radius: 10px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+    border: 2.5px solid #94A3B8;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2198,104 +2469,364 @@ body::after {
 }
 
 .stage-desk-items {
-    font-size: 1.6rem;
+    font-size: 1.7rem;
 }
 
 .stage-desk-label {
-    font-size: 0.65rem;
-    font-weight: 700;
+    font-size: 0.66rem;
+    font-weight: 800;
     color: #475569;
 }
 
-/* ==================== CORRIDOR / DOORWAY ARCHWAY (Middle: 500 to 600px) ==================== */
-.stage-corridor {
-    width: 100px;
-    height: 100%;
-    position: relative;
-    background: 
-        repeating-linear-gradient(180deg, #CBD5E1 0px, #CBD5E1 30px, #E2E8F0 30px, #E2E8F0 60px);
+/* ==================== 3D INTERACTIVE HOSPITAL DOORS ==================== */
+.stage-3d-door-frame {
+    position: absolute;
+    width: 90px;
+    height: 265px;
+    background: #0F172A;
+    border: 3.5px solid #334155;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 
+        0 14px 28px rgba(0, 0, 0, 0.35),
+        inset 0 0 16px rgba(0, 0, 0, 0.6);
+    perspective: 800px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    z-index: 3;
+    padding-top: 8px;
+    z-index: 8;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.stage-corridor-sign {
-    background: var(--color-navy-dark);
-    color: var(--color-yellow-star);
-    border: 2px solid var(--color-yellow-star);
-    padding: 6px 8px;
-    border-radius: 8px;
+.stage-3d-door-frame:hover {
+    border-color: var(--color-tosca-primary);
+    box-shadow: 0 16px 36px rgba(0, 201, 167, 0.35);
+}
+
+.stage-3d-door-frame.door-exam-pos {
+    right: 18px;
+    top: 55px;
+}
+
+.stage-3d-door-frame.door-pharmacy-pos {
+    left: 18px;
+    top: 55px;
+}
+
+.door-room-sign {
+    background: #0284C7;
+    color: white;
     font-family: var(--font-heading);
-    font-size: 0.68rem;
+    font-size: 0.62rem;
     font-weight: 900;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1.5px solid #BAE6FD;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.door-pharmacy-pos .door-room-sign {
+    background: #D97706;
+    border-color: #FDE68A;
+}
+
+.stage-3d-door-leaf {
+    width: 78px;
+    height: 215px;
+    background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+    border: 3px solid #94A3B8;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.6s ease;
+    box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 24px;
+}
+
+.door-pharmacy-pos .stage-3d-door-leaf {
+    transform-origin: right center;
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+    border-color: #D97706;
+}
+
+/* Door Swing Open State (Pure 3D Swing) */
+.stage-3d-door-leaf.door-open {
+    transform: rotateY(-82deg);
+    box-shadow: 12px 6px 24px rgba(0, 0, 0, 0.45);
+}
+
+.door-pharmacy-pos .stage-3d-door-leaf.door-open {
+    transform: rotateY(82deg);
+}
+
+/* Door Glass Porthole Window */
+.door-porthole {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(186, 230, 253, 0.8));
+    border: 3px solid #38BDF8;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(56, 189, 248, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.door-porthole::after {
+    content: '';
     position: absolute;
-    top: 24px;
-    line-height: 1.3;
+    top: 4px;
+    left: 8px;
+    width: 14px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    transform: rotate(-35deg);
+}
+
+/* Door Handle */
+.door-handle {
+    position: absolute;
+    right: 8px;
+    top: 110px;
+    width: 10px;
+    height: 28px;
+    background: linear-gradient(180deg, #E2E8F0, #64748B);
+    border-radius: 4px;
+    border: 1px solid #475569;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.door-pharmacy-pos .door-handle {
+    right: auto;
+    left: 8px;
+}
+
+/* ==================== CORRIDOR / SELASAR RS (Width: 250px) ==================== */
+.stage-corridor {
+    width: 250px;
+    height: 100%;
+    min-height: 520px;
+    position: relative;
+    background: 
+        repeating-linear-gradient(180deg, #475569 0px, #475569 32px, #64748B 32px, #64748B 64px),
+        linear-gradient(180deg, #1E293B 0%, #334155 45%, #475569 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 6;
+    border-right: 4px solid #D97706;
+    box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.35);
+}
+
+.corridor-wall-strip {
+    width: 100%;
+    background: #0F172A;
+    padding: 6px 10px;
+    margin-top: 14px;
+    border-top: 2px solid #334155;
+    border-bottom: 2px solid #334155;
+}
+
+.corridor-sign-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: var(--font-heading);
+    font-size: 0.62rem;
+    font-weight: 800;
+    color: #F8FAFC;
+    letter-spacing: 0.3px;
+    text-align: center;
+}
+
+.corridor-clock {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.8rem;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    animation: gentleWiggle 3s infinite ease-in-out;
+}
+
+.corridor-bench {
+    position: absolute;
+    top: 175px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 60px;
+    background: linear-gradient(180deg, #3B82F6, #1D4ED8);
+    border: 3px solid #1E40AF;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+.bench-doll {
+    font-size: 1.5rem;
+    animation: gentleHover 2s infinite alternate ease-in-out;
+}
+
+.corridor-water-cooler {
+    position: absolute;
+    left: 14px;
+    top: 110px;
+    width: 36px;
+    height: 72px;
+    background: #E2E8F0;
+    border: 2px solid #94A3B8;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+    z-index: 4;
+}
+
+.cooler-bottle {
+    font-size: 1.25rem;
+}
+
+.corridor-plant {
+    position: absolute;
+    right: 14px;
+    top: 115px;
+    font-size: 2.1rem;
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+    animation: plantSway 3s infinite alternate ease-in-out;
+    z-index: 4;
+}
+
+@keyframes plantSway {
+    0% { transform: rotate(-3deg); }
+    100% { transform: rotate(3deg); }
 }
 
 .stage-floor-arrows {
-    font-size: 1.5rem;
-    color: var(--color-tosca-primary);
-    animation: pulseArrow 1.2s infinite ease-in-out;
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #FACC15;
+    letter-spacing: 6px;
+    animation: pulseArrow 1.5s infinite ease-in-out;
+    text-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
 }
 
 @keyframes pulseArrow {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.2); opacity: 1; }
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.7; }
+    50% { transform: translateX(-50%) scale(1.15); opacity: 1; }
 }
 
-/* ==================== ROOM 2: Ruangan Obat-obatan / Pharmacy (Right: 600 to 1080px) ==================== */
+/* ==================== ROOM 2: Ruangan Obat-obatan / Pharmacy (Right: 550px) ==================== */
 .stage-room-pharmacy {
-    width: 480px;
+    width: 550px;
     height: 100%;
+    min-height: 520px;
     position: relative;
     background: 
-        repeating-linear-gradient(0deg, rgba(217, 119, 6, 0.04) 0px, rgba(217, 119, 6, 0.04) 20px, transparent 20px, transparent 40px),
-        repeating-linear-gradient(90deg, rgba(217, 119, 6, 0.04) 0px, rgba(217, 119, 6, 0.04) 20px, transparent 20px, transparent 40px),
-        linear-gradient(180deg, #FEF3C7 0%, #FDE68A 65%, #FCD34D 100%);
-    border-left: 3px dashed #D97706;
+        radial-gradient(ellipse at 50% 25%, rgba(255, 255, 255, 0.7) 0%, transparent 65%),
+        repeating-linear-gradient(0deg, rgba(217, 119, 6, 0.08) 0px, rgba(217, 119, 6, 0.08) 32px, transparent 32px, transparent 64px),
+        repeating-linear-gradient(90deg, rgba(217, 119, 6, 0.08) 0px, rgba(217, 119, 6, 0.08) 32px, transparent 32px, transparent 64px),
+        linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 35%, #FDE68A 80%, #FCD34D 100%);
+    box-shadow: inset 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 .stage-room-pharmacy .stage-room-header-badge {
     left: auto;
-    right: 18px;
+    right: 20px;
     border-color: #D97706;
     color: #92400E;
 }
 
-/* Pharmacy Medicine Shelves Object */
+/* Pintu Gudang Resep (Right Wall Door) */
+.stage-pharmacy-door {
+    position: absolute;
+    right: 14px;
+    top: 65px;
+    width: 68px;
+    height: 215px;
+    background: #92400E;
+    border: 3px solid #78350F;
+    border-radius: 8px 8px 0 0;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8px;
+    z-index: 5;
+}
+
+.pharmacy-door-sign {
+    background: #451A03;
+    color: #FEF3C7;
+    font-size: 0.52rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #B45309;
+    text-transform: uppercase;
+}
+
+.door-knob {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #FACC15;
+    border: 1px solid #CA8A04;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 10px;
+    top: 110px;
+}
+
+/* 3D Pharmacy Medicine Shelves Object */
 .stage-shelves-object {
     position: absolute;
-    left: 40px;
+    left: 130px;
     top: 60px;
-    width: 390px;
-    height: 150px;
+    width: 385px;
+    height: 175px;
     background: #78350F;
-    border: 3px solid #451A03;
-    border-radius: 14px;
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+    border: 3.5px solid #451A03;
+    border-radius: 16px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
     padding: 10px;
     cursor: pointer;
     z-index: 5;
-    transition: transform 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .stage-shelves-object:hover {
-    transform: scale(1.02);
-    box-shadow: 0 14px 30px rgba(217, 119, 6, 0.35);
+    transform: scale(1.03) translateY(-2px);
+    box-shadow: 0 16px 35px rgba(217, 119, 6, 0.4);
 }
 
 .shelves-header-title {
     font-family: var(--font-heading);
     font-size: 0.76rem;
-    font-weight: 800;
+    font-weight: 900;
     color: #FEF3C7;
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     letter-spacing: 0.5px;
     display: flex;
     align-items: center;
@@ -2307,7 +2838,7 @@ body::after {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 6px;
-    height: 80px;
+    height: 85px;
 }
 
 .shelf-tile {
@@ -2335,7 +2866,7 @@ body::after {
 }
 
 .shelf-name {
-    font-size: 0.55rem;
+    font-size: 0.54rem;
     font-weight: 800;
     color: #78350F;
     margin-top: 2px;
@@ -2345,9 +2876,9 @@ body::after {
 .shelves-click-hint {
     background: #FACC15;
     color: #78350F;
-    font-size: 0.65rem;
+    font-size: 0.66rem;
     font-weight: 900;
-    padding: 3px 12px;
+    padding: 4px 14px;
     border-radius: var(--radius-full);
     margin: 8px auto 0;
     width: fit-content;
@@ -2357,14 +2888,14 @@ body::after {
 /* Pharmacy Dispenser Table */
 .stage-dispenser-desk {
     position: absolute;
-    left: 120px;
-    top: 250px;
-    width: 240px;
-    height: 80px;
+    left: 155px;
+    top: 275px;
+    width: 250px;
+    height: 85px;
     background: #FFFBEB;
-    border: 2px solid #D97706;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    border: 2.5px solid #D97706;
+    border-radius: 14px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -2376,13 +2907,76 @@ body::after {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 0.7rem;
-    font-weight: 700;
+    font-size: 0.72rem;
+    font-weight: 800;
     color: #92400E;
 }
 
 .dispenser-prop span:first-child {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+}
+
+/* Floating Action HUD on Top of the Stage */
+.stage-hud-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 2px solid #E2E8F0;
+    backdrop-filter: blur(14px);
+    border-radius: 20px;
+    padding: 10px 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.stage-hud-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-hud-action {
+    background: white;
+    border: 1.5px solid #CBD5E1;
+    color: var(--color-navy-dark);
+    padding: 8px 14px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-hud-action:hover {
+    transform: translateY(-2px);
+    border-color: #00C9A7;
+    box-shadow: 0 6px 16px rgba(0, 201, 167, 0.25);
+}
+
+.btn-hud-action.roster-btn {
+    border-color: #38BDF8;
+    color: #0369A1;
+    background: #F0F9FF;
+}
+
+.btn-hud-action.trolley-btn {
+    border-color: #34D399;
+    color: #065F46;
+    background: #ECFDF5;
+}
+
+.btn-hud-action.vitals-btn {
+    border-color: #F472B6;
+    color: #9D174D;
+    background: #FDF2F8;
 }
 
 /* ==================== PLAYABLE DOKTER USAGI SPRITE ==================== */
@@ -2398,6 +2992,19 @@ body::after {
 
 .usagi-character-sprite.facing-left {
     transform: translate(-50%, -85%) scaleX(-1);
+}
+
+.usagi-floor-shadow {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 14px;
+    background: rgba(15, 23, 42, 0.35);
+    border-radius: 50%;
+    filter: blur(3px);
+    z-index: -1;
 }
 
 .usagi-svg-sprite {
@@ -3135,438 +3742,560 @@ body::after {
     <main class="game-viewport">
 
         <!-- ==================== SCREEN 1: Welcome & Setup ==================== -->
+        <!-- ==================== SCREEN 1: Welcome & Setup (Ultra-Cute Chiikawa Theme) ==================== -->
         <section class="welcome-screen" id="welcomeScreen">
             <div class="welcome-card">
-                <div class="hospital-badge">
-                    <span>🏥</span> Klinik Edukasi Bio Dokter Usagi (Chiikawa)
+                <div class="welcome-top-badges">
+                    <span class="hospital-badge">🏥 Klinik Chiikawa Bio Care</span>
+                    <span class="cloud-badge-welcome">☁️ Firebase Cloud: biology-911 (Online)</span>
                 </div>
-                <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.76rem; background: #EFF6FF; border: 1.5px solid #BFDBFE; color: #1D4ED8; padding: 4px 12px; border-radius: 9999px; margin-bottom: 12px; font-weight: 700;">
-                    <span>☁️</span> Firebase Cloud Sync: biology-911 (Online)
-                </div>
-                <h2 class="welcome-title">Selamat Bertugas di <span>Klinik Dokter Usagi</span>! (YAHA!)</h2>
+                <h2 class="welcome-title">Selamat Bertugas di <span>Klinik Dokter Usagi</span>! 🩺</h2>
                 <p class="welcome-subtitle">
-                    Teman-teman Chiikawa membutuhkan keahlian Biologi SMA-mu! Bantu Dokter Usagi memeriksa pasien di
-                    <strong>Ruang Pemeriksaan</strong>, lalu berjalanlah ke <strong>Ruangan Obat-obatan</strong> untuk
-                    mengambil resep obat yang tepat!
+                    Teman-teman Chiikawa membutuhkan keahlian Biologi SMA-mu! Rawat pasien di
+                    <strong>Ruang Pemeriksaan 3D</strong>, telusuri koridor rumah sakit, dan racik terapi kuratif di
+                    <strong>Ruang Obat & Farmasi</strong>!
                 </p>
 
-                <div class="character-select-title">Pilih Avatar Doktermu:</div>
+                <div class="character-select-label">Pilih Karakter Dokter / Asisten Medis:</div>
                 <div class="avatar-options">
-                    <div class="avatar-choice active" data-avatar="🐰">🐰 Usagi</div>
-                    <div class="avatar-choice" data-avatar="🤍">🤍 Chiikawa</div>
-                    <div class="avatar-choice" data-avatar="🐱">🐱 Hachiware</div>
-                    <div class="avatar-choice" data-avatar="🌰">🌰 Kurimanju</div>
+                    <div class="avatar-choice active" data-avatar="🐰">
+                        <div class="avatar-emoji">🐰</div>
+                        <div class="avatar-meta">
+                            <span class="avatar-name">Usagi</span>
+                            <span class="avatar-role">Dokter Utama</span>
+                        </div>
+                    </div>
+                    <div class="avatar-choice" data-avatar="🤍">
+                        <div class="avatar-emoji">🤍</div>
+                        <div class="avatar-meta">
+                            <span class="avatar-name">Chiikawa</span>
+                            <span class="avatar-role">Perawat Lembut</span>
+                        </div>
+                    </div>
+                    <div class="avatar-choice" data-avatar="🐱">
+                        <div class="avatar-emoji">🐱</div>
+                        <div class="avatar-meta">
+                            <span class="avatar-name">Hachiware</span>
+                            <span class="avatar-role">Asisten Cerdas</span>
+                        </div>
+                    </div>
+                    <div class="avatar-choice" data-avatar="🌰">
+                        <div class="avatar-emoji">🌰</div>
+                        <div class="avatar-meta">
+                            <span class="avatar-name">Kurimanju</span>
+                            <span class="avatar-role">Kepala Farmasi</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="nurse-name-input-group">
-                    <label for="nurseNameInput">Nama Lengkap Dokter / Asisten:</label>
+                    <label for="nurseNameInput">🏷️ Nama Lengkap Dokter / Asisten:</label>
                     <div class="input-with-icon">
-                        <span>🏷️</span>
                         <input type="text" id="nurseNameInput" class="nurse-name-input" value="Dokter Usagi"
                             placeholder="Ketik namamu di sini..." maxlength="25">
                     </div>
                 </div>
 
-                <div class="curriculum-pills">
-                    <span class="curriculum-pill">🩸 Sistem Peredaran Darah (Eritrosit & Hb)</span>
-                    <span class="curriculum-pill">🛡️ Sistem Imun (Leukosit & Patogen)</span>
-                    <span class="curriculum-pill">🍔 Sistem Pencernaan (Asam Lambung HCl)</span>
-                    <span class="curriculum-pill">🫁 Sistem Respirasi (Alveolus & O2)</span>
-                    <span class="curriculum-pill">🫘 Sistem Ekskresi (Ginjal & ADH)</span>
-                    <span class="curriculum-pill">⚡ Metabolisme Sel (Mitokondria & Asam Laktat)</span>
+                <div class="curriculum-section-label">📚 Cakupan Materi Biologi SMA (Kelas 10 - 12):</div>
+                <div class="curriculum-grid">
+                    <div class="curriculum-card">
+                        <span class="curriculum-icon">🩸</span>
+                        <div class="curriculum-text">
+                            <strong>Sirkulasi Darah</strong>
+                            <small>Eritrosit & Hemoglobin</small>
+                        </div>
+                    </div>
+                    <div class="curriculum-card">
+                        <span class="curriculum-icon">🛡️</span>
+                        <div class="curriculum-text">
+                            <strong>Sistem Imun</strong>
+                            <small>Leukosit & Patogen</small>
+                        </div>
+                    </div>
+                    <div class="curriculum-card">
+                        <span class="curriculum-icon">🍔</span>
+                        <div class="curriculum-text">
+                            <strong>Pencernaan</strong>
+                            <small>Asam Lambung HCl</small>
+                        </div>
+                    </div>
+                    <div class="curriculum-card">
+                        <span class="curriculum-icon">🫁</span>
+                        <div class="curriculum-text">
+                            <strong>Respirasi</strong>
+                            <small>Alveolus & Transpor O2</small>
+                        </div>
+                    </div>
+                    <div class="curriculum-card">
+                        <span class="curriculum-icon">🫘</span>
+                        <div class="curriculum-text">
+                            <strong>Ekskresi</strong>
+                            <small>Nefron Ginjal & ADH</small>
+                        </div>
+                    </div>
+                    <div class="curriculum-card">
+                        <span class="curriculum-icon">⚡</span>
+                        <div class="curriculum-text">
+                            <strong>Metabolisme</strong>
+                            <small>Respirasi Seluler & ATP</small>
+                        </div>
+                    </div>
                 </div>
 
                 <button class="btn-start-game" id="btnStartGame">
                     <span>Mulai Shift Jaga & Rawat Pasien (YAHA!)</span>
-                    <span>🚀</span>
+                    <span class="btn-sparkle">🚀✨</span>
                 </button>
             </div>
         </section>
 
-        <!-- ==================== SCREEN 2: Ward & Patient Simulation ==================== -->
+        <!-- ==================== SCREEN 2: Ward Fullscreen 3D Hospital Experience ==================== -->
         <section class="ward-screen" id="wardScreen" style="display: none;">
 
-            <!-- Left Column: Patient Roster -->
-            <aside class="ward-roster-card">
-                <div class="roster-header">
-                    <h3><span>📋</span> Daftar Pasien Chiikawa</h3>
-                    <span class="roster-badge">6 Kamar</span>
+            <!-- Stage Top HUD Bar (Missions, Inventory, Quick Travel) -->
+            <div class="stage-hud-bar">
+                <div class="stage-mission-box">
+                    <span class="mission-icon">🎯</span>
+                    <div class="mission-text-wrap">
+                        <span class="mission-label">Misi Dokter Usagi:</span>
+                        <span class="mission-desc" id="missionBannerText">Periksa Chiikawa di ranjang periksa!</span>
+                    </div>
                 </div>
+                <div class="stage-inventory-box">
+                    <span>🎒</span>
+                    <span id="usagiInventoryText">Tas Kosong (Siap bertugas)</span>
+                </div>
+                <div class="stage-nav-shortcuts">
+                    <button class="btn-stage-nav" id="btnGoExam" title="Jalan Cepat ke Ruang Periksa">
+                        🏥 Ruang Periksa
+                    </button>
+                    <button class="btn-stage-nav" id="btnGoCorridor" title="Jalan Cepat ke Koridor Rumah Sakit">
+                        🚶 Koridor
+                    </button>
+                    <button class="btn-stage-nav" id="btnGoPharmacy" title="Jalan Cepat ke Ruang Obat">
+                        💊 Ruang Obat
+                    </button>
+                </div>
+            </div>
+
+            <!-- Fullscreen 3D Hospital Viewport -->
+            <div class="hospital-stage-viewport" id="hospitalStage">
+                <div class="hospital-world" id="hospitalWorld">
+
+                    <!-- ROOM 1: Ruang Pemeriksaan (Clinic Exam Room 101) -->
+                    <div class="stage-room-exam" id="stageRoomExam">
+                        <div class="stage-room-header-badge">
+                            <span>🏥</span> Ruang Periksa 101
+                        </div>
+
+                        <!-- Clinic Entrance Door (Pintu Masuk Luar) -->
+                        <div class="stage-entrance-door" id="doorEntrance" title="Pintu Masuk Utama Klinik">
+                            <span class="entrance-door-sign">MASUK</span>
+                            <div class="entrance-door-sensor"></div>
+                            <div class="entrance-glass-panel">
+                                <span class="cross-emblem">✚</span>
+                            </div>
+                        </div>
+
+                        <!-- Sunny Hospital Window -->
+                        <div class="stage-window">
+                            <div class="window-sun"></div>
+                            <div class="window-cloud"></div>
+                        </div>
+
+                        <!-- Wall Poster: Biology Concepts -->
+                        <div class="stage-wall-poster">
+                            <div class="poster-title">Biologi SMA</div>
+                            <div class="poster-icons">🩸 🫀 🫁 🔬</div>
+                            <div class="poster-sub">Sistem Organ & Enzim</div>
+                        </div>
+
+                        <!-- 3D Bed Object with Chiikawa Patient -->
+                        <div class="stage-bed-object" id="stagePatientBed" title="Klik untuk mendekat & periksa pasien!">
+                            <div class="stage-bed-bubble" id="stageBedComplaint">
+                                "Wawa... perutku perih..."
+                            </div>
+                            <div class="stage-bed-frame">
+                                <div class="stage-pillow"></div>
+                                <div class="stage-patient-avatar-box" id="stagePatientAvatar">
+                                    <!-- Dynamic Patient SVG -->
+                                </div>
+                                <div class="stage-bed-blanket"></div>
+                            </div>
+                            <div class="stage-bed-label">Ranjang Pasien [Periksa]</div>
+                        </div>
+
+                        <!-- 3D IV Drip Stand (Tiang Infus) -->
+                        <div class="stage-iv-stand">
+                            <div class="iv-bottle"><div class="iv-bubble"></div></div>
+                            <div class="iv-pole"></div>
+                        </div>
+
+                        <!-- Doctor Desk -->
+                        <div class="stage-desk-object" id="stageDesk">
+                            <div class="stage-desk-items">🔬💻📚</div>
+                            <div class="stage-desk-label">Meja Usagi</div>
+                        </div>
+
+                        <!-- 3D PINTU RUANG PERIKSA (Menuju Koridor) -->
+                        <div class="stage-3d-door-frame door-exam-pos" id="doorExamFrame" title="Klik untuk lewat Pintu Ruang Periksa!">
+                            <div class="door-room-sign">🚪 101 PERIKSA</div>
+                            <div class="stage-3d-door-leaf" id="doorExam">
+                                <div class="door-porthole"></div>
+                                <div class="door-handle"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CORRIDOR: Lorong / Selasar Penghubung Rumah Sakit -->
+                    <div class="stage-corridor" id="stageArchway">
+                        <div class="corridor-wall-strip">
+                            <div class="corridor-sign-box">
+                                <span>⬅️ RUANG PERIKSA 101</span>
+                                <span>•</span>
+                                <span>RUANG OBAT ➡️</span>
+                            </div>
+                        </div>
+
+                        <!-- Hospital Corridor Features -->
+                        <div class="corridor-clock">🕒</div>
+                        <div class="corridor-bench" title="Bangku Tunggu Pasien">
+                            <span class="bench-doll">🐰🤍</span>
+                        </div>
+                        <div class="corridor-water-cooler" title="Dispenser Air Minum Klinik">
+                            <span class="cooler-bottle">💧</span>
+                        </div>
+                        <div class="corridor-plant" title="Tanaman Hias Klinik">🌿</div>
+
+                        <div class="stage-floor-arrows">➔ ➔ ➔</div>
+                    </div>
+
+                    <!-- ROOM 2: Ruangan Obat-obatan (Pharmacy) -->
+                    <div class="stage-room-pharmacy" id="stageRoomPharmacy">
+                        <div class="stage-room-header-badge">
+                            <span>💊</span> Ruang Obat (Apotek)
+                        </div>
+
+                        <!-- 3D PINTU RUANG OBAT (Dari Koridor) -->
+                        <div class="stage-3d-door-frame door-pharmacy-pos" id="doorPharmacyFrame" title="Klik untuk lewat Pintu Ruang Obat!">
+                            <div class="door-room-sign">🚪 APOTEK BIO</div>
+                            <div class="stage-3d-door-leaf" id="doorPharmacy">
+                                <div class="door-porthole" style="border-color: #FCD34D;"></div>
+                                <div class="door-handle"></div>
+                            </div>
+                        </div>
+
+                        <!-- 3D Medicine Shelves Object -->
+                        <div class="stage-shelves-object" id="stagePharmacyShelves" title="Klik untuk mendekat & buka lemari obat!">
+                            <div class="shelves-header-title">
+                                <span>🏥</span> LEMARI OBAT BIOLOGI USAGI <span>✨</span>
+                            </div>
+                            <div class="shelves-grid">
+                                <div class="shelf-tile">
+                                    <span class="shelf-icon">💊</span>
+                                    <span class="shelf-name">Antasida</span>
+                                </div>
+                                <div class="shelf-tile">
+                                    <span class="shelf-icon">🩸</span>
+                                    <span class="shelf-name">Zat Besi</span>
+                                </div>
+                                <div class="shelf-tile">
+                                    <span class="shelf-icon">🫁</span>
+                                    <span class="shelf-name">Inhaler</span>
+                                </div>
+                                <div class="shelf-tile">
+                                    <span class="shelf-icon">🛡️</span>
+                                    <span class="shelf-name">Vit Imun</span>
+                                </div>
+                                <div class="shelf-tile">
+                                    <span class="shelf-icon">⚡</span>
+                                    <span class="shelf-name">Glukosa</span>
+                                </div>
+                                <div class="shelf-tile">
+                                    <span class="shelf-icon">💧</span>
+                                    <span class="shelf-name">Oralit</span>
+                                </div>
+                            </div>
+                            <div class="shelves-click-hint">📦 Klik / Dekati untuk Ambil Obat</div>
+                        </div>
+
+                        <!-- Pharmacy Dispenser Desk -->
+                        <div class="stage-dispenser-desk">
+                            <div class="dispenser-prop">
+                                <span>⚖️</span>
+                                <span>Timbangan</span>
+                            </div>
+                            <div class="dispenser-prop">
+                                <span>🧪</span>
+                                <span>Racikan</span>
+                            </div>
+                            <div class="dispenser-prop">
+                                <span>📦</span>
+                                <span>Obat Siap</span>
+                            </div>
+                        </div>
+
+                        <!-- Pharmacy Storage Door -->
+                        <div class="stage-pharmacy-door" id="doorPharmacyStorage">
+                            <div class="pharmacy-door-sign">GUDANG</div>
+                            <div class="door-knob"></div>
+                        </div>
+                    </div>
+
+                    <!-- PLAYABLE DOKTER USAGI 3D SPRITE -->
+                    <div class="usagi-character-sprite" id="usagiCharacter">
+                        <!-- Dynamic Floor Shadow -->
+                        <div class="usagi-floor-shadow"></div>
+
+                        <!-- Overhead Carried Item -->
+                        <div class="usagi-carried-item" id="usagiCarriedItem">💊</div>
+                        <!-- Usagi Speech Bubble -->
+                        <div class="usagi-speech-bubble" id="usagiSpeechBubble">YAHA!</div>
+
+                        <!-- SVG Character Sprite -->
+                        <svg viewBox="0 0 80 100" class="usagi-svg-sprite">
+                            <!-- Tail -->
+                            <circle cx="20" cy="74" r="7" fill="#FDE047" stroke="#334155" stroke-width="2" />
+                            <!-- Left Bunny Ear -->
+                            <path class="ear-left" d="M30 42 C18 16, 20 2, 30 3 C38 4, 40 22, 36 42 Z"
+                                fill="#FDE047" stroke="#334155" stroke-width="2.5" />
+                            <path class="ear-left-inner" d="M30 36 C22 18, 24 8, 30 9 C35 10, 36 22, 34 36 Z"
+                                fill="#F472B6" opacity="0.65" />
+                            <!-- Right Bunny Ear -->
+                            <path class="ear-right" d="M48 42 C44 22, 46 4, 54 3 C64 2, 66 16, 54 42 Z"
+                                fill="#FDE047" stroke="#334155" stroke-width="2.5" />
+                            <path class="ear-right-inner" d="M50 36 C48 22, 48 8, 54 9 C60 10, 60 22, 54 36 Z"
+                                fill="#F472B6" opacity="0.65" />
+                            <!-- Head & Body -->
+                            <ellipse cx="42" cy="56" rx="25" ry="23" fill="#FDE047" stroke="#334155" stroke-width="2.5" />
+                            <!-- Doctor White Coat -->
+                            <path d="M22 62 C26 54, 58 54, 62 62 L64 82 C64 85, 20 85, 20 82 Z" fill="#FFFFFF"
+                                stroke="#334155" stroke-width="2" />
+                            <line x1="42" y1="62" x2="42" y2="82" stroke="#00C9A7" stroke-width="1.8" stroke-dasharray="3" />
+                            <!-- Red Cross on Coat -->
+                            <circle cx="54" cy="71" r="4.5" fill="#EF4444" />
+                            <text x="51.8" y="74" font-size="7.5" font-weight="900" fill="#FFFFFF">+</text>
+                            <!-- Pink Stethoscope -->
+                            <path d="M28 58 Q42 70 56 58" fill="none" stroke="#EC4899" stroke-width="2.8" stroke-linecap="round" />
+                            <circle cx="42" cy="67" r="4" fill="#00C9A7" stroke="#0A2540" stroke-width="1.2" />
+                            <!-- Beady Black Eyes -->
+                            <circle cx="34" cy="52" r="4.2" fill="#1E293B" />
+                            <circle cx="50" cy="52" r="4.2" fill="#1E293B" />
+                            <circle cx="32" cy="50" r="1.5" fill="#FFFFFF" />
+                            <circle cx="48" cy="50" r="1.5" fill="#FFFFFF" />
+                            <!-- Rosy Cheeks -->
+                            <circle cx="26" cy="58" r="4.5" fill="#F472B6" opacity="0.75" />
+                            <circle cx="58" cy="58" r="4.5" fill="#F472B6" opacity="0.75" />
+                            <!-- Cute Open Smile -->
+                            <path d="M38 58 Q42 65 46 58" stroke="#1E293B" stroke-width="2.2" fill="#E11D48" />
+                            <path d="M39 59 Q42 62 45 59" fill="#FFFFFF" />
+                            <!-- Feet -->
+                            <ellipse class="foot-left" cx="32" cy="84" rx="6.5" ry="4.5" fill="#FDE047"
+                                stroke="#334155" stroke-width="2" />
+                            <ellipse class="foot-right" cx="52" cy="84" rx="6.5" ry="4.5" fill="#FDE047"
+                                stroke="#334155" stroke-width="2" />
+                        </svg>
+                    </div>
+
+                    <!-- Floating 3D Interaction Prompt -->
+                    <div class="stage-interact-prompt action-exam pulse" id="stageInteractPrompt">
+                        <span>🩺</span> <strong>SPASI / KLIK:</strong> Periksa Pasien!
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Mobile On-Screen Touch Controller -->
+            <div class="mobile-touch-controller" id="mobileControls">
+                <div class="dpad-cross">
+                    <button class="dpad-btn up" id="dpadUp">▲</button>
+                    <button class="dpad-btn left" id="dpadLeft">◀</button>
+                    <button class="dpad-btn right" id="dpadRight">▶</button>
+                    <button class="dpad-btn down" id="dpadDown">▼</button>
+                </div>
+                <button class="btn-mobile-action" id="btnMobileAction">
+                    <span>⭐</span>
+                    <span>AKSI</span>
+                </button>
+            </div>
+
+            <!-- ==================== FLOATING ACTION DOCK (Bottom Controls) ==================== -->
+            <div class="ward-floating-dock">
+                <button class="dock-action-btn" id="btnToggleRoster" title="Buka Daftar Pasien Chiikawa">
+                    <span>📋</span>
+                    <span>Daftar Pasien</span>
+                    <span class="dock-badge-pill" id="dockPatientBadge">6 Kamar</span>
+                </button>
+
+                <button class="dock-action-btn" id="btnToggleTrolley" title="Buka Troli Tindakan & Alat Medis">
+                    <span>🧰</span>
+                    <span>Troli Medis</span>
+                    <span class="dock-badge-pill" id="dockToolBadge">5 Alat</span>
+                </button>
+
+                <button class="dock-action-btn" id="btnToggleVitals" title="Buka Monitor EKG & Status Klinis">
+                    <span>🩺</span>
+                    <span>Monitor EKG</span>
+                    <span class="dock-badge-pill" id="dockBpmBadge">❤️ <span id="dockBpmText">115</span> BPM</span>
+                </button>
+            </div>
+
+            <!-- ==================== SLIDING DRAWER 1: Patient Roster (Left) ==================== -->
+            <aside class="patient-roster-drawer" id="patientRosterDrawer">
+                <div class="drawer-header-row">
+                    <div class="drawer-title">
+                        <span>📋</span> Daftar Pasien Chiikawa
+                    </div>
+                    <button class="btn-drawer-close" id="btnCloseRoster" title="Tutup">✕</button>
+                </div>
+                <p class="drawer-subtext">Pilih pasien untuk memeriksa kondisi biologisnya:</p>
                 <div class="patient-list" id="patientRosterList">
                     <!-- Populated dynamically via JS -->
                 </div>
             </aside>
 
-            <!-- Center Column: Patient Bed & Nurse Trolley -->
-            <div class="ward-center-stage">
-
-                <!-- Stage Top HUD Bar (Missions, Inventory, Quick Travel) -->
-                <div class="stage-hud-bar">
-                    <div class="stage-mission-box">
-                        <span class="mission-icon">🎯</span>
-                        <div class="mission-text-wrap">
-                            <span class="mission-label">Misi Dokter Usagi:</span>
-                            <span class="mission-desc" id="missionBannerText">Periksa Chiikawa di ranjang
-                                periksa!</span>
-                        </div>
+            <!-- ==================== SLIDING DRAWER 2: Medical Trolley (Center/Float) ==================== -->
+            <div class="nurse-trolley-drawer" id="nurseTrolleyDrawer">
+                <div class="drawer-header-row">
+                    <div class="drawer-title">
+                        <span>🧰</span> Troli Tindakan Medis Dokter Usagi
                     </div>
-                    <div class="stage-inventory-box">
-                        <span>🎒</span>
-                        <span id="usagiInventoryText">Tas Kosong (Siap bertugas)</span>
-                    </div>
-                    <div class="stage-nav-shortcuts">
-                        <button class="btn-stage-nav" id="btnGoExam" title="Jalan Cepat ke Ruang Periksa">
-                            🏥 Ruang Periksa
-                        </button>
-                        <button class="btn-stage-nav" id="btnGoPharmacy" title="Jalan Cepat ke Ruang Obat">
-                            💊 Ruang Obat
-                        </button>
-                    </div>
+                    <button class="btn-drawer-close" id="btnCloseTrolley" title="Tutup">✕</button>
                 </div>
+                <p class="drawer-subtext">Pilih alat medis di bawah untuk memeriksa pasien & menyelesaikan tantangan biologi:</p>
 
-                <!-- Interactive Walkable 2-Room Hospital Stage Viewport -->
-                <div class="hospital-stage-viewport" id="hospitalStage">
-                    <div class="hospital-world" id="hospitalWorld">
+                <div class="tools-grid">
+                    <!-- Tool 1: Stethoscope -->
+                    <button class="medical-tool-btn ready" data-tool="stethoscope" id="toolStethoscope">
+                        <div class="tool-check-pill">✓</div>
+                        <div class="tool-icon-wrapper">🩺</div>
+                        <div class="tool-name-label">Stetoskop</div>
+                        <div class="tool-sub-label">Auskultasi Klinis</div>
+                    </button>
 
-                        <!-- ROOM 1: Ruang Pemeriksaan (Clinic Exam Room) -->
-                        <div class="stage-room-exam" id="stageRoomExam">
-                            <div class="stage-room-header-badge">
-                                <span>🏥</span> Ruangan Pemeriksaan
-                            </div>
+                    <!-- Tool 2: Thermometer -->
+                    <button class="medical-tool-btn ready" data-tool="thermometer" id="toolThermometer">
+                        <div class="tool-check-pill">✓</div>
+                        <div class="tool-icon-wrapper">🌡️</div>
+                        <div class="tool-name-label">Termometer</div>
+                        <div class="tool-sub-label">Skrining & Suhu</div>
+                    </button>
 
-                            <!-- Wall Poster: Biology Concepts -->
-                            <div class="stage-wall-poster">
-                                <div class="poster-title">Biologi SMA</div>
-                                <div class="poster-icons">🩸 🫀 🫁 🔬</div>
-                                <div class="poster-sub">Sistem Organ & Enzim</div>
-                            </div>
+                    <!-- Tool 3: Blood Lab -->
+                    <button class="medical-tool-btn ready" data-tool="bloodLab" id="toolBloodLab">
+                        <div class="tool-check-pill">✓</div>
+                        <div class="tool-icon-wrapper">💉</div>
+                        <div class="tool-name-label">Lab Darah</div>
+                        <div class="tool-sub-label">Hematologi & Bio</div>
+                    </button>
 
-                            <!-- Bed Object with Chiikawa Patient -->
-                            <div class="stage-bed-object" id="stagePatientBed"
-                                title="Klik untuk mendekat & periksa pasien!">
-                                <div class="stage-bed-bubble" id="stageBedComplaint">
-                                    "Wawa... perutku perih..."
-                                </div>
-                                <div class="stage-bed-frame">
-                                    <div class="stage-pillow"></div>
-                                    <div class="stage-patient-avatar-box" id="stagePatientAvatar">
-                                        <!-- Dynamic Patient SVG -->
-                                    </div>
-                                    <div class="stage-bed-blanket"></div>
-                                </div>
-                                <div class="stage-bed-label">Ranjang Pasien [Periksa]</div>
-                            </div>
+                    <!-- Tool 4: Microscope -->
+                    <button class="medical-tool-btn ready" data-tool="microscope" id="toolMicroscope">
+                        <div class="tool-check-pill">✓</div>
+                        <div class="tool-icon-wrapper">🔬</div>
+                        <div class="tool-name-label">Mikroskop</div>
+                        <div class="tool-sub-label">Observasi Sel</div>
+                    </button>
 
-                            <!-- Doctor Desk -->
-                            <div class="stage-desk-object" id="stageDesk">
-                                <div class="stage-desk-items">🔬📚</div>
-                                <div class="stage-desk-label">Meja Usagi</div>
-                            </div>
-                        </div>
-
-                        <!-- Corridor Archway (Lorong Penghubung) -->
-                        <div class="stage-corridor" id="stageArchway">
-                            <div class="stage-corridor-sign">
-                                ➡️ KE RUANG OBAT<br>
-                                ⬅️ KE RUANG PERIKSA
-                            </div>
-                            <div class="stage-floor-arrows">➔</div>
-                        </div>
-
-                        <!-- ROOM 2: Ruangan Obat-obatan (Pharmacy) -->
-                        <div class="stage-room-pharmacy" id="stageRoomPharmacy">
-                            <div class="stage-room-header-badge">
-                                <span>💊</span> Ruangan Obat-obatan (Apotek)
-                            </div>
-
-                            <!-- Medicine Shelves Object -->
-                            <div class="stage-shelves-object" id="stagePharmacyShelves"
-                                title="Klik untuk mendekat & buka lemari obat!">
-                                <div class="shelves-header-title">
-                                    <span>🏥</span> LEMARI OBAT BIOLOGI USAGI <span>✨</span>
-                                </div>
-                                <div class="shelves-grid">
-                                    <div class="shelf-tile">
-                                        <span class="shelf-icon">💊</span>
-                                        <span class="shelf-name">Antasida</span>
-                                    </div>
-                                    <div class="shelf-tile">
-                                        <span class="shelf-icon">🩸</span>
-                                        <span class="shelf-name">Zat Besi</span>
-                                    </div>
-                                    <div class="shelf-tile">
-                                        <span class="shelf-icon">🫁</span>
-                                        <span class="shelf-name">Inhaler</span>
-                                    </div>
-                                    <div class="shelf-tile">
-                                        <span class="shelf-icon">🛡️</span>
-                                        <span class="shelf-name">Vit Imun</span>
-                                    </div>
-                                    <div class="shelf-tile">
-                                        <span class="shelf-icon">⚡</span>
-                                        <span class="shelf-name">Glukosa</span>
-                                    </div>
-                                    <div class="shelf-tile">
-                                        <span class="shelf-icon">💧</span>
-                                        <span class="shelf-name">Oralit</span>
-                                    </div>
-                                </div>
-                                <div class="shelves-click-hint">📦 Klik / Dekati untuk Ambil Obat</div>
-                            </div>
-
-                            <!-- Pharmacy Dispenser Desk -->
-                            <div class="stage-dispenser-desk">
-                                <div class="dispenser-prop">
-                                    <span>⚖️</span>
-                                    <span>Timbangan</span>
-                                </div>
-                                <div class="dispenser-prop">
-                                    <span>🧪</span>
-                                    <span>Racikan</span>
-                                </div>
-                                <div class="dispenser-prop">
-                                    <span>📦</span>
-                                    <span>Obat Siap</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- PLAYABLE DOKTER USAGI SPRITE -->
-                        <div class="usagi-character-sprite" id="usagiCharacter">
-                            <!-- Overhead Carried Item -->
-                            <div class="usagi-carried-item" id="usagiCarriedItem">💊</div>
-                            <!-- Usagi Speech Bubble -->
-                            <div class="usagi-speech-bubble" id="usagiSpeechBubble">YAHA!</div>
-
-                            <!-- SVG Character Sprite -->
-                            <svg viewBox="0 0 80 100" class="usagi-svg-sprite">
-                                <!-- Tail -->
-                                <circle cx="20" cy="74" r="7" fill="#FDE047" stroke="#334155" stroke-width="2" />
-                                <!-- Left Bunny Ear -->
-                                <path class="ear-left" d="M30 42 C18 16, 20 2, 30 3 C38 4, 40 22, 36 42 Z"
-                                    fill="#FDE047" stroke="#334155" stroke-width="2.5" />
-                                <path class="ear-left-inner" d="M30 36 C22 18, 24 8, 30 9 C35 10, 36 22, 34 36 Z"
-                                    fill="#F472B6" opacity="0.65" />
-                                <!-- Right Bunny Ear -->
-                                <path class="ear-right" d="M48 42 C44 22, 46 4, 54 3 C64 2, 66 16, 54 42 Z"
-                                    fill="#FDE047" stroke="#334155" stroke-width="2.5" />
-                                <path class="ear-right-inner" d="M50 36 C48 22, 48 8, 54 9 C60 10, 60 22, 54 36 Z"
-                                    fill="#F472B6" opacity="0.65" />
-                                <!-- Head & Body -->
-                                <ellipse cx="42" cy="56" rx="25" ry="23" fill="#FDE047" stroke="#334155"
-                                    stroke-width="2.5" />
-                                <!-- Doctor White Coat -->
-                                <path d="M22 62 C26 54, 58 54, 62 62 L64 82 C64 85, 20 85, 20 82 Z" fill="#FFFFFF"
-                                    stroke="#334155" stroke-width="2" />
-                                <line x1="42" y1="62" x2="42" y2="82" stroke="#00C9A7" stroke-width="1.8"
-                                    stroke-dasharray="3" />
-                                <!-- Red Cross on Coat -->
-                                <circle cx="54" cy="71" r="4.5" fill="#EF4444" />
-                                <text x="51.8" y="74" font-size="7.5" font-weight="900" fill="#FFFFFF">+</text>
-                                <!-- Pink Stethoscope -->
-                                <path d="M28 58 Q42 70 56 58" fill="none" stroke="#EC4899" stroke-width="2.8"
-                                    stroke-linecap="round" />
-                                <circle cx="42" cy="67" r="4" fill="#00C9A7" stroke="#0A2540" stroke-width="1.2" />
-                                <!-- Beady Black Eyes -->
-                                <circle cx="34" cy="52" r="4.2" fill="#1E293B" />
-                                <circle cx="50" cy="52" r="4.2" fill="#1E293B" />
-                                <circle cx="32" cy="50" r="1.5" fill="#FFFFFF" />
-                                <circle cx="48" cy="50" r="1.5" fill="#FFFFFF" />
-                                <!-- Rosy Cheeks -->
-                                <circle cx="26" cy="58" r="4.5" fill="#F472B6" opacity="0.75" />
-                                <circle cx="58" cy="58" r="4.5" fill="#F472B6" opacity="0.75" />
-                                <!-- Cute Open Smile -->
-                                <path d="M38 58 Q42 65 46 58" stroke="#1E293B" stroke-width="2.2" fill="#E11D48" />
-                                <path d="M39 59 Q42 62 45 59" fill="#FFFFFF" />
-                                <!-- Feet -->
-                                <ellipse class="foot-left" cx="32" cy="84" rx="6.5" ry="4.5" fill="#FDE047"
-                                    stroke="#334155" stroke-width="2" />
-                                <ellipse class="foot-right" cx="52" cy="84" rx="6.5" ry="4.5" fill="#FDE047"
-                                    stroke="#334155" stroke-width="2" />
-                            </svg>
-                        </div>
-
-                        <!-- Floating Interaction Prompt -->
-                        <div class="stage-interact-prompt action-exam pulse" id="stageInteractPrompt">
-                            <span>🩺</span> <strong>SPASI / KLIK:</strong> Periksa Pasien!
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Mobile On-Screen Touch Controller -->
-                <div class="mobile-touch-controller" id="mobileControls">
-                    <div class="dpad-cross">
-                        <button class="dpad-btn up" id="dpadUp">▲</button>
-                        <button class="dpad-btn left" id="dpadLeft">◀</button>
-                        <button class="dpad-btn right" id="dpadRight">▶</button>
-                        <button class="dpad-btn down" id="dpadDown">▼</button>
-                    </div>
-                    <button class="btn-mobile-action" id="btnMobileAction">
-                        <span>⭐</span>
-                        <span>AKSI</span>
+                    <!-- Tool 5: Prescription Treatment -->
+                    <button class="medical-tool-btn ready" data-tool="treatment" id="toolTreatment">
+                        <div class="tool-check-pill">✓</div>
+                        <div class="tool-icon-wrapper">💊</div>
+                        <div class="tool-name-label">Resep Obat</div>
+                        <div class="tool-sub-label">Terapi Kuratif</div>
                     </button>
                 </div>
-
-
-                <!-- Main Patient Bed View -->
-                <div class="patient-bed-card">
-                    <div class="bed-header-row">
-                        <div class="bed-title-meta">
-                            <span class="bed-number-pill" id="patientBedNumber">Bed 101 - Bangsal Sirkulasi</span>
-                            <h2 class="patient-main-name" id="patientName">Pak Budi</h2>
-                            <p class="patient-sub-details" id="patientMeta">52 Tahun • Laki-laki • Anemia Berat</p>
-                        </div>
-                        <div class="recovery-container">
-                            <div class="recovery-label-row">
-                                <span>Status Pemulihan</span>
-                                <span id="recoveryPercentText">0% Kesembuhan</span>
-                            </div>
-                            <div class="recovery-progress-track">
-                                <div class="recovery-progress-fill" id="recoveryFill"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Interactive Patient Display Bed -->
-                    <div class="patient-bed-visual">
-                        <div class="bed-headboard"></div>
-                        <div class="patient-avatar-wrapper" id="patientAvatarBox">
-                            <!-- Injected SVG Avatar -->
-                        </div>
-                        <div class="patient-complaint-bubble">
-                            <div class="bubble-tag">Keluhan Pasien:</div>
-                            <div class="bubble-text" id="patientComplaint">
-                                "Badan saya terasa lemas sekali, kepala pusing berkunang-kunang, dan napas saya
-                                terengah-engah..."
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Nurse's Medical Trolley (Interactive Medical Tools) -->
-                <div class="nurse-trolley-panel">
-                    <div class="trolley-header">
-                        <div class="trolley-title-group">
-                            <h4><span>🧰</span> Troli Tindakan Medis Perawat</h4>
-                            <p class="trolley-instruction">Klik alat medis di bawah untuk memeriksa pasien & menjawab
-                                challenge soal biologi:</p>
-                        </div>
-                    </div>
-
-                    <div class="tools-grid">
-                        <!-- Tool 1: Stethoscope -->
-                        <button class="medical-tool-btn ready" data-tool="stethoscope" id="toolStethoscope">
-                            <div class="tool-check-pill">✓</div>
-                            <div class="tool-icon-wrapper">🩺</div>
-                            <div class="tool-name-label">Stetoskop</div>
-                            <div class="tool-sub-label">Auskultasi Klinis</div>
-                        </button>
-
-                        <!-- Tool 2: Thermometer -->
-                        <button class="medical-tool-btn ready" data-tool="thermometer" id="toolThermometer">
-                            <div class="tool-check-pill">✓</div>
-                            <div class="tool-icon-wrapper">🌡️</div>
-                            <div class="tool-name-label">Termometer</div>
-                            <div class="tool-sub-label">Skrining & Suhu</div>
-                        </button>
-
-                        <!-- Tool 3: Blood Lab -->
-                        <button class="medical-tool-btn ready" data-tool="bloodLab" id="toolBloodLab">
-                            <div class="tool-check-pill">✓</div>
-                            <div class="tool-icon-wrapper">💉</div>
-                            <div class="tool-name-label">Lab Darah</div>
-                            <div class="tool-sub-label">Hematologi & Bio</div>
-                        </button>
-
-                        <!-- Tool 4: Microscope -->
-                        <button class="medical-tool-btn ready" data-tool="microscope" id="toolMicroscope">
-                            <div class="tool-check-pill">✓</div>
-                            <div class="tool-icon-wrapper">🔬</div>
-                            <div class="tool-name-label">Mikroskop</div>
-                            <div class="tool-sub-label">Observasi Sel</div>
-                        </button>
-
-                        <!-- Tool 5: Prescription Treatment -->
-                        <button class="medical-tool-btn ready" data-tool="treatment" id="toolTreatment">
-                            <div class="tool-check-pill">✓</div>
-                            <div class="tool-icon-wrapper">💊</div>
-                            <div class="tool-name-label">Resep Obat</div>
-                            <div class="tool-sub-label">Terapi Kuratif</div>
-                        </button>
-                    </div>
-                </div>
-
             </div>
 
-            <!-- Right Column: Vital Signs & Diagnostic Panel -->
-            <div class="vital-monitor-col">
-                <div class="vital-monitor-card">
-                    <div class="monitor-top-bar">
-                        <span class="monitor-brand">BIO-MONITOR 3000</span>
-                        <div class="monitor-status-dot">
-                            <div class="pulse-indicator"></div>
-                            <span>REALTIME EKG</span>
-                        </div>
+            <!-- ==================== SLIDING DRAWER 3: Vitals Monitor & Diagnosis (Right) ==================== -->
+            <div class="vitals-monitor-drawer" id="vitalsMonitorDrawer">
+                <div class="drawer-header-row">
+                    <div class="drawer-title" style="color: #38BDF8;">
+                        <span>🩺</span> Bio-Monitor 3000 & Status Pasien
+                    </div>
+                    <button class="btn-drawer-close" id="btnCloseVitals" title="Tutup">✕</button>
+                </div>
+
+                <!-- Patient Bed Meta Card inside Drawer -->
+                <div class="drawer-patient-summary">
+                    <div class="drawer-avatar-wrap" id="patientAvatarBox">
+                        <!-- Dynamic SVG -->
+                    </div>
+                    <div class="drawer-patient-info">
+                        <span class="bed-number-pill" id="patientBedNumber">Bed 101</span>
+                        <h3 class="patient-main-name" id="patientName" style="color: white; font-size: 1.15rem;">Pak Budi</h3>
+                        <p class="patient-sub-details" id="patientMeta" style="color: #94A3B8; font-size: 0.76rem;">52 Tahun • Laki-laki</p>
+                    </div>
+                </div>
+
+                <!-- Recovery progress -->
+                <div class="recovery-container" style="width: 100%; margin: 8px 0 14px;">
+                    <div class="recovery-label-row" style="color: #E2E8F0;">
+                        <span>Status Pemulihan</span>
+                        <span id="recoveryPercentText">0% Kesembuhan</span>
+                    </div>
+                    <div class="recovery-progress-track">
+                        <div class="recovery-progress-fill" id="recoveryFill"></div>
+                    </div>
+                </div>
+
+                <!-- Patient Complaint -->
+                <div class="patient-complaint-bubble" style="max-width: 100%; margin-bottom: 14px; background: #1E293B; border-color: #0284C7; color: #E2E8F0;">
+                    <div class="bubble-tag" style="color: #38BDF8;">Keluhan Pasien:</div>
+                    <div class="bubble-text" id="patientComplaint" style="color: #F8FAFC;">
+                        "Badan terasa lemas..."
+                    </div>
+                </div>
+
+                <!-- Live Oscilloscope EKG Canvas -->
+                <div class="monitor-top-bar" style="margin-bottom: 6px;">
+                    <span class="monitor-brand" style="font-size: 0.72rem; color: #38BDF8;">BIO-MONITOR 3000</span>
+                    <div class="monitor-status-dot">
+                        <div class="pulse-indicator"></div>
+                        <span style="font-size: 0.7rem; color: #00C9A7;">REALTIME EKG</span>
+                    </div>
+                </div>
+                <div class="ekg-screen-box" style="height: 100px; margin-bottom: 12px;">
+                    <canvas id="ekgCanvas"></canvas>
+                </div>
+
+                <!-- Dynamic Vitals Grid -->
+                <div class="vitals-grid" style="grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;">
+                    <div class="vital-tile heart-rate">
+                        <div class="vital-label"><span>Detak Jantung</span><span>❤️</span></div>
+                        <div class="vital-value" id="vitalHR">115</div>
+                        <div class="vital-unit">BPM</div>
+                        <div class="vital-status-pill warning" id="vitalStatusHR">Takikardia</div>
                     </div>
 
-                    <!-- Live Oscilloscope EKG Canvas -->
-                    <div class="ekg-screen-box">
-                        <canvas id="ekgCanvas"></canvas>
+                    <div class="vital-tile spo2">
+                        <div class="vital-label"><span>Saturasi O2</span><span>🫁</span></div>
+                        <div class="vital-value" id="vitalSpO2">92%</div>
+                        <div class="vital-unit">SpO2</div>
+                        <div class="vital-status-pill warning" id="vitalStatusSpO2">Hipoksia</div>
                     </div>
 
-                    <!-- Dynamic Vitals Grid -->
-                    <div class="vitals-grid">
-                        <div class="vital-tile heart-rate">
-                            <div class="vital-label">
-                                <span>Detak Jantung</span>
-                                <span>❤️</span>
-                            </div>
-                            <div class="vital-value" id="vitalHR">115</div>
-                            <div class="vital-unit">BPM (Denyut/Menit)</div>
-                            <div class="vital-status-pill warning" id="vitalStatusHR">Takikardia</div>
-                        </div>
+                    <div class="vital-tile temp">
+                        <div class="vital-label"><span>Suhu Tubuh</span><span>🌡️</span></div>
+                        <div class="vital-value" id="vitalTemp">36.4°C</div>
+                        <div class="vital-unit">°C</div>
+                        <div class="vital-status-pill normal" id="vitalStatusTemp">Normal</div>
+                    </div>
 
-                        <div class="vital-tile spo2">
-                            <div class="vital-label">
-                                <span>Saturasi O2</span>
-                                <span>🫁</span>
-                            </div>
-                            <div class="vital-value" id="vitalSpO2">92%</div>
-                            <div class="vital-unit">SpO2 (Kadar Oksigen)</div>
-                            <div class="vital-status-pill warning" id="vitalStatusSpO2">Hipoksia</div>
-                        </div>
-
-                        <div class="vital-tile temp">
-                            <div class="vital-label">
-                                <span>Suhu Tubuh</span>
-                                <span>🌡️</span>
-                            </div>
-                            <div class="vital-value" id="vitalTemp">36.4°C</div>
-                            <div class="vital-unit">Celcius (°C)</div>
-                            <div class="vital-status-pill normal" id="vitalStatusTemp">Normal</div>
-                        </div>
-
-                        <div class="vital-tile bp">
-                            <div class="vital-label">
-                                <span>Tekanan Darah</span>
-                                <span>⚡</span>
-                            </div>
-                            <div class="vital-value" id="vitalBP">90/60</div>
-                            <div class="vital-unit">mmHg</div>
-                            <div class="vital-status-pill normal" id="vitalStatusBP">Hipotensi</div>
-                        </div>
+                    <div class="vital-tile bp">
+                        <div class="vital-label"><span>Tekanan Darah</span><span>⚡</span></div>
+                        <div class="vital-value" id="vitalBP">90/60</div>
+                        <div class="vital-unit">mmHg</div>
+                        <div class="vital-status-pill normal" id="vitalStatusBP">Hipotensi</div>
                     </div>
                 </div>
 
                 <!-- Clinical Organ & Biology Focus -->
-                <div class="clinical-organ-card">
-                    <h5><span>🔬</span> Materi Biologi Terkait:</h5>
-                    <div class="organ-tag-badge" id="organTagBadge">Sistem Peredaran Darah & Eritrosit</div>
-                    <p class="clinical-tip-text">
-                        <strong>Diagnosis Pasien:</strong> <span id="clinicalDiagnosis">Anemia Berat & Hipoksia
-                            Jaringan</span>. Pelajari struktur hemoglobin, peran Fe2+, dan transpor gas darah untuk
-                        memulihkan pasien.
+                <div class="clinical-organ-card" style="background: rgba(30, 41, 59, 0.8); border-color: rgba(56, 189, 248, 0.3);">
+                    <h5 style="color: #38BDF8;"><span>🔬</span> Materi Biologi Terkait:</h5>
+                    <div class="organ-tag-badge" id="organTagBadge">Sistem Sirkulasi</div>
+                    <p class="clinical-tip-text" style="color: #CBD5E1; font-size: 0.76rem;">
+                        <strong>Diagnosis Pasien:</strong> <span id="clinicalDiagnosis">Anemia Berat</span>.
                     </p>
                 </div>
             </div>
@@ -4211,6 +4940,21 @@ class SoundSystem {
         notes.forEach((f, i) => {
             this.playTone(f, 'sine', 0.3, 0.16, i * 0.1);
         });
+    }
+
+    // Door Open sound - Gentle chime & door whoosh
+    playDoorOpen() {
+        if (this.isMuted) return;
+        this.playTone(523.25, 'sine', 0.15, 0.08, 0);       // C5
+        this.playTone(783.99, 'triangle', 0.22, 0.07, 0.07); // G5
+        this.playTone(1046.50, 'sine', 0.28, 0.05, 0.14);   // C6
+    }
+
+    // Door Close sound - Soft gentle hospital latch
+    playDoorClose() {
+        if (this.isMuted) return;
+        this.playTone(392.00, 'triangle', 0.1, 0.06, 0);    // G4
+        this.playTone(261.63, 'sine', 0.14, 0.05, 0.05);    // C4
     }
 
     // Gentle ambient hospital clinic melody loop
@@ -5756,11 +6500,18 @@ class BiologyGame {
         this.animFrameId = null;
         this.lastFrameTime = performance.now();
 
-        // World Bounds (Width: 1080px, Height: 420px)
-        this.worldWidth = 1080;
-        this.worldHeight = 420;
-        this.bedPos = { x: 130, y: 220 };
-        this.shelvesPos = { x: 820, y: 170 };
+        // World Bounds (Fullscreen 1350px 3D Hospital World)
+        this.worldWidth = 1350;
+        this.worldHeight = 520;
+        this.bedPos = { x: 130, y: 240 };
+        this.doorExamPos = { x: 480, y: 220 };
+        this.corridorCenterPos = { x: 675, y: 240 };
+        this.doorPharmacyPos = { x: 840, y: 220 };
+        this.shelvesPos = { x: 1080, y: 170 };
+
+        // 3D Interactive Doors State
+        this.isExamDoorOpen = false;
+        this.isPharmacyDoorOpen = false;
 
         // EKG Canvas State
         this.ekgCanvas = null;
@@ -5862,6 +6613,17 @@ class BiologyGame {
         this.stagePatientAvatar = document.getElementById('stagePatientAvatar');
         this.stageBedComplaint = document.getElementById('stageBedComplaint');
         this.stagePharmacyShelves = document.getElementById('stagePharmacyShelves');
+
+        // 3D Interactive Doors
+        this.doorExam = document.getElementById('doorExam');
+        this.doorPharmacy = document.getElementById('doorPharmacy');
+
+        // Fullscreen Sliding Drawers & Floating Dock
+        this.patientRosterDrawer = document.getElementById('patientRosterDrawer');
+        this.nurseTrolleyDrawer = document.getElementById('nurseTrolleyDrawer');
+        this.vitalsMonitorDrawer = document.getElementById('vitalsMonitorDrawer');
+        this.dockBpmText = document.getElementById('dockBpmText');
+        this.dockPatientBadge = document.getElementById('dockPatientBadge');
     }
 
     bindEvents() {
@@ -6002,11 +6764,74 @@ class BiologyGame {
             });
         }
 
+        const btnGoCorridor = document.getElementById('btnGoCorridor');
+        if (btnGoCorridor) {
+            btnGoCorridor.addEventListener('click', () => {
+                this.walkTo(675, 240);
+                this.showUsagiSpeech("YAHA! Menuju Koridor Klinik!");
+            });
+        }
+
         const btnGoPharmacy = document.getElementById('btnGoPharmacy');
         if (btnGoPharmacy) {
             btnGoPharmacy.addEventListener('click', () => {
-                this.walkTo(780, 240);
+                this.walkTo(1050, 240);
                 this.showUsagiSpeech("URA! Menuju Ruang Obat!");
+            });
+        }
+
+        // Fullscreen Floating Dock & Sliding Drawer Toggles
+        const btnToggleRoster = document.getElementById('btnToggleRoster');
+        const btnCloseRoster = document.getElementById('btnCloseRoster');
+        if (btnToggleRoster) {
+            btnToggleRoster.addEventListener('click', () => this.toggleDrawer('roster'));
+        }
+        if (btnCloseRoster) {
+            btnCloseRoster.addEventListener('click', () => this.closeDrawers());
+        }
+
+        const btnToggleTrolley = document.getElementById('btnToggleTrolley');
+        const btnCloseTrolley = document.getElementById('btnCloseTrolley');
+        if (btnToggleTrolley) {
+            btnToggleTrolley.addEventListener('click', () => this.toggleDrawer('trolley'));
+        }
+        if (btnCloseTrolley) {
+            btnCloseTrolley.addEventListener('click', () => this.closeDrawers());
+        }
+
+        const btnToggleVitals = document.getElementById('btnToggleVitals');
+        const btnCloseVitals = document.getElementById('btnCloseVitals');
+        if (btnToggleVitals) {
+            btnToggleVitals.addEventListener('click', () => this.toggleDrawer('vitals'));
+        }
+        if (btnCloseVitals) {
+            btnCloseVitals.addEventListener('click', () => this.closeDrawers());
+        }
+
+        // 3D Door Interactive Clicks
+        if (this.doorExam) {
+            this.doorExam.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.walkTo(this.doorExamPos.x, this.doorExamPos.y, () => {
+                    this.openDoor('exam');
+                    setTimeout(() => {
+                        this.walkTo(620, 240);
+                        this.showUsagiSpeech("YAHA! Melewati Pintu Periksa!");
+                    }, 250);
+                });
+            });
+        }
+
+        if (this.doorPharmacy) {
+            this.doorPharmacy.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.walkTo(this.doorPharmacyPos.x, this.doorPharmacyPos.y, () => {
+                    this.openDoor('pharmacy');
+                    setTimeout(() => {
+                        this.walkTo(960, 240);
+                        this.showUsagiSpeech("YAHA! Melewati Pintu Apotek!");
+                    }, 250);
+                });
             });
         }
 
@@ -6104,7 +6929,7 @@ class BiologyGame {
         window.soundSystem.playCorrect();
         this.showUsagiSpeech("YAHA! Selamat Datang di Klinik Bio!");
         this.welcomeScreen.style.display = 'none';
-        this.wardScreen.style.display = 'grid';
+        this.wardScreen.style.display = 'flex';
 
         // Load default first patient
         this.loadPatient(this.activePatientId);
@@ -6143,6 +6968,10 @@ class BiologyGame {
             `;
             rosterContainer.appendChild(item);
         });
+
+        if (this.dockPatientBadge) {
+            this.dockPatientBadge.textContent = `${this.curedCount}/6 Sembuh`;
+        }
     }
 
     loadPatient(patientId) {
@@ -6219,6 +7048,10 @@ class BiologyGame {
 
         // BP
         this.vitalBP.textContent = recoveryPercent === 100 ? target.bp : init.bp;
+
+        if (this.dockBpmText) {
+            this.dockBpmText.textContent = `${currentHR}`;
+        }
     }
 
     updateToolButtonsState(patientId) {
@@ -6763,6 +7596,29 @@ class BiologyGame {
     }
 
     checkProximityTriggers() {
+        // Proximity detection for 3D Interactive Doors
+        const distToDoorExam = Math.hypot(this.usagiX - this.doorExamPos.x, this.usagiY - this.doorExamPos.y);
+        if (distToDoorExam < 85 && !this.isExamDoorOpen) {
+            this.isExamDoorOpen = true;
+            if (this.doorExam) this.doorExam.classList.add('door-open');
+            window.soundSystem.playDoorOpen();
+        } else if (distToDoorExam > 125 && this.isExamDoorOpen) {
+            this.isExamDoorOpen = false;
+            if (this.doorExam) this.doorExam.classList.remove('door-open');
+            window.soundSystem.playDoorClose();
+        }
+
+        const distToDoorPharmacy = Math.hypot(this.usagiX - this.doorPharmacyPos.x, this.usagiY - this.doorPharmacyPos.y);
+        if (distToDoorPharmacy < 85 && !this.isPharmacyDoorOpen) {
+            this.isPharmacyDoorOpen = true;
+            if (this.doorPharmacy) this.doorPharmacy.classList.add('door-open');
+            window.soundSystem.playDoorOpen();
+        } else if (distToDoorPharmacy > 125 && this.isPharmacyDoorOpen) {
+            this.isPharmacyDoorOpen = false;
+            if (this.doorPharmacy) this.doorPharmacy.classList.remove('door-open');
+            window.soundSystem.playDoorClose();
+        }
+
         if (!this.stageInteractPrompt) return;
 
         const patient = getPatientById(this.activePatientId);
@@ -6810,10 +7666,9 @@ class BiologyGame {
             } else if (progress.isCured) {
                 this.showUsagiSpeech("Pasien sudah sehat bugar! YAHA!");
             } else {
-                // Open first uncompleted tool or default stethoscope question
-                const tools = ['stethoscope', 'thermometer', 'bloodLab', 'microscope', 'treatment'];
-                const nextTool = tools.find(t => !progress.completedTools.has(t)) || 'stethoscope';
-                this.handleToolClick(nextTool);
+                // Auto-open nurse trolley drawer for seamless tool picking
+                this.toggleDrawer('trolley');
+                this.showUsagiSpeech("Pilih tindakan dari Troli Medis!");
             }
         } else if (this.activeInteractTarget === 'pharmacy') {
             this.openMedicineCabinet();
@@ -6821,6 +7676,61 @@ class BiologyGame {
             // General Usagi chirp
             window.soundSystem.playUsagiUra();
             this.showUsagiSpeech("YAHA! URA!");
+        }
+    }
+
+    toggleDrawer(type) {
+        window.soundSystem.playToolClick();
+        const isRosterOpen = this.patientRosterDrawer && this.patientRosterDrawer.classList.contains('active');
+        const isTrolleyOpen = this.nurseTrolleyDrawer && this.nurseTrolleyDrawer.classList.contains('active');
+        const isVitalsOpen = this.vitalsMonitorDrawer && this.vitalsMonitorDrawer.classList.contains('active');
+
+        this.closeDrawers();
+
+        if (type === 'roster' && !isRosterOpen) {
+            if (this.patientRosterDrawer) this.patientRosterDrawer.classList.add('active');
+            const btn = document.getElementById('btnToggleRoster');
+            if (btn) btn.classList.add('active');
+        } else if (type === 'trolley' && !isTrolleyOpen) {
+            if (this.nurseTrolleyDrawer) this.nurseTrolleyDrawer.classList.add('active');
+            const btn = document.getElementById('btnToggleTrolley');
+            if (btn) btn.classList.add('active');
+        } else if (type === 'vitals' && !isVitalsOpen) {
+            if (this.vitalsMonitorDrawer) this.vitalsMonitorDrawer.classList.add('active');
+            const btn = document.getElementById('btnToggleVitals');
+            if (btn) btn.classList.add('active');
+        }
+    }
+
+    closeDrawers() {
+        if (this.patientRosterDrawer) this.patientRosterDrawer.classList.remove('active');
+        if (this.nurseTrolleyDrawer) this.nurseTrolleyDrawer.classList.remove('active');
+        if (this.vitalsMonitorDrawer) this.vitalsMonitorDrawer.classList.remove('active');
+        const buttons = document.querySelectorAll('.dock-action-btn');
+        buttons.forEach(b => b.classList.remove('active'));
+    }
+
+    openDoor(doorType) {
+        if (doorType === 'exam' && this.doorExam) {
+            this.isExamDoorOpen = true;
+            this.doorExam.classList.add('door-open');
+            window.soundSystem.playDoorOpen();
+        } else if (doorType === 'pharmacy' && this.doorPharmacy) {
+            this.isPharmacyDoorOpen = true;
+            this.doorPharmacy.classList.add('door-open');
+            window.soundSystem.playDoorOpen();
+        }
+    }
+
+    closeDoor(doorType) {
+        if (doorType === 'exam' && this.doorExam) {
+            this.isExamDoorOpen = false;
+            this.doorExam.classList.remove('door-open');
+            window.soundSystem.playDoorClose();
+        } else if (doorType === 'pharmacy' && this.doorPharmacy) {
+            this.isPharmacyDoorOpen = false;
+            this.doorPharmacy.classList.remove('door-open');
+            window.soundSystem.playDoorClose();
         }
     }
 
