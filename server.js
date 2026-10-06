@@ -17,7 +17,10 @@ const server = http.createServer((req, res) => {
     let reqUrl = req.url.split('?')[0];
     if (reqUrl === '/') reqUrl = '/index.html';
 
-    const filePath = path.join(__dirname, reqUrl);
+    let filePath = path.join(__dirname, 'public', reqUrl);
+    if (!fs.existsSync(filePath)) {
+        filePath = path.join(__dirname, reqUrl);
+    }
     const ext = path.extname(filePath).toLowerCase();
 
     fs.readFile(filePath, (err, content) => {

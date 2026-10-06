@@ -3,11 +3,16 @@ const path = require('path');
 
 console.log("=== RUNNING GAME SANITY CHECK ===");
 
+const findPath = (relPath) => {
+    const pubPath = path.join(__dirname, 'public', relPath);
+    return fs.existsSync(pubPath) ? pubPath : path.join(__dirname, relPath);
+};
+
 // 1. Read files
-const questionsContent = fs.readFileSync(path.join(__dirname, 'js/questions.js'), 'utf8');
-const patientsContent = fs.readFileSync(path.join(__dirname, 'js/patients.js'), 'utf8');
-const htmlContent = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
-const gameContent = fs.readFileSync(path.join(__dirname, 'js/game.js'), 'utf8');
+const questionsContent = fs.readFileSync(findPath('js/questions.js'), 'utf8');
+const patientsContent = fs.readFileSync(findPath('js/patients.js'), 'utf8');
+const htmlContent = fs.readFileSync(findPath('index.html'), 'utf8');
+const gameContent = fs.readFileSync(findPath('js/game.js'), 'utf8');
 
 // Mock window environment
 const windowMock = {};
